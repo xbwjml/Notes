@@ -223,3 +223,7 @@
 ​				float	*pointer_3;	//pointer_3是指向float型变量的指针变量;
 
 ​				char	*pointer_4;	//pointer_4是指向字符型变量的指针变量;
+
+### 7.5 数组与指针
+
+​				
