@@ -444,3 +444,87 @@
 ​						- toArray(), 把集合转换成数组，然后遍历数组即可。
 
 ​						- 或者iterator(),返回一个迭代器对象，可以通过迭代器对象来迭代集合;
+
+
+
+## 11.多线程
+
+### 11.1继承Thread类
+
+​					方法1：一个类继承Thread 类，重写run 方法，创建这个类的对象，并调用这个对象的start方法。代码如下所示:
+
+```java
+public class Demo1 {
+    public static void main(String[] args) {
+        Thread1 t1 = new Thread1(); //创建线程实例
+        t1.start(); //启动线程
+    }
+}
+
+class Thread1 extends Thread{//继承Thread
+    @Override//重写run方法
+    public void run() {
+        System.out.println("Thread1运行");
+    }
+}
+```
+
+注：主方法 public static void main(String[] args) {...} 是单线程的。
+
+### 11.2实现runnable接口
+
+​				方法2：一个类实现 runnable 接口，实现 run 方法。然后创建该类的实例，创建 Thread 时作为一个参数来传递并启动。代码如下:
+
+```java
+public class Demo3 {
+    public static void main(String[] args) {
+
+        //创建线程实例
+        MyThreadd mt = new MyThreadd();
+        Thread t1 = new Thread(mt);
+        t1.setName("哈哈哈");
+
+        //启动线程
+        t1.start();
+    }
+}
+
+class MyThreadd implements Runnable{
+    @Override
+    public void run() {
+        for ( int i=0; i<100; i++ ){
+            System.out.println(Thread.currentThread().getName()+":"+i);
+        }
+    }
+}
+```
+
+
+
+### 11.3同步
+
+​				synchronized : 同步(锁)，可以修饰代码块和方法，被修饰的代码块和方法一旦被某个线程访问，则直接锁住，其他线程将无法访问。
+
+
+
+​				同步代码块：
+
+```java
+			synchronized ( 锁对象 ){
+                ...
+            }
+```
+
+​				注意：-锁对象需要被所有的线程所共享。
+
+
+
+​				同步方法: 使用关键字synchronized 修饰的方法，一旦被一个线程访问，则整个方法全部锁住，其他线程无法访问。
+
+​				注意:   -非静态同步方法的锁对象是 this 。
+
+​						   -静态同步方法的锁对象是 当前类的字节码对象。
+
+### 11.4线程的生命周期
+
+​				
