@@ -469,15 +469,25 @@ class Impl implements IA{
 
 ### 10.1集合的体系结构
 
-### 
+```java
+                Connection接口
+                      |
+      ————————————————————————————————————
+      |                                  |
+    List接口                           Set接口
+```
+
+
 
 ### 10.2迭代器
 
-​				集合的遍历方式:
+​				Collection的遍历方式（三种）:
 
-​						- toArray(), 把集合转换成数组，然后遍历数组即可。
+​						- toArray(), 把集合转换成 Object 数组，然后遍历数组即可。
 
 ​						- 或者iterator(),返回一个迭代器对象，可以通过迭代器对象来迭代集合;
+
+​						- 增强 for 循环；
 
 ### 10.3并发修改异常
 
@@ -487,7 +497,29 @@ class Impl implements IA{
 
 ### 10.4泛型
 
+### 10.5增强for循环
 
+​				foreach: 增强for循环，一般用于遍历集合或数组
+
+```java
+for( E e : 集合或数组对象 ){
+    //...
+}
+```
+
+​				注意！在增强for循环中不能修改元素，否则会出现并发修改异常。
+
+### 10.6 List
+
+​			List的实现类，比如ArrayList和LinkedList特点：
+
+​			-有序，能通过索引访问；
+
+​			-元素允许重复；
+
+​			-List的实现类，比如ArrayList和LinkedList,里面的元素是有序的，可以通过索引访问，所以遍历List的实现类，除了使用Collection的3个遍历方法外，还可以用索引循环遍历。
+
+​			-ArrayList 基于顺序存储结构，LinkedList基于链式存储结构；
 
 
 
@@ -574,3 +606,177 @@ class MyThreadd implements Runnable{
 ### 11.4线程的生命周期
 
 ​				
+
+## 12.Map与Set
+
+### 12.1遍历Set
+
+​				由于Set继承了Connection，所以 Collection的三种遍历方方法，Set也可以使用：
+
+​						- toArray(), 把集合转换成 Object 数组，然后遍历数组即可。
+
+​						- 或者iterator(),返回一个迭代器对象，可以通过迭代器对象来迭代集合;
+
+​						- 增强 for 循环；
+
+### 12.2Set的特点
+
+​				-无序（存储和遍历得顺序可能不一样）,没有索引;
+
+​				-不允许重复（要求元素唯一）,最多能有一个null ;
+
+### 12.3HashSet add()方法分析
+
+​				通过查看源码，一步步找到 HashSet   的  add 方法的具体实现。
+
+```java
+    public boolean add(E e) {
+        return map.put(e, PRESENT)==null;
+    }
+```
+
+```java
+    public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+```
+
+```java
+    /**
+     * Implements Map.put and related methods
+     *
+     * @param hash hash for key
+     * @param key the key
+     * @param value the value to put
+     * @param onlyIfAbsent if true, don't change existing value
+     * @param evict if false, the table is in creation mode.
+     * @return previous value, or null if none
+     */
+    final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
+
+
+```
+
+简而言之，步骤就是:
+
+-1.先通过要添加的新元素的 hashCode()返回值计算出 hash 值；
+
+-2.获取当前集合中已有的每一个元素，和新添加的元素比较，若重复，则返回，若不重复，则添加新元素；
+
+那么，第2步中，如何比较元素是否重复呢？
+
+​		-首先比较哈希值是否一样，若不一样，就是不重复；
+
+​		-如果哈希值一样，则比较地址值或用equals()方法进行比较；
+
+​		-若上一步的值是 true,则就是重复，不添加该新元素，若上一步值是true,则不重复，就添加该新元素；
+
+
+
+### 12.4Collections工具类
+
+​				Collections是一个工具类，用来操作集合。
+
+​				相关方法见 API 文档。
+
+### 12.5Map接口概述
+
+​				将键映射到值的对象。一个映射不能包含重复的键；每个键最多只能映射到一个值。
+
+### 12.6Map的keySet()和values()
+
+```java
+public class Demo5 {
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("001","张三");
+        map.put("002","里斯");
+        map.put("003","王五");
+
+        System.out.println(map);
+
+        Set<String> keys = map.keySet();//获取所有的key
+        System.out.println(keys);
+
+        Collection<String> values = map.values();//获取所有value
+        System.out.println(values);
+    }
+}
+```
+
+### 12.7遍历Map的三种方法
+
+```java
+public class Demo6 {
+    public static void main(String[] args) {
+
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("郭靖","黄蓉");
+        map.put("杨过","小龙女");
+        map.put("张无忌","赵敏");
+
+
+        //方式1.先获取所有的key,再通过key找value
+        //获取key的集合
+        Set<String> keys = map.keySet();
+        //遍历key获取value
+        for ( String key : keys) {
+            System.out.println(key+"==="+map.get(key));
+        }
+
+
+        //方式2.通过values()方法获取到所有的key,但是没法获取对应的key
+
+
+        //方式3.通过“结婚证”来获取key和value
+        //获取结婚证对象
+        Set<Map.Entry<String, String>> entries = map.entrySet();
+        //遍历结婚证对象集合
+        for ( Map.Entry<String,String> entry: entries) {
+            System.out.println(entry.getKey()+"+++"+entry.getValue());
+        }
+    }
+}
+```
+
