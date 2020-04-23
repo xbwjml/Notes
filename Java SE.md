@@ -461,7 +461,17 @@ class Impl implements IA{
 
 ### 9.2 System类
 
+### 9.3 StringBuffer类和StringBuilder类
 
+​				为了避免频繁地创建新的String而浪费内存空间（方法区常量池），可以用StringBuffer和StringBuilder来替代。
+
+​				-StringBuffer 中的方法大都采用了 synchronized 关键字进行修饰，因此是线程安全的.
+
+​				-而 StringBuilder 没有这个修饰，可以被认为是线程不安全的。 
+
+​				-在单线程程序下，StringBuilder效率更快，因为它不需要加锁，不具备多线程安全
+
+而StringBuffer则每次都需要判断锁，效率相对更低。
 
 
 
@@ -776,6 +786,443 @@ public class Demo6 {
         for ( Map.Entry<String,String> entry: entries) {
             System.out.println(entry.getKey()+"+++"+entry.getValue());
         }
+    }
+}
+```
+
+
+
+## 13 IO流
+
+### 13.1概述
+
+​				IO流用于把数据写到文件中或者读取文件中的数据。
+
+### 13.2输入输出
+
+​				输入流：把数据输入到内存中，读数据。
+
+​				输出流：内存中数据写到文件中，写数据。
+
+​				注：判断输入输出，以内存为参照。
+
+### 13.3FileWriter
+
+​				用来写入字符文件的便捷类。
+
+```java
+public class test01 {
+	public static void main(String[] args) throws IOException {
+
+		/**
+		 * 1.调用系统资源创建了一个文件 （D:\\a.txt）
+		 * 2.创建了以恶搞输出流对象（fw）
+		 * 3.把输出流对象指向文件
+		 */
+		FileWriter fw = new FileWriter("d:\\a.txt");
+
+		//调用输出流对象的写数据方法
+		fw.write("IO流测试");
+
+		/**
+		 *数据其实没有直接写入文件，其实写到了内存缓冲区，
+		 * 所以需要刷新缓冲区
+		 */
+		fw.flush();
+		
+		//释放资源(通知系统释放和该文件相关的资源)
+		fw.close();
+	}
+
+}
+```
+
+​				flush()和close()的1区别：
+
+​				-flush():刷新缓冲区；
+
+​				-close():先刷新缓冲区，再通知系统释放资源，流对象就不能再使用了；
+
+
+
+### 13.4FileWriter写数据的5种方法
+
+​				-void write(String str):写一个字符串数据;
+
+​				-void write(String str,int index,int len):写一个字符串中的一部分数据;
+
+​				-void write(int ch):写一个字符数据,这里写int类型的好处是既可以写char类型的数					据，也可以写char对应的int类型的值。'a',97;
+
+​				-void write(char[] chs):写一个字符数组数据;
+
+​				-void write(char[] chs,int index,int len):写一个字符数组的一部分数据;
+
+### 13.5FileReader
+
+```java
+public class Test01 {
+	public static void main(String[] args) throws IOException {
+		
+		//创建输入流对象
+		FileReader fr = new FileReader("fr.txt");
+		
+		//调用输入流对象的读数据方法
+		
+		//一次读取一个字符
+//		int ch = fr.read();
+//		System.out.println(ch);
+//		System.out.println((char)ch);
+//		
+//		ch = fr.read();
+//		System.out.println(ch);
+//		System.out.println((char)ch);
+//		
+//		System.out.println(fr.read());
+//		System.out.println(fr.read());
+//		System.out.println(fr.read());
+		
+        //方式一：一次读一个字符
+		//int ch;
+		//while( (ch=fr.read()) != -1 ) {
+		//	System.out.print((char)ch);
+		//}
+        
+        //方式二：一次读一个字符数组
+        char[] chs = new char[1024];
+		int len;
+		while( (len=fr.read(chs)) != -1  ) {
+			System.out.print(new String(chs,0,len));	
+		}
+        
+		
+		//释放资源
+		fr.close();
+	}
+
+}
+```
+
+### 13.6复制文件
+
+```java
+public class Copy {
+	public static void main(String[] args) throws IOException {
+		
+		//创建输入流对象
+		FileReader fr = new FileReader("fr.txt");
+		
+		//创建输出流对象
+		FileWriter fw = new FileWriter("dest.java");
+		
+		//方式一：读写数据,一次读写一个字符
+		//int ch;
+		//while( (ch=fr.read()) != -1 ) {
+		//	fw.write(ch);
+		//}
+        
+        //方式二：读写数据，一次读写一个字符数组
+        char[] chs = new char[1024];
+        int len;
+        while ( (len=fr.read(chs))!=-1 ){
+            fw.write(chs,0,len);
+        }
+		
+		//释放资源
+		fw.close();
+		fr.close();
+	}
+
+}
+```
+
+### 13.7缓冲流的基本使用
+
+```java
+public class BufferedStreamDemo {
+    public static void main(String[] args) throws IOException {
+
+        /*//创建输出缓冲流对象
+        BufferedWriter bw = new BufferedWriter(new FileWriter("a.txt"));
+        bw.write("Hello");
+        bw.flush();
+        bw.close();*/
+
+        //创建输入缓冲流对象
+        BufferedReader br =new BufferedReader(new FileReader("a.txt"));
+
+        /*//一次读写一个字符
+        int ch;
+        while( (ch=br.read())!=-1 ){
+            System.out.print((char)ch);
+        }*/
+
+        //一次读写一个字符数组
+        char[] chs = new char[1024];
+        int len;
+        while( (len=br.read(chs))!=-1 ){
+            System.out.print(new String(chs,0,len));
+        }
+
+
+        //释放资源
+        br.close();
+    }
+}
+```
+
+### 13.8缓冲流复制文本的2种方式
+
+​				-一次读写一个字符；
+
+​				-一次读写一个字符数组；
+
+```java
+public class CopyFileDemo {
+    public static void main(String[] args) throws IOException {
+
+        //创建输入缓冲流对象
+        BufferedReader br = new BufferedReader(new FileReader("a.txt"));
+
+        //创建输出缓冲流对象
+        BufferedWriter bw = new BufferedWriter(new FileWriter("a副本.txt"));
+
+        //读写数据
+        /*
+        //一次读写一个字符
+        int ch;
+        while ( (ch=br.read())!=-1 ){
+            bw.write(ch);
+        }
+        */
+
+
+        //一次读写一个字符数组
+        char[] chs = new char[1024];
+        int len;
+        while ( (len=br.read(chs))!=-1 ){
+            bw.write(chs,0,len);
+        }
+
+        //释放资源
+        bw.close();
+        br.close();
+    }
+}
+```
+
+
+
+### 13.9缓冲流的特殊功能
+
+​				BufferedWriter：void newLine()；写一个换行符；
+
+​				BufferedReader：String readLine()：一次读一行数据，但是不读换行符；
+
+```java
+public class BufferedStreamDemo {
+    public static void main(String[] args) throws IOException {
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("a.txt"));
+        for( int i=0; i<10; i++ ){
+            bw.write("hello"+i);
+//            bw.write("\r\n");
+            bw.newLine();
+            bw.flush();
+        }
+        bw.close();
+
+
+        BufferedReader br = new BufferedReader(new FileReader("a.txt"));
+        String line;
+        while ( (line=br.readLine())!=null ){
+            System.out.println(line);
+        }
+
+        br.close();
+    }
+}
+```
+
+### 13.10缓冲流特殊功能复制文本文件
+
+```java
+public class CopyFileDemo {
+    public static void main(String[] args) throws IOException {
+        //创建输入缓冲流对象
+        BufferedReader br = new BufferedReader(new FileReader("a.txt"));
+        //创建输出缓冲流对象
+        BufferedWriter bw = new BufferedWriter(new FileWriter("a副本2.txt"));
+
+        //读写数据，一次读写一行
+        String line;
+        while ( (line=br.readLine())!=null ){
+            bw.write(line);
+            bw.newLine();
+            bw.flush();
+        }
+
+        //释放资源
+        bw.close();
+        br.close();
+    }
+}
+```
+
+### 13.11复制文本文件的5种方式
+
+```java
+/**
+ * @author LeeMJ
+ * @Date 2020 - 01 - 29 - 21:56
+ *
+ * 复制文本文件的5种方式
+ * 数据源：a.txt
+ * 目的地：a_dest.txt
+ */
+public class CopyFileTest {
+    public static void main(String[] args) throws IOException{
+        String src = "a.txt";
+        String dest = "a_dest.txt";
+
+        method1(src,dest);//基本流一次读写一个字符
+        method2(src,dest);//基本流一次读写一个字符数组
+        method3(src,dest);//缓冲流一次读写一个字符
+        method4(src,dest);//缓冲流一次读写一个字符数组
+        method5(src,dest);//缓冲流一次读写一个字符串
+    }
+
+    /**
+     * 缓冲流一次读取一个字符串
+     * @param src
+     * @param dest
+     * @throws IOException
+     */
+    public static void method5(String src,String dest) throws IOException {
+        Date startDate = new Date();
+        long start = startDate.getTime();
+        //创建输入缓冲流对象
+        BufferedReader br = new BufferedReader(new FileReader(src));
+        //创建输出缓冲流对象
+        BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
+        //一次读写一个字符串
+        String line;
+        while ( (line=br.readLine())!=null ){
+            bw.write(line);
+            bw.newLine();
+            bw.flush();
+        }
+        //释放资源
+        bw.close();
+        br.close();
+        Date endDate = new Date();
+        long end = endDate.getTime();
+        System.out.println("method5耗时(毫秒):"+(end-start));
+    }
+
+    /**
+     * 缓冲流一次读写一个字符数组
+     * @param src
+     * @param dest
+     * @throws IOException
+     */
+    public static void method4(String src,String dest) throws IOException {
+        Date startDate = new Date();
+        long start = startDate.getTime();
+        //创建输入缓冲流对象
+        BufferedReader br = new BufferedReader(new FileReader(src));
+        //创建输出缓冲流对象
+        BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
+        //一次读写一个字符数组
+        char[] chs = new char[1024];
+        int len;
+        while ( (len=br.read(chs))!=-1 ){
+            bw.write(chs,0,len);
+        }
+        //释放资源
+        bw.close();
+        br.close();
+        Date endDate = new Date();
+        long end = endDate.getTime();
+        System.out.println("method4耗时(毫秒):"+(end-start));
+    }
+
+    /**
+     * 缓冲流一次读写一个字符
+     * @param src
+     * @param dest
+     * @throws IOException
+     */
+    public static void method3(String src,String dest) throws IOException {
+        Date startDate = new Date();
+        long start = startDate.getTime();
+        //创建输入缓冲流对象
+        BufferedReader br = new BufferedReader(new FileReader(src));
+        //创建输出缓冲流对象
+        BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
+        //一次读写一个字符
+        int ch;
+        while ( (ch=br.read())!=-1 ){
+            bw.write((char)ch);
+        }
+        //释放资源
+        bw.close();
+        br.close();
+        Date endDate = new Date();
+        long end = endDate.getTime();
+        System.out.println("method3耗时(毫秒):"+(end-start));
+    }
+
+    /**
+     * 基本流一次读写一个字符数组
+     * @param src
+     * @param dest
+     * @throws IOException
+     */
+    public static void method2(String src,String dest) throws IOException {
+        Date startDate = new Date();
+        long start = startDate.getTime();
+        //创建输入流对象
+        FileReader fr = new FileReader(src);
+        //创建输出流对象
+        FileWriter fw = new FileWriter(dest);
+        //一次读写一个字符数组
+        char[] chs = new char[1024];
+        int len;
+        while ( (len=fr.read(chs))!=-1 ){
+            fw.write(chs,0,len);
+        }
+        //释放资源
+        fw.close();
+        fr.close();
+        Date endDate = new Date();
+        long end = endDate.getTime();
+        System.out.println("method2耗时(毫秒):"+(end-start));
+    }
+
+
+    /**
+     * 基本流一次读写一个字符
+     * @param src
+     * @param dest
+     */
+    public static void method1(String src,String dest) throws IOException {
+        Date startDate = new Date();
+        long start = startDate.getTime();
+        //创建输入流对象
+        FileReader fr = new FileReader(src);
+        //创建输出流对象
+        FileWriter fw = new FileWriter(dest);
+        //一次读写一个字符
+        int ch;
+        while ( (ch=fr.read())!=-1 ){
+            fw.write((char)ch);
+        }
+        //释放资源
+        fw.close();
+        fr.close();
+        Date endDate = new Date();
+        long end = endDate.getTime();
+        System.out.println("method1耗时(毫秒):"+(end-start));
     }
 }
 ```
