@@ -473,6 +473,16 @@ class Impl implements IA{
 
 而StringBuffer则每次都需要判断锁，效率相对更低。
 
+### 9.4Date类
+
+### 9.5SimpleDateFormat
+
+### 9.6Calendar类
+
+### 9.7正则表达式
+
+
+
 
 
 ## 10.泛型与常见数据结构
@@ -1225,5 +1235,158 @@ public class CopyFileTest {
         System.out.println("method1耗时(毫秒):"+(end-start));
     }
 }
+```
+
+
+
+## 14异常
+
+### 14.1异常体系结构
+
+​				Throwable(最顶层s)
+
+​								Error：出现的不能够处理的严重问题；
+
+​								Exception：可以处理的问题；
+
+### 14.2JVM处理异常的方式
+
+​				如果出现异常我们没有处理，jvm会处理，会把异常的类型，原因和位置打印出来。并且终止程序，后面的代码将不再执行。
+
+### 14.3处理异常的方式
+
+​				-捕获处理；
+
+```java
+    	try {
+			有可能出现问题的代码
+		} catch (异常类型 e) {
+			处理异常
+		}
+//执行顺序：
+//先执行try语句，如果try里面的语句出现异常，则异常那一行后面的代码就不执行了，跳入catch语句。
+//如果try里面没有异常，则走完try,不进入catch。
+```
+
+
+
+​				-抛出异常；
+
+```java
+    //当我们不想处理异常，或者没有能力处理异常，可以选择抛出异常,谁调用方法谁就处理异常。
+    //使用关键字throws在方法声明处抛出异常
+	public void method() throws IOException {
+    	FileWriter fw = new FileWriter("a.txt");
+    }
+```
+
+### 14.4处理多个异常
+
+```java
+public class Demo2 {
+	public static void main(String[] args) {
+		
+		//可以使用一个 try 多个 catch
+		try {
+			String s = null;
+			System.out.println(s.length());
+			
+			int[] arr = new int[3];
+			System.out.println(arr[5]);
+		} catch (NullPointerException e) {
+			System.out.println("空指针异常");
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("数组索引越界异常");
+		}catch (Exception e) {
+			System.out.println("异常");
+		}
+		
+		//多个catch之间的关系：
+			//多个catch之间可以有子父类
+			//平级之间没有顺序关系
+		    //如果有子父类，父类异常必须放在后面
+		
+	}
+}
+```
+
+### 14.5Thorwable
+
+​				- String	getMessage()     获得原因;
+
+​				- String	toString()			获得类型和原因；
+
+​				- void	printStackTrace() 打印类型和原因和异常代码位置；
+
+### 14.6finally
+
+​				finally的代码一定会执行；
+
+```java
+public static void main(String[] args) {
+    try {
+
+    } catch (Exception e) {
+        // TODO: handle exception
+    } finally {
+        //finaly里的代码一定会执行，无论try里面有没有出现异常
+    }
+}
+```
+
+### 14.7异常的分类
+
+​				-运行时期异常：RuntimeException的子类，再编译时期可以选择处理或不处理；
+
+​				-编译时期异常：是Exception的子类，并且非RuntimeException得子类，再编译时期必须处理.
+
+​				注：RuntimeException是Exception得子类；
+
+### 14.8自定义异常
+
+```java
+/**
+ * thorw 制造异常，并结束方法;
+ * 注意：如果throw的是编译时期异常，必须在方法声明出抛出(throws);
+ * 
+ * 如何自定义一个异常类:
+ * 		只要写一个类去继承Exception或RuntimeException,然后实现多个构造
+ * @author Leemi
+ *
+ */
+public class Demo5 {
+	public static void main(String[] args) {
+		try {
+			check(900);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void check(int score) throws Exception {
+		if( score<0 || score>100 ) {
+			throw new MyException("成绩范围不对");
+		}
+		System.out.println("分数正常");
+	}
+}
+
+/**
+ * 自定义异常类
+ * @author Leemi
+ *
+ */
+class MyException extends RuntimeException{
+
+	public MyException() {
+		super();
+	}
+
+	public MyException(String message) {
+		super(message);
+	}
+	
+}
+
 ```
 
