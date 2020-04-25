@@ -1390,3 +1390,131 @@ class MyException extends RuntimeException{
 
 ```
 
+
+
+## 15IO流高级
+
+### 15.1 File类
+
+​				文件和目录路径名的抽象表示形式，一个File对象指向一个文件或一个目录。 
+
+​				File类常用功能：
+
+```java
+/**
+ * File类创建和删除功能
+ *  boolean createNewFile():指定路径不存在该文件时时创建文件,返回true,否则返回false
+ *  boolean mkdir():当指定的单级文件夹不存在时创建文件夹并返回true，否则返回false  
+ *	boolean mkdirs():当指定的多级文件夹某一级文件夹不存在时,创建多级文件夹并返回true,否则返回false
+ *	boolean delete():删除文件或者删除单级文件夹
+ */
+
+/**
+ * File类的判断功能
+ *	boolean exists():判断指定路径的文件或文件夹是否存在
+ *	boolean isAbsolute():判断当前路路径是否是绝对路径
+ *	boolean isDirectory():判断当前的目录是否存在
+ *	boolean isFile():判断当前路径是否是一个文件
+ *	boolean isHidden():判断当前路径是否是隐藏文件
+ */
+
+/**
+ * File类的获取功能和修改名字功能
+ *	  File getAbsoluteFile():获取文件的绝对路径,返回File对象
+ *	  String getAbsolutePath():获取文件的绝对路径,返回路径的字符串
+ *	  String getParent():获取当前路径的父级路径,以字符串形式返回该父级路径
+ *	  File getParentFile():获取当前路径的父级路径,以字File对象形式返回该父级路径
+ *	  String getName():获取文件或文件夹的名称
+ *	  String getPath():获取File对象中封装的路径
+ *	  long lastModified():以毫秒值返回最后修改时间
+ *	  long length():返回文件的字节数
+ *	  boolean renameTo(File dest): 将当前File对象所指向的路径 修改为 指定File所指向的路径
+ */
+		
+/**
+ * File类的其它获取功能
+ *	String[] list():以字符串数组的形式返回当前路径下所有的文件和文件夹的名称
+ *	File[] listFiles():以File对象的形式返回当前路径下所有的文件和文件夹的名称
+ *	static File[] listRoots():获取计算机中所有的盘符
+ */
+```
+
+```java
+
+public class Demo2 {
+	public static void main(String[] args) {
+		File f = new File("src");
+		method(f);
+		
+		File f2 = new File("D:\\deleteTest");
+		method2(f2);
+	}
+	
+	/**
+	 * 输出指定目录下所有的java文件(包含子目录)
+	 * @param file
+	 */
+	public static void method(File file) {
+		if( file.isDirectory() ) {
+			File[] files = file.listFiles();
+			for( File f : files) {
+				//判断是否是文件对象
+				if( f.isFile() ) {
+					if( f.getName().endsWith(".java") ) {
+						System.out.println(f.getName());
+					}
+				}else {
+					//是一个目录对象
+					method(f);
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 删除指定目录
+	 * 注：如果要删除一个目录，则需要删除这个目录下所有的子文件和子目录
+	 * @param file
+	 */
+	public static void method2(File file) {
+		if( file.isDirectory() ) {
+			//删除自己所有的子文件和子目录
+			File[] files = file.listFiles();
+			for( File f : files ) {
+				if( f.isFile() ) {
+					System.out.println(f.getName());
+					f.delete();
+				}else {
+					method2(f);
+				}
+			}
+			//删除自己
+			System.out.println(file.getName());
+			file.delete();
+		}
+	}
+}
+
+```
+
+### 15.2 IO流的分类
+
+```java
+/*
+ * IO流分类：
+ * 			流向
+ * 					输入流	读取数据	FileReader	Reader
+ * 					输出流	写出数据	FileWriter	Writer
+ * 			数据类型
+ * 					字节流	
+ * 							字节输入流		读取数据	InputStream
+ * 							字节输出流		写出数据	OutputStream
+ * 					字符流
+ * 							字符输入流		读取数据	Reader
+ * 							字符输出流		写出数据	Writer
+ */
+```
+
+### 15.3使用字节流复制图片
+
