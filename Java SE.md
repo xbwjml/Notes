@@ -1549,3 +1549,90 @@ public class Demo3 {
 }
 ```
 
+### 15.4 标准输入输出流
+
+### 15.6 打印流
+
+### 15.7对象操作流
+
+### 15.8 Serializable接口
+
+### 15.9 Properties
+
+```java
+/**
+ * Properties:表示了一个持久的属性集，属性列表中每个键及其对应值都是字符串
+ * @author leemj
+ *
+ */
+public class Demo2 {
+	public static void main(String[] args) {
+		
+		//创建属性列表对象
+		Properties prop = new Properties();
+		
+		//添加映射关系
+		prop.put("001", "张三");
+		prop.put("002", "里斯");
+		prop.put("003", "王武");
+		
+		//遍历属性对象
+		Set<Object> keys = prop.keySet();
+		for( Object key : keys ) {
+			System.out.println( key+"==="+prop.get(key) );
+		}
+		
+	}
+}
+```
+
+```java
+public class Demo3 {
+	public static void main(String[] args) throws IOException {
+//		method1();
+//		method2();
+//		method3();
+	}
+
+	private static void method3() throws IOException {
+		//创建属性列表对象
+		Properties prop = new Properties();
+		//添加映射关系
+		prop.put("杨过", "小龙女");
+		prop.put("郭靖", "黄蓉");
+		prop.put("令狐冲", "任盈盈");
+		//创建输出流对象
+		FileWriter fw = new FileWriter("e.txt");
+		
+		prop.store(fw, "Hello!!!");
+	}
+
+	private static void method2() throws FileNotFoundException, IOException {
+		//创建属性列表对象
+		Properties prop = new Properties();
+		//创建一个输入流对象
+		FileReader fr = new FileReader("d.txt");
+		
+		prop.load(fr);
+		
+		//释放资源
+		fr.close();
+		System.out.println(prop);
+	}
+
+	private static void method1() throws FileNotFoundException {
+		//创建属性列表对象
+		Properties prop = new Properties();
+		//添加映射关系
+		prop.setProperty("老大", "刘备");
+		prop.setProperty("老二", "关羽");
+		prop.setProperty("老三", "张飞");
+		//创建打印流对象
+		PrintWriter out = new PrintWriter("d.txt");
+		prop.list(out);
+		//释放资源
+		out.close();
+	}
+}
+```
+
