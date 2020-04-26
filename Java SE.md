@@ -1636,3 +1636,124 @@ public class Demo3 {
 }
 ```
 
+
+
+## 16网络编程
+
+### 16.1网络通信三要素
+
+​				- IP地址；
+
+​				- 端口；
+
+​				- 传输协议（UDP，TCP）；
+
+### 16.2 InetAddress类
+
+### 16.3 UDP收发数据
+
+```java
+public class Demo2 {
+	public static void main(String[] args) throws IOException {
+		
+		//创建发送端Socket对象
+		DatagramSocket ds = new DatagramSocket();
+		
+		//创建数据并打包
+		String s = " I'm coming! ";
+		byte[] bys = s.getBytes();
+		int length = bys.length;
+		InetAddress address = InetAddress.getByName("LAPTOP-903TEHP4");//发送给自己
+		int port = 8888;
+		//打包
+		DatagramPacket dp = new DatagramPacket(bys, length,address,port);
+		
+		//发送数据
+		ds.send(dp);
+		
+		//释放资源
+		ds.close();
+	}
+}
+```
+
+```java
+public class Demo3 {
+	public static void main(String[] args) throws IOException {
+		
+		//创建接收端对象
+		DatagramSocket ds = new DatagramSocket(8888);
+		
+		//接收数据
+		byte[] bys = new byte[1024];
+		DatagramPacket dp = new DatagramPacket(bys, bys.length);
+		ds.receive(dp);
+		
+		//解析数据
+		InetAddress address = dp.getAddress();
+		byte[] data = dp.getData();
+		int length = dp.getLength();
+		
+		//输出数据
+		System.out.println("发送端是："+address.getHostAddress());
+		System.out.println(new String(data,0,length));
+		
+		
+		//释放资源
+		ds.close();
+	}
+}
+```
+
+### 16.4TCP收发数据
+
+```java
+public class Client {
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		
+		//创建发送端 Socket对象,(创建连接)
+		Socket s = new Socket(InetAddress.getByName("LAPTOP-903TEHP4"),10086);
+		
+		//创建输出流对象
+		OutputStream os = s.getOutputStream();
+		
+		//发送数据
+		os.write("tcp coming!".getBytes());
+		
+		//释放资源
+		os.close();
+		s.close();
+	}
+}
+```
+
+```java
+public class Server {
+	public static void main(String[] args) throws IOException {
+		
+		//创建接收端Socket对象
+		ServerSocket ss = new ServerSocket(10086);
+		
+		//监听 (阻塞)
+		Socket s = ss.accept();
+		//获取输入流对象
+		InputStream is = s.getInputStream();
+		
+		//获取数据
+		byte[] bys = new byte[1024];
+		int len;
+		len = is.read(bys);
+		
+		//输出数据
+		System.out.println(new String(bys,0,len));
+		
+		//释放资源
+		s.close();
+	}
+}
+```
+
+
+
+## 17 反射
+
