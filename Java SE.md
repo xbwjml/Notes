@@ -156,7 +156,7 @@
 
 ​					- 子类只能获取父类非私有成员；
 
- 				   - 成员变量采用就近原则，如果子类中有，就用子类的，如果子类中没有，那就使用父类的。 
+   - 成员变量采用就近原则，如果子类中有，就用子类的，如果子类中没有，那就使用父类的。 
 
 ​					- 关键字super:父类的引用(用法类似于this)，可以获取父类的成员变量和成员方法。
 
@@ -1440,7 +1440,6 @@ class MyException extends RuntimeException{
 ```
 
 ```java
-
 public class Demo2 {
 	public static void main(String[] args) {
 		File f = new File("src");
@@ -1756,4 +1755,251 @@ public class Server {
 
 
 ## 17 反射
+
+### 17.1类的加载
+
+​				当程序要使用某个类时，如果该类还未被加载到内存中，则系统会通过加载，连接，初始化三步来实现对这个类进行初始化。
+
+​				-加载：
+
+​					就是指将class文件读入内存，并为之创建一个Class对象。
+
+​					任何类被使用时系统都会建立一个Class对象。
+
+​				-连接：
+
+​					验证是否有正确的内部结构，并和其他类协调一致。
+
+​					准备 负责为类的静态成员分配内存，并设置默认初始化值。
+
+​					解析 将类的二进制数据中的符号引用替换为直接引用。
+
+​				-初始化： 
+
+​					就是我们以前讲过的初始化步骤。
+
+### 17.2类的加载时机
+
+以下的情况，会加载这个类。
+
+a. 创建类的实例
+b. 类的静态变量，或者为静态变量赋值
+c. 类的静态方法
+d. 使用反射方式来强制创建某个类或接口对应的java.lang.Class对象
+e. 初始化某个类的子类
+f. 直接使用java.exe命令来运行某个主类
+
+
+
+### 17.3类加载器
+
+​				-负责将.class文件加载到内在中，并为之生成对应的Class对象。
+
+​				-虽然我们不需要关心类加载机制，但是了解这个机制我们就能更好的理解程序的运行
+
+### 17.4类加载器组成
+
+​				-Bootstrap ClassLoader 根类加载器:
+
+​					也被称为引导类加载器，负责Java核心类的加载。
+
+​					比如System,String等。在JDK中JRE的lib目录下rt.jar文件中。
+
+​				-Extension ClassLoader 扩展类加载器：
+
+​					负责JRE的扩展目录中jar包的加载。
+
+​					在JDK中JRE的lib目录下ext目录。
+
+​				-System ClassLoader 系统类加载器：
+
+​					负责在JVM启动时加载来自java命令的class文件，以及classpath环境变量所指定的jar包和类路径。
+
+
+
+通过这些描述就可以知道我们常用的类，都是由谁来加载完成的。
+
+到目前为止我们已经知道把class文件加载到内存了，那么，如果我们仅仅站在这些class文件的角度，我们如何来使用这些class文件中的内容呢?
+
+这就是我们反射要研究的内容。
+
+
+
+### 17.5反射的概念及作用
+
+​				JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。
+
+​				要想解剖一个类,必须先要获取到该类的字节码文件对象。而解剖使用的就是Class类中的方法.所以先要获取到每一个字节码文件对应的Class类型的对象。
+
+### 17.6 class文件对象
+
+```java
+/**
+ * 获取一个类的class文件对象的三种方式
+ * 1.对象获取
+ * 2.类名获取
+ * 3.Class类的静态方法获取
+ * @author Leemi
+ *
+ */
+public class Demo1 {
+	public static void main(String[] args) throws ClassNotFoundException {
+		
+		//1.通过该类的对象获取
+		Person p = new Person();
+		Class class1 = p.getClass();
+		System.out.println(class1);
+		
+		//2.通过类名获取
+		Class class2 = Person.class;
+		System.out.println(class2);
+		System.out.println(Double.class);
+		System.out.println(String.class);
+		System.out.println(ArrayList.class);
+		
+		//3.Class类的静态方法获取
+		Class class3 = Class.forName("com.fanshe.day01.Person");//一定要写全路径
+		System.out.println(class3);
+		System.out.println(Class.forName("java.util.Calendar"));
+	}
+}
+```
+
+### 17.7反射获得构造方法
+
+```java
+public class Demo2 {
+	public static void main(String[] args) throws Exception{
+		Class c = Class.forName("com.fanshe.day01.Person");
+		
+		//获取public空参构造方法
+		Constructor con =  c.getConstructor();
+		System.out.println(con);
+		//运行空参数构造方法
+		Object obj = con.newInstance();
+		System.out.println(obj);
+		
+		//获取public有参构造
+		Constructor con2 = c.getConstructor(String.class,int.class);
+		System.out.println(con2);
+		//运行有参构造方法
+		Object obj2 = con2.newInstance("张三",18);
+		System.out.println(obj2);
+	}
+}
+```
+
+```java
+/**
+ * 反射获取构造方法并运行，有快捷方式
+ * 前提：
+ * 		被反射的类必须有public空参构造
+ * @author Leemi
+ *
+ */
+public class Demo3 {
+	public static void main(String[] args) throws Exception {
+		Class c = Class.forName("com.fanshe.day01.Person");
+		Object obj = c.newInstance();
+		System.out.println(obj);
+	}
+}
+```
+
+### 17.8反射获得私有构造方法
+
+```java
+public class Demo4 {
+	public static void main(String[] args) throws Exception {
+		Class c = Class.forName("com.fanshe.day01.Person");
+		
+		//获得所有构造方法，包括私有的
+		Constructor[] cons = c.getDeclaredConstructors();
+		for( Constructor con : cons ) {
+			System.out.println(con);
+		}
+		
+		//获得指定的私有构造
+		Constructor con = c.getDeclaredConstructor(String.class);
+		con.setAccessible(true);
+		System.out.println(con.newInstance("张三"));
+	}
+}
+```
+
+### 17.9field获得成员变量
+
+```java
+public class Demo5 {
+	public static void main(String[] args) throws Exception {
+		Class c = Class.forName("com.fanshe.day01.Person");
+		
+		//获得所有public成员变量
+		Field[] fields = c.getFields();
+		for( Field f : fields ) {
+			System.out.println(f);
+		}
+		
+		//获得指定public成员变量
+		Field f = c.getField("address");
+		Object obj = c.newInstance();
+		f.set(obj, "张江");
+		System.out.println(obj);
+		
+		//注： 获取private成员变量参照上面
+	}
+}
+```
+
+### 17.10反射获取成员方法
+
+```java
+public class Demo6 {
+	public static void main(String[] args) throws Exception {
+		Class c = Class.forName("com.fanshe.day01.Person");
+		
+		//获取所有public方法，包括继承的public方法。
+		Method[] methods = c.getMethods();
+		for( Method m : methods ) {
+			System.out.println(m);
+		}
+		
+		System.out.println("==============");
+		
+		//获得指定方法
+		Method m = c.getMethod("eat", String.class);
+		System.out.println(m);
+		m.invoke(c.newInstance(), "奥利奥");
+		
+		//注：获得private方法参照上面
+	}
+}
+```
+
+### 17.11泛型擦除
+
+```java
+/**
+ * 编译后的class文件中是没有泛型约束的
+ * 实用意义不大，主要考察对反射的掌握程度
+ * @author Leemi
+ *
+ */
+public class Demo7 {
+	public static void main(String[] args) throws Exception {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("a");
+		
+		//获得ArrayList类的class文件对象
+		Class c = list.getClass();
+		//获取ArrayList.class中的add()方法
+		Method m = c.getMethod("add", Object.class);
+		m.invoke(list, 10);
+		m.invoke(list, 10.5);
+		m.invoke(list, 'x');
+		
+		System.out.println(list);
+	}
+}
+```
 
