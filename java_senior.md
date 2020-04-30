@@ -49,3 +49,140 @@
 ## 1.5CountDownLatch
 
 ​				CountDownLatch主要有两个方法，当一个或多个线程调用await方法时，这些线程会阻塞。其他线程调用countDown()方法会将计数器减1（调用countDown方法的线程不会阻塞）。当计数器的值变为0时，因await方法阻塞的线程会被唤醒，继续执行。
+
+
+
+
+
+
+
+# 2JVM
+
+## 2.1JVM体系结构概述
+
+![JVM位置](java_senior_pic/JVM/JVM位置.png)
+
+
+
+
+
+​				JVM体系结构概览（如下图所示）：
+
+![JVM体系结构概览](java_senior_pic/JVM/JVM体系结构概览.png)
+
+上图中，灰色的部分不会有垃圾回收；JVM调优就是调橙色的地方，大概率是调整堆。
+
+
+
+## 2.2类装载器ClassLoader
+
+​				负责加载class文件，class文件在文件开头有特定的文件标识，并且ClassLoader只是负责class文件的加载，至于它是否可以运行，则由Execution Engine决定。
+
+![类装载器](java_senior_pic/JVM/类装载器.png)
+
+
+
+类装载器的顺序如下图所示：
+
+![类装载器顺序](java_senior_pic/JVM/类装载器顺序.png)
+
+
+
+## 2.3双亲委派&沙箱
+
+​				待补充
+
+## 2.4执行引擎Execute Engine
+
+​				Execute Engine执行引擎负责解释命令，提交操作系统执行；
+
+## 2.5本地方法接口Native Interface
+
+![native本地接口](java_senior_pic/JVM/native本地接口.png)
+
+
+
+## 2.6本地方法区Native Method Stack
+
+![本地方法区](java_senior_pic/JVM/本地方法区.png)
+
+
+
+## 2.7PC寄存器
+
+​				又称程序计数器（Program Counter Register ）。
+
+![PC寄存器](java_senior_pic/JVM/PC寄存器.png)
+
+
+
+## 2.8方法区Method Area
+
+![方法区](java_senior_pic/JVM/方法区.png)
+
+
+
+## 2.9栈
+
+![栈内存](java_senior_pic/JVM/栈内存.png)
+
+
+
+​				栈里面存些什么？
+
+![栈存的东西](java_senior_pic/JVM/栈存的东西.png)
+
+
+
+​				栈运行原理;
+
+![栈运行原理](java_senior_pic/JVM/栈运行原理.png)
+
+
+
+![栈_两个栈帧图解](java_senior_pic/JVM/栈_两个栈帧图解.png)
+
+
+
+![栈_栈帧里面](java_senior_pic/JVM/栈_栈帧里面.png)
+
+
+
+![栈_堆_方法区的交互关系](java_senior_pic/JVM/栈_堆_方法区的交互关系.png)
+
+
+
+## 2.10堆
+
+![堆](java_senior_pic/JVM/堆.png)
+
+
+
+![堆_java7之前](java_senior_pic/JVM/堆_java7之前.png)
+
+
+
+​				新生区：
+
+![新生区](java_senior_pic/JVM/新生区.png)
+
+
+
+![hotSpot内存管理](java_senior_pic/JVM/hotSpot内存管理.png)
+
+
+
+![hotSpot_新生代png](java_senior_pic/JVM/hotSpot_新生代png.png)
+
+
+
+![hotSpot_旧生代](java_senior_pic/JVM/hotSpot_旧生代.png)
+
+
+
+​				永久区：
+
+![永久区](java_senior_pic/JVM/永久区.png)
+
+
+
