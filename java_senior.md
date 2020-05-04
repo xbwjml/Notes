@@ -186,3 +186,17 @@
 
 
 
+## 2.11堆内存调优
+
+![堆内存调优java7](java_senior_pic/JVM/堆内存调优java7.png)
+
+
+
+![堆内存调优java8](java_senior_pic/JVM/堆内存调优java8.png)
+
+
+
+![堆内存调优简介01](java_senior_pic/JVM/堆内存调优简介01.png)
+
+
+
