@@ -206,5 +206,68 @@
 
 ![MAT简介](java_senior_pic/JVM/MAT简介.png)
 
+## 2.11GC
+
+### 2.11.1概述
+
+![GC分类](java_senior_pic/JVM/GC分类.png)
 
 
+
+### 2.11.2GC算法
+
+
+
+1.引用计数法
+
+![GC_引用计数法](java_senior_pic/JVM/GC_引用计数法.png)
+
+
+
+2.复制算法
+
+![GC_minorGC](java_senior_pic/JVM/GC_minorGC.png)
+
+![GC_复制算法](java_senior_pic/JVM/GC_复制算法.png)
+
+![GC_复制算法_原理](java_senior_pic/JVM/GC_复制算法_原理.png)
+
+![GC_复制算法_原理2](java_senior_pic/JVM/GC_复制算法_原理2.png)
+
+![GC_复制算法_原理3](java_senior_pic/JVM/GC_复制算法_原理3.png)
+
+![GC_复制算法_缺点](java_senior_pic/JVM/GC_复制算法_缺点.png)
+
+
+
+3标记清除算法
+
+![GC_标记清除算法_用途](java_senior_pic/JVM/GC_标记清除算法_用途.png)
+
+![GC_标记清除算法_步骤](java_senior_pic/JVM/GC_标记清除算法_步骤.png)
+
+![GC_标记清除算法_优缺点](java_senior_pic/JVM/GC_标记清除算法_优缺点.png)
+
+
+
+4.标记压缩算法
+
+![GC_标记压缩算法_用途](java_senior_pic/JVM/GC_标记压缩算法_用途.png)
+
+![GC_标记清除算法_原理](java_senior_pic/JVM/GC_标记清除算法_原理.png)
+
+![GC_标记压缩算法_优缺点](java_senior_pic/JVM/GC_标记压缩算法_优缺点.png)
+
+
+
+5标记清除压缩算法
+
+![GC_标记清除压缩算法_原理](java_senior_pic/JVM/GC_标记清除压缩算法_原理.png)
+
+
+
+各种算法的优劣：
+
+![GC_各种算法优劣](java_senior_pic/JVM/GC_各种算法优劣.png)
+
+![GC_各种算法优劣2](java_senior_pic/JVM/GC_各种算法优劣2.png)
