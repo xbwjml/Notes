@@ -1243,7 +1243,7 @@ public class CopyFileTest {
 
 ### 14.1异常体系结构
 
-​				Throwable(最顶层s)
+​				Throwable(最顶层)
 
 ​								Error：出现的不能够处理的严重问题；
 
@@ -1827,7 +1827,7 @@ f. 直接使用java.exe命令来运行某个主类
 
 ### 17.5反射的概念及作用
 
-​				JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。
+​				JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取信息以及动态调用对象的方法的功能称为java语言的反射机制。
 
 ​				要想解剖一个类,必须先要获取到该类的字节码文件对象。而解剖使用的就是Class类中的方法.所以先要获取到每一个字节码文件对应的Class类型的对象。
 
@@ -2002,4 +2002,119 @@ public class Demo7 {
 	}
 }
 ```
+
+
+
+
+
+## 18.补充
+
+### 18.1 HashMap详解
+
+```
+
+```
+
+### 18.2 Java自带工具
+
+```
+jps
+```
+
+```
+jstack
+```
+
+```
+jconsole
+```
+
+```
+jstat
+```
+
+### 18.3 Object类
+
+```java
+public native int hashCode();
+
+返回一个对象的哈希值.
+```
+
+```java
+public final native Class<?> getClass()
+
+获得类对象,反射中使用
+```
+
+```java
+public boolean equals(Object obj) {
+        return (this == obj);
+}
+
+判断内存中的位置是否相同
+此方法经常被重写，例如String类
+```
+
+```java
+protected native Object clone() throws CloneNotSupportedException;
+
+首先是浅拷贝和深拷贝的区别;
+
+Object类里的clone方法是浅拷贝;
+
+浅拷贝是指拷贝对象时仅仅拷贝对象本身（包括对象中的基本变量），而不拷贝对象包含的引用指向的对象。深拷贝不仅拷贝对象本身，而且拷贝对象包含的引用指向的所有对象。通过clone方法复制对象时，若不对clone()方法进行改写，则调用此方法得到的对象为浅拷贝。
+
+```
+
+```java
+public String toString() {
+    return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}
+
+改方法用于返回一个对象的字符串表示.
+```
+
+```java
+public final native void wait(long timeout) throws InterruptedException;
+
+wait的作用是让当前线程进入等待状态，同时，wait()方法也会让当前线程释放它持有的锁，直到其他线程调用此对象的notify()或notifyAll()方法，当前线程就被唤醒。
+```
+
+```java
+public final native void notify();
+
+notify方法只唤醒一个等待（对象的）线程并使该线程开始执行。所以如果有多个线程等待一个对象，这个方法只会唤醒其中一个线程，选择哪个线程取决于操作系统对多线程管理的实现
+```
+
+```java
+public final native void notifyAll();
+
+notifyAll 会唤醒所有等待(对象的)线程，尽管哪一个线程将会第一个处理取决于操作系统的实现。如果当前情况下有多个线程需要被唤醒，推荐使用notifyAll 方法。比如在生产者-消费者里面的使用，每次都需要唤醒所有的消费者或是生产者，以判断程序是否可以继续往下执行。
+```
+
+```java
+wait()和sleep的区别：
+
+sleep
+让当前线程休眠指定时间。
+休眠时间的准确性依赖于系统时钟和CPU调度机制。
+不释放已获取的锁资源，如果sleep方法在同步上下文中调用，那么其他线程是无法进入到当前同步块或者同步方法中的。
+可通过调用interrupt()方法来唤醒休眠线程。
+    
+wait
+让当前线程进入等待状态，当别的其他线程调用notify()或者notifyAll()方法时，当前线程进入就绪状态
+wait方法必须在同步上下文中调用，例如：同步方法块或者同步方法中，这也就意味着如果你想要调用wait方法，前提是必须获取对象上的锁资源
+当wait方法调用时，当前线程将会释放已获取的对象锁资源，并进入等待队列，其他线程就可以尝试获取对象上的锁资源。
+```
+
+
+
+|            | wait                                                         | sleep                                             |
+| ---------- | ------------------------------------------------------------ | ------------------------------------------------- |
+| 同步       | 只能在同步上下文中调用wait方法，否则或抛出IllegalMonitorStateException异常 | 不需要在同步方法或同步块中调用                    |
+| 作用对象   | wait方法定义在Object类中，作用于对象本身                     | sleep方法定义在java.lang.Thread中，作用于当前线程 |
+| 释放锁资源 | 是                                                           | 否                                                |
+| 唤醒条件   | 其他线程调用对象的notify()或者notifyAll()方法                | 超时或者调用interrupt()方法体                     |
+| 方法属性   | wait是实例方法                                               | sleep是静态方法                                   |
 
