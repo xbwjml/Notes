@@ -2118,3 +2118,171 @@ wait方法必须在同步上下文中调用，例如：同步方法块或者同�
 | 唤醒条件   | 其他线程调用对象的notify()或者notifyAll()方法                | 超时或者调用interrupt()方法体                     |
 | 方法属性   | wait是实例方法                                               | sleep是静态方法                                   |
 
+### 18.4 Thread类
+
+```
+摘自: https://www.cnblogs.com/albertrui/p/8391447.html
+```
+
+```
+	在正式学习Thread类中的具体方法之前，我们先来了解一下线程有哪些状态，这个将会有助于后面对Thread类中的方法的理解。
+
+　　线程从创建到最终的消亡，要经历若干个状态。一般来说，线程包括以下这几个状态：创建(new)、就绪(runnable)、运行(running)、阻塞(blocked)、time waiting、waiting、消亡（dead）。
+
+　　当需要新起一个线程来执行某个子任务时，就创建了一个线程。但是线程创建之后，不会立即进入就绪状态，因为线程的运行需要一些条件（比如内存资源，譬如程序计数器、Java栈、本地方法栈都是线程私有的，所以需要为线程分配一定的内存空间），只有线程运行需要的所有条件满足了，才进入就绪状态。
+
+　　当线程进入就绪状态后，不代表立刻就能获取CPU执行时间，也许此时CPU正在执行其他的事情，因此它要等待。当得到CPU执行时间之后，线程便真正进入运行状态。
+
+　　线程在运行状态过程中，可能有多个原因导致当前线程不继续运行下去，比如用户主动让线程睡眠（睡眠一定的时间之后再重新执行）、用户主动让线程等待，或者被同步块给阻塞，此时就对应着多个状态：time waiting（睡眠或等待一定的事件）、waiting（等待被唤醒）、blocked（阻塞）。
+
+　　当由于突然中断或者子任务执行完毕，线程就会被消亡。
+
+　　下面这副图描述了线程从创建到消亡之间的状态：
+```
+
+![Thread_线程状态](java_senior_pic/Thread_线程状态.jpg)
+
+```
+start()方法：
+start()用来启动一个线程，当调用start方法后，系统才会开启一个新的线程来执行用户定义的子任务，在这个过程中，会为相应的线程分配需要的资源。
+```
+
+```
+run()方法：
+run()方法是不需要用户来调用的，当通过start方法启动一个线程之后，当线程获得了CPU执行时间，便进入run方法体去执行具体的任务。注意，继承Thread类必须重写run方法，在run方法中定义具体要执行的任务。
+```
+
+```
+sleep(...)方法：
+sleep相当于让线程睡眠，交出CPU，让CPU去执行其他的任务。
+　　如果需要让当前正在执行的线程暂停一段时间，并进入阻塞状态，则可以通过调用Thread类的静态sleep()方法来实现。
+　　当当前线程调用sleep()方法进入阻塞状态后，在其睡眠时间内，该线程不会获得执行机会，即使系统中没有其他可执行线程，处于sleep()中的线程也不会执行，因此sleep()方法常用来暂停程序的执行
+　　但是有一点要非常注意，sleep方法不会释放锁，也就是说如果当前线程持有对某个对象的锁，则即使调用sleep方法，其他线程也无法访问这个对象。
+```
+
+```
+yield()方法：
+yield()方法和sleep()方法有点相似，它也是Thread类提供的一个静态方法，它也可以让当前正在执行的线程暂停，但它不会阻塞该线程，它只是将该线程转入到就绪状态。即让当前线程暂停一下，让系统的线程调度器重新调度一次，完全可能的情况是：当某个线程调用了yield()方法暂停之后，线程调度器又将其调度出来重新执行。
+　　调用yield方法会让当前线程交出CPU权限，让CPU去执行其他的线程。它跟sleep方法类似，同样不会释放锁。但是yield不能控制具体的交出CPU的时间，另外，当某个线程调用了yield()方法之后，只有优先级与当前线程相同或者比当前线程更高的处于就绪状态的线程才会获得执行机会。
+　　注意，调用yield方法并不会让线程进入阻塞状态，而是让线程重回就绪状态，它只需要等待重新获取CPU执行时间，这一点是和sleep方法不一样的。
+```
+
+```java
+join()方法：
+假如在main线程中，调用thread.join方法，则main方法会等待thread线程执行完毕或者等待一定的时间。
+如果调用的是无参join方法，则等待thread执行完毕，如果调用的是指定了时间参数的join方法，则等待指定的时间。
+
+public class Demo1 {
+	public static void main(String[] args) throws IOException {
+		System.out.println("进入线程" + Thread.currentThread().getName());
+		Demo1 test = new Demo1();
+		MyThread thread1 = test.new MyThread();
+		thread1.start();
+		try {
+			System.out.println("线程" + Thread.currentThread().getName() + "等待");
+			thread1.join();
+			System.out.println("线程" + Thread.currentThread().getName() + "继续执行");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	class MyThread extends Thread {
+		@Override
+		public void run() {
+			System.out.println("进入线程" + Thread.currentThread().getName());
+			try {
+				Thread.currentThread().sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO: handle exception
+			}
+			System.out.println("线程" + Thread.currentThread().getName() + "执行完毕");
+		}
+	}
+}
+
+==========================控制台输出如下==========================
+线程main等待
+进入线程Thread-0
+线程Thread-0执行完毕
+线程main继续执行
+====================================================   
+    
+可以看出，当调用thread1.join()方法后，main线程会进入等待，然后等待thread1执行完之后再继续执行。
+```
+
+```java
+interrupt():
+interrupt，顾名思义，即中断的意思。单独调用interrupt方法可以使得处于阻塞状态的线程抛出一个异常，也就说，它可以用来中断一个正处于阻塞状态的线程；另外，通过interrupt方法和isInterrupted()方法来停止正在运行的线程。
+    
+public class Demo2 {
+	public static void main(String[] args) throws IOException {
+		Demo2 test = new Demo2();
+		MyThread thread = test.new MyThread();
+		thread.start();
+		try {
+			Thread.currentThread().sleep(2000);
+		} catch (InterruptedException e) {
+
+		}
+		thread.interrupt();
+	}
+
+	class MyThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				System.out.println("进入睡眠状态");
+				Thread.currentThread().sleep(10000);
+				System.out.println("睡眠完毕");
+			} catch (InterruptedException e) {
+				System.out.println("得到中断异常");
+			}
+			System.out.println("run方法执行完毕");
+		}
+	}
+}
+
+==========================控制台输出如下==========================
+进入睡眠状态
+得到中断异常
+run方法执行完毕
+====================================================   
+    
+从这里可以看出，通过interrupt方法可以中断处于阻塞状态的线程。那么能不能中断处于非阻塞状态的线程呢？看下面这个例子：
+
+public class Demo3 {
+	public static void main(String[] args) throws IOException {
+		Demo3 test = new Demo3();
+		MyThread thread = test.new MyThread();
+		thread.start();
+		try {
+			Thread.currentThread().sleep(2000);
+		} catch (InterruptedException e) {
+
+		}
+		thread.interrupt();
+	}
+
+	class MyThread extends Thread {
+		@Override
+		public void run() {
+			int i = 1;
+			while (i < Integer.MAX_VALUE) {
+				System.out.println(i + " while循环");
+				i++;
+			}
+		}
+	}
+	
+}
+
+运行该程序会发现，while循环会一直运行直到变量i的值超出Integer.MAX_VALUE。所以说直接调用interrupt方法不能中断正在运行中的线程。
+```
+
+```
+interrupted方法：
+interrupted()函数是Thread静态方法，用来检测当前线程的interrupt状态，检测完成后，状态清空。通过下面的interrupted源码我们能够知道，此方法首先调用isInterrupted方法，而isInterrupted方法是一个重载的native方法private native boolean isInterrupted(boolean ClearInterrupted) 通过方法的注释能够知道，用来测试线程是否已经中断，参数用来决定是否重置中断标志。
+```
+
