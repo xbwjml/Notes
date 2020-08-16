@@ -940,3 +940,11 @@ show status like 'innodb_row_lock%';
 5.尽可能低级别事务隔离。
 ```
 
+
+
+# 37.主从复制
+
+```
+
+```
+
