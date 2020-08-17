@@ -136,6 +136,103 @@ public class Demo1 {
 通道(channel):由java.nio.channels包定义的。Channel表示IO源与目标打开的连接。Channel类似于传统的"流"。只不过Channel本身不能直接访问数据,Channel只能与Buffer交互。
 ```
 
+```java
+/**
+ * 一. 通道(channel):用于源节点与目标节点的连接。
+ *                  在Java NIO中负责缓冲区中数据的传输。
+ *                  channel本身不存储任何数据。
+ *
+ * 二.通道的一些主要实现类；
+ *      FileChannel,
+ *      SocketChannel,
+ *      ServerSocketChannel,
+ *      DatagramChannel,
+ *
+ * 三.获取通道:
+ *      1.Java对支持通道的类提供了getChannel()方法;
+ *      2.从jdk1.7开始，nio.2对各个通道提供了静态方法open();
+ *      3.从jdk1.7开始，nio.2中的File工具类的newByteChannel();
+ *
+ * 四.通道之间的数据传输:
+ *      transferFrom()
+ *      transferTo()
+ *
+ * 五. 分散(Sactter)与聚集(Gather)
+ *      分散读取：将通道中的数据分散到多个缓冲区
+ *      聚集写入: 将读个缓冲区中的数据都聚集到通道中
+ *
+ * 六. 字符集 Charset
+ *
+ */
+public class Demo1 {
+
+    //1.利用通道完成文件的复制(非直接缓冲区)
+    @Test
+    public void test1() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream("1.jpg");
+        FileOutputStream fileOutputStream = new FileOutputStream("2.jpg");
+
+        //获取通道
+        FileChannel inChannel = fileInputStream.getChannel();
+        FileChannel outChannel = fileOutputStream.getChannel();
+
+        //分配指定大小的缓冲区
+        ByteBuffer buf = ByteBuffer.allocate(1024);
+
+        //将通道中的数据存入缓冲区
+        while ( inChannel.read(buf) != -1 ){
+            buf.flip();//将缓冲区切换成读取模式
+            outChannel.write(buf);//将缓冲区中的数据写入通道
+            buf.clear();//清空缓冲区
+        }
+
+        outChannel.close();
+        inChannel.close();
+        fileOutputStream.close();
+        fileInputStream.close();
+    }
+
+
+    //2.使用直接缓冲区完成文件的复制(内存映射文件)
+    @Test
+    public void test2() throws IOException{
+        FileChannel inChannel = FileChannel.open(Paths.get("1.jpg"), StandardOpenOption.READ);
+        FileChannel outChannel = FileChannel.open(Paths.get("3.jpg"),
+                StandardOpenOption.WRITE, StandardOpenOption.READ,StandardOpenOption.CREATE_NEW);
+
+        //内存映射文件
+        MappedByteBuffer inMappedBuf = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
+        MappedByteBuffer outMappedBuf = outChannel.map(FileChannel.MapMode.READ_WRITE, 0, inChannel.size());
+
+        //直接对缓冲区进行数据读写
+        byte[] dst = new byte[inMappedBuf.limit()];
+        inMappedBuf.get(dst);
+        outMappedBuf.put(dst);
+
+        inChannel.close();
+        outChannel.close();
+    }
+
+    //3.通道之间的数据传输(直接缓冲区)
+    @Test
+    public void test3() throws IOException{
+        FileChannel inChannel = FileChannel.open(Paths.get("1.jpg"), StandardOpenOption.READ);
+        FileChannel outChannel = FileChannel.open(Paths.get("3.jpg"),
+                StandardOpenOption.WRITE, StandardOpenOption.READ,StandardOpenOption.CREATE_NEW);
+
+        inChannel.transferTo(0,inChannel.size(),outChannel);
+
+        inChannel.close();
+        outChannel.close();
+    }
+
+}
+```
+
+
+
+# 4.阻塞与非阻塞
+
 ```
 
 ```
