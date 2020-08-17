@@ -237,3 +237,132 @@ public class Demo1 {
 
 ```
 
+## 4.1阻塞式
+
+```java
+/**
+ * 一.使用NIO完成网络通信的三个核心:
+ *      1.通道(Channel),负责连接.
+ *      2.缓冲区(Buffer),负责数据的存取.
+ *      3.选择器(Selector),是SelectableChannel的多路复用器,
+ *                         用于监控SelectableChannel的IO状况.
+ */
+public class Blocking {
+
+    //客户端
+    @Test
+    public void cilent() throws IOException {
+        //1.获取通道
+        SocketChannel sChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9999));
+        FileChannel inChannel = FileChannel.open(Paths.get("1.jpg"), StandardOpenOption.READ);
+        //2.分配指定大小的缓冲区
+        ByteBuffer buf = ByteBuffer.allocate(1024);
+        //3.读取本地文件并往服务端发送
+        while ( inChannel.read(buf) != -1 ){
+            buf.flip();
+            sChannel.write(buf);
+            buf.clear();
+        }
+        //4.关闭通道
+        inChannel.close();
+        sChannel.close();
+    }
+
+    //服务端
+    @Test
+    public void server() throws IOException {
+        //1.获取通道
+        ServerSocketChannel ssChannel = ServerSocketChannel.open();
+        FileChannel outChannel = FileChannel.open(Paths.get("2.jpg"),
+                                    StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+        //2.绑定连接
+        ssChannel.bind(new InetSocketAddress(9999));
+        //3.获取客户端连接的通道
+        SocketChannel acceptChannel = ssChannel.accept();
+        //4.分配指定大小的缓冲区
+        ByteBuffer buf = ByteBuffer.allocate(1024);
+        //5.接收客户端的数据并保存到本地
+        while ( acceptChannel.read(buf) != -1 ){
+            buf.flip();
+            outChannel.write(buf);
+            buf.clear();
+        }
+        //6.关闭通道
+        acceptChannel.close();
+        outChannel.close();
+        ssChannel.close();
+    }
+
+}
+
+```
+
+```java
+/**
+ *
+ */
+public class Blocking2 {
+
+    //客户端
+    @Test
+    public void cilent() throws IOException {
+        //1.获取通道
+        SocketChannel sChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9999));
+        FileChannel inChannel = FileChannel.open(Paths.get("1.jpg"), StandardOpenOption.READ);
+        //2.分配指定大小的缓冲区
+        ByteBuffer buf = ByteBuffer.allocate(1024);
+        //3.读取本地文件并往服务端发送
+        while ( inChannel.read(buf) != -1 ){
+            buf.flip();
+            sChannel.write(buf);
+            buf.clear();
+        }
+        sChannel.shutdownOutput();
+        //4.接收服务端的反馈
+        int len=0;
+        while( (len=sChannel.read(buf)) != -1 ){
+            buf.flip();
+            System.out.println(new String(buf.array(), 0, len));
+            buf.clear();
+        }
+        //5.关闭通道
+        inChannel.close();
+        sChannel.close();
+    }
+
+    //服务端
+    @Test
+    public void server() throws IOException {
+        //1.获取通道
+        ServerSocketChannel ssChannel = ServerSocketChannel.open();
+        FileChannel outChannel = FileChannel.open(Paths.get("2.jpg"),
+                StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+        //2.绑定连接
+        ssChannel.bind(new InetSocketAddress(9999));
+        //3.获取客户端连接的通道
+        SocketChannel acceptChannel = ssChannel.accept();
+        //4.分配指定大小的缓冲区
+        ByteBuffer buf = ByteBuffer.allocate(1024);
+        //5.接收客户端的数据并保存到本地
+        while ( acceptChannel.read(buf) != -1 ){
+            buf.flip();
+            outChannel.write(buf);
+            buf.clear();
+        }
+        //6.发送反馈给客户端
+        buf.put("服务端接收数据成功".getBytes());
+        buf.flip();
+        acceptChannel.write(buf);
+        //7.关闭通道
+        acceptChannel.close();
+        outChannel.close();
+        ssChannel.close();
+    }
+
+}
+
+```
+
+
+
+## 4.2非阻塞式
