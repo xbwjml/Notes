@@ -128,3 +128,15 @@ public class Demo1 {
 
 ```
 
+
+
+# 3.channel通道
+
+```
+通道(channel):由java.nio.channels包定义的。Channel表示IO源与目标打开的连接。Channel类似于传统的"流"。只不过Channel本身不能直接访问数据,Channel只能与Buffer交互。
+```
+
+```
+
+```
+
