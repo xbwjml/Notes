@@ -41,3 +41,73 @@
 
 ```
 
+```java
+public class Producer {
+    public static void main(String[] args) throws JMSException {
+        String url = "tcp://127.0.0.1:61616";
+        String queueName = "queue01";
+        //1.创建连接工厂
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(url);
+        //2.通过连接工厂，获得连接对象
+        Connection connection = activeMQConnectionFactory.createConnection();
+        //3.开启连接
+        connection.start();
+
+        //4.创建session
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        //5.创建目的地(具体是队列还是主题)
+        Queue queue = session.createQueue(queueName);
+
+        //6.创建消息的生产者
+        MessageProducer producer = session.createProducer(queue);
+        //7.生产3条消息发送到MQ的队列里面
+        for( int i=0; i<3; i++ ){
+            //创建消息
+            TextMessage textMessage = session.createTextMessage("msg---" + (i + 1));
+            //通过producer发送给MQ
+            producer.send(textMessage);
+        }
+
+        //8.关闭资源
+        producer.close();
+        session.close();
+        connection.close();
+        System.out.println("欧了====");
+    }
+}
+```
+
+```java
+public class Consumer {
+    public static void main(String[] args) throws JMSException {
+        String url = "tcp://127.0.0.1:61616";
+        String queueName = "queue01";
+        //1.创建连接工厂
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(url);
+        //2.通过连接工厂，获得连接对象
+        Connection connection = activeMQConnectionFactory.createConnection();
+        //3.开启连接
+        connection.start();
+        //4.创建session
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        //5.创建目的地(具体是队列还是主题)
+        Queue queue = session.createQueue(queueName);
+
+        //6.创建消费者
+        MessageConsumer messageConsumer = session.createConsumer(queue);
+        while (true){
+            TextMessage textMessage = (TextMessage) messageConsumer.receive();
+            if( null!=textMessage ){
+                System.out.println("***消费者接收到消息***"+textMessage.getText());
+            }else{
+                break;
+            }
+        }
+
+        messageConsumer.close();
+        session.close();
+        connection.close();
+    }
+}
+```
+
