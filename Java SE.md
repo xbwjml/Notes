@@ -2286,3 +2286,189 @@ interrupted方法：
 interrupted()函数是Thread静态方法，用来检测当前线程的interrupt状态，检测完成后，状态清空。通过下面的interrupted源码我们能够知道，此方法首先调用isInterrupted方法，而isInterrupted方法是一个重载的native方法private native boolean isInterrupted(boolean ClearInterrupted) 通过方法的注释能够知道，用来测试线程是否已经中断，参数用来决定是否重置中断标志。
 ```
 
+
+
+### 18.5 ThreadLocal
+
+```
+从Java官方文档中描述:
+	ThreadLocal类用来提供线程内部的局部变量。这种变量在多线程环境下访问时能保证各个线程的变量相对独立于其他线程内的变量。ThreadLocal实例通常来说都是private static类型的，用于关联线程和线程上下文。
+	我们可以得知ThreadLocal的作用是:提供线程内的局部变量，不同线程之间不会互相干扰，这种变量在线程的生命周期内起作用，减少同一个线程内多个函数或组件之间一些公共变量传递的复杂度。
+```
+
+```java
+/**
+ * ThreadLocal: 
+ * 		set(): 将变量绑定到当前线程中。
+ * 		get(): 获取当前线程绑定的变量。
+ *
+ */
+public class Demo1 {
+	
+	ThreadLocal<String> t1 = new ThreadLocal<>();
+	
+	private String content;
+
+	public String getContent() {
+//		return content;
+		return t1.get();
+	}
+
+	public void setContent(String content) {
+//		this.content = content;
+		//变量绑定到当前线程
+		t1.set(content);
+	}
+	
+	public static void main(String[] args) {
+		Demo1 demo1 = new Demo1();
+		for( int i=0; i<5; i++ ) {
+			Thread t = new Thread( new Runnable() {
+				@Override
+				public void run() {
+					demo1.setContent(Thread.currentThread().getName()+"的数据");
+					System.out.println("=================");
+					System.out.println(Thread.currentThread().getName()+"====>"+demo1.getContent());
+				}
+			} );
+			
+			t.setName("线程"+i);
+			t.start();
+		}
+	}
+}
+```
+
+```
+ThreadLocal类与synchronized区别:
+```
+
+|        |                         synchronized                         |                         ThreadLocal                          |
+| :----: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|  原理  | 同步机制采用"以时间换空间的方式"，只提供了一份变量，让不同的线程排队访问。 | 采用“以空间换时间”的方式，为每一个线程都提供了一份变量的副本，从而实现同时访问而互不干扰。 |
+| 侧重点 |                 使多线程之间访问资源的同步。                 |            多线程中让每个线程之间的数据相互隔离。            |
+
+```
+应用场景:
+```
+
+```java
+
+```
+
+```
+ThreadLocal的优势:
+1.传递数据:保存每个线程绑定的数据，在需要的地方可以直接获取，避免参数直接传递带来的代码耦合问题.
+2.线程隔离:各线程之间的数据相互隔离却又具有并发性，避免同步方式带来的性能损失.
+```
+
+```
+ThreadLocal内部结构:
+
+jdk8之前,每个ThreadLocal都创建一个map,线程做为这个map的key,要存储的局部变量做为value。
+
+jdk8开始,每个Thread维护一个ThreadLocalMap,这个map的key是ThreadLocal实例本身,value才是要真正要存储值的Object.
+具体过程是这样的:
+1).每一个Thread线程内部都有一个map，就是ThreadLocalMap;
+2).Map里存储了ThreadLocal对象(key)和线程变量副本(value);
+3).ThreadLocal内部的map是由ThreadLocal维护的,由ThreadLocal负责向map获取和设置线程的变量值.
+4).对于不同的线程，每次获取副本时，别的线程并不能获取到当前线程的副本值,形成了副本的隔离,互不干扰.
+
+新旧方案对比:
+1).jdk8开始，每个map存储的entry变少。jdk8之前，每个map的key是各个线程，有多少个线程就有多少个entry。jdk8开始，每个map的key是threadLoacl对象。一般而言,threadLocal对象远少于线程数。
+2).jdk8开始，当Thread销毁的时候，ThreadLocalMap随之销毁，减少内存的使用。
+
+```
+
+
+
+### 18.6 Java8新特性
+
+```
+lambda表达式:
+
+lambda表达式是一个匿名函数，我们可以把它理解为是一段可传递的代码。可以写出更简洁灵活的代码。
+```
+
+```java
+/**
+ * lambda表达式：
+ * 		java8中引入了一个新的操作符 "->",
+ * 		该符号称为箭头操作符或lambda操作符，
+ * 		箭头操作符将lambda表达式拆分为两部分
+ * 	左侧:lambda表达式的参数列表;
+ *  右侧:lambda体;
+ *  	
+ *  lambda表达式需要函数式接口
+ *  	若接口中只有一个抽象方法,
+ *  	那么就称之为函数式接口。
+ *      可以使用注解@FunctionalInterface修饰,
+ *      @FunctionalInterface修饰的接口必须有且只能有一个抽象方法
+ */
+public class Demo2 {
+
+	/**
+	 * 语法格式1: 无参数，无返回值
+	 * 		() -> System.out.println("Hello");
+	 */
+	@Test
+	public void test1() {
+		Runnable r1 = new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Hello1");
+			}
+		};
+		
+		Runnable r2 = ()-> System.out.println("Hello2");
+		r1.run();
+		r2.run();
+	}
+	
+	/**
+	 * 语法格式2：有一个参数，无返回值
+	 * 		(x) -> System.out.println(x);
+	 * 		若只有一个参数，小括号可以不写
+	 */
+	@Test
+	public void test2() {
+//		Consumer<String> con = (x) -> System.out.println("test2  "+x);
+		//若只有一个参数，小括号可以不写
+		Consumer<String> con = x -> System.out.println("test2  "+x);
+		con.accept("666");
+	}
+	
+	/**
+	 * 语法格式3:有多个参数，并且lambda体中有多条语句
+	 */
+	@Test
+	public void test3() {
+		Comparator<Integer> comp = (x,y) -> {
+			System.out.println("hello");
+			System.out.println("world");
+			System.out.println("java");
+			return Integer.compare(x, y);
+		};
+		
+		Integer res = comp.compare(111, 222);
+		System.out.println(res);
+	}
+	
+	/**
+	 * 语法格式4:有返回值，但lambda体中只有一条语句，那么return和大括号可以不写
+	 */
+	@Test
+	public void test4() {
+		Comparator<Integer> comp = (x,y) -> Integer.compare(x, y);
+		Integer res = comp.compare(222, 66);
+		System.out.println(res);
+	}
+	
+	/**
+	 * 语法格式6:参数的数据类型可以不写，
+	 * 		       因为jvm编译器通过上下文推断出数据类型,
+	 *         
+	 */
+}
+```
+
