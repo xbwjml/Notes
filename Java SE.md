@@ -2621,3 +2621,205 @@ public class Demo1 {
 }
 ```
 
+
+
+```
+Stream:
+```
+
+```java
+/**
+ * 一. 创建Stream流的三个操作
+ * 
+ *   1.创建Stream
+ *   
+ *   2.中间操作
+ *   
+ *   3.终止操作
+ *
+ */
+public class Demo1 {
+	
+	//创建Stream
+	@Test
+	public void test01() {
+		//1.通过Collection
+		List<String> list = new ArrayList<>();
+		Stream<String> stream1 = list.stream();
+		//2.通过Arrays中的静态方法 stream() 获取数组流
+		Object[] arr = new Object[10];
+		Stream<Object> stream2 = Arrays.stream(arr);
+		//3.通过Stream中的静态方法  of()
+		Stream<String> stream3 = Stream.of("AA","BB","CC");
+		//4.创建无限流
+		//迭代
+		Stream<Integer> stream4 = Stream.iterate(0, (x)->x+2);
+		stream4.limit(10)
+			   .forEach(System.out::println);
+		//生成
+		Stream.generate(()->Math.random())
+				.limit(5)
+				.forEach(System.out::println);
+	}
+}
+```
+
+
+
+```
+Optional类:
+```
+
+```java
+public class Demo1 {
+	
+	@Test
+	public void test1() {
+		Optional<Student> opt = Optional.of(new Student());
+//		Optional<Student> opt = Optional.of(null);
+		Student stu = opt.get();
+		System.out.println(stu);
+	}
+	
+	@Test
+	public void test2() {
+		Optional<Object> empty = Optional.empty();
+		System.out.println(empty.get());
+	}
+	
+	@Test
+	public void test3() {
+		Optional<Student> opt = Optional.ofNullable(null);
+		if( opt.isPresent() ) {
+			System.out.println(opt.get());
+		}
+		Student stu = opt.orElse(new Student("张三",18));
+		System.out.println(stu);
+	}
+	
+}
+
+```
+
+
+
+```
+接口默认方法与静态方法
+```
+
+```java
+public interface IMy {
+	
+	//用default修饰的默认实例方法,子类可以不重写这个方法
+	//若和类中的方法一样(方法名和参数列表),则类中的方法优先
+	//若一个类实现了多个接口，这多个接口有相同的默认方法，则这个类必须重写这个方法
+	default String getName() {
+		return "哈哈哈";
+	}
+	
+	//静态方法,直接用接口名调用
+	public static void staMethod() {
+		System.out.println("接口中的静态方法");
+	}
+
+}
+```
+
+
+
+```
+新的时间API
+```
+
+```java
+public class Demo1 {
+
+	@Test
+	public void test1() {
+		LocalDateTime ldt = LocalDateTime.now();
+		System.out.println(ldt);
+		
+		LocalDateTime ldt2 = LocalDateTime.of(2013, 9, 12, 13, 43, 23);
+		System.out.println(ldt2);
+		
+		LocalDateTime ldt3 = ldt.plusYears(2);
+		System.out.println(ldt3);
+		
+		LocalDateTime ldt4 = ldt.minusMonths(2);
+		System.out.println(ldt4);
+		
+		System.out.println(ldt.getYear()+"---"+ldt.getMonth()+"---"+ldt.getMonthValue());
+	}
+	
+	// Instant: 时间戳(1970-01-01 00:00:00 到某个时间的毫秒值)
+	@Test
+	public void test2() {
+		Instant ins1 = Instant.now();//默认获取utc时区
+		System.out.println(ins1);
+		OffsetDateTime odt = ins1.atOffset(ZoneOffset.ofHours(8));
+		System.out.println(odt);
+	}
+	
+	@Test
+	public void test3() throws Exception{
+		Instant ins1 = Instant.now();
+		Thread.sleep(2000);
+		Instant ins2 = Instant.now();
+		//计算两个时间之间的间隔
+		Duration duration = Duration.between(ins1, ins2);
+		System.out.println(duration);
+		System.out.println(duration.toMillis());
+	}
+	
+	@Test
+	public void test4() {
+		LocalDate ld1 = LocalDate.of(2017, 3, 21);
+		LocalDate ld2 = LocalDate.now();
+		//计算两个日期之间的间隔
+		Period period = Period.between(ld1, ld2);
+		System.out.println(period);
+		System.out.println(period.getYears());
+		System.out.println(period.getMonths());
+		System.out.println(period.getDays());
+	}
+	
+	@Test
+	public void test5() {
+		LocalDate ldt = LocalDate.now();
+		System.out.println(ldt);
+		
+		LocalDate ldt2 = ldt.withDayOfMonth(3);
+		System.out.println(ldt2);
+		
+		LocalDate ldt3 = ldt.with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY));
+		System.out.println(ldt3);
+		
+		//自定义，得到下一个工作日
+		LocalDate nextWorkLdt = ldt.with( (l)->{
+							LocalDateTime temp = (LocalDateTime) l;
+							DayOfWeek dow = temp.getDayOfWeek();
+							if(dow.equals(DayOfWeek.FRIDAY)) {
+								return temp.plusDays(3);
+							} else if(dow.equals(DayOfWeek.SATURDAY)) {
+								return temp.plusDays(2);
+							} else {
+								return temp.plusDays(1);
+							}
+		} );
+		System.out.println(nextWorkLdt);
+	}
+	
+	@Test
+	public void test6() {
+		
+	}
+	
+}
+```
+
+
+
+```
+
+```
+
