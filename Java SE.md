@@ -2380,6 +2380,14 @@ jdk8开始,每个Thread维护一个ThreadLocalMap,这个map的key是ThreadLocal�
 
 ```
 
+```
+ThreadLocal源码:
+```
+
+```
+
+```
+
 
 
 ### 18.6 Java8新特性
