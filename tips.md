@@ -24,7 +24,7 @@
 
 ​				由于JVM运行程序的实体是线程，每个线程创建时，JVM都会为其创建一个工作内存（有些地方称为栈空间），工作内存是每个线程的私有数据区域，而Java内存模型中规定所有变量都存储在主内存，主内存是共享内存区域，所有线程都可以访问，但线程对变量的操作（读取赋值等）必须在工作内存中进行，然后对变量进行操作，操作完成后再将变量写回主内存，不能直接操作主内存中的变量，各个线程中的工作内存中存储着主内存中的变量副本拷贝，因此不同线程间无法访问其他线程的工作内存，线程间的通信（传值）必须通过主内存来完成，其简要访问过程如下图：
 
-![JMM_内存可见性.png](面试题_pic/JMM_内存可见性.png.jpg)
+![JMM_内存可见性.png](tips_pic/JMM_内存可见性.png.jpg)
 
 ​				JMM关于同步的规定：
 
@@ -139,7 +139,7 @@ class MyData2 {
 
 ​				首先，何为指令重排？见下图:
 
-![指令重排](面试题_pic/指令重排.jpg)
+![指令重排](tips_pic/指令重排.jpg)
 
 
 
@@ -224,21 +224,21 @@ private static volatile SingletonDemo instance = null;
 
 ​				下面以 AtomicReference 的 compareAndSet 方法为例，分析CAS原理：
 
-![unsafe类](面试题_pic/unsafe类.jpg)
+![unsafe类](tips_pic/unsafe类.jpg)
 
 ​				变量valueOffset，表示该变量值在内存中的偏移地址，因为Unsafe就是根据内存偏移地址来获取数据的。
 
-![CAS基于自旋锁](面试题_pic/CAS基于自旋锁.jpg)
+![CAS基于自旋锁](tips_pic/CAS基于自旋锁.jpg)
 
 ​				上面这个是自旋锁原理（后面会详述）。
 
-![CAS基于自旋锁.2jpg](面试题_pic/CAS基于自旋锁.2jpg.jpg)
+![CAS基于自旋锁.2jpg](tips_pic/CAS基于自旋锁.2jpg.jpg)
 
 
 
 ​				附注：变量value用volatile修饰，保证了多线程之间的内存可见性。
 
-![unsafe类2](面试题_pic/unsafe类2.jpg)
+![unsafe类2](tips_pic/unsafe类2.jpg)
 
 ## 2.3概念
 
@@ -811,7 +811,7 @@ public class Demo7 {
 
 ​				阻塞队列，顾名思义。首先它是一个队列，而一个阻塞队列在数据结构中所起的作用大致如下图所示：
 
-![阻塞队列](面试题_pic/阻塞队列.jpg)
+![阻塞队列](tips_pic/阻塞队列.jpg)
 
 ​		-当阻塞队列是空的时，从队列中获取元素的操作将会被阻塞。
 
@@ -841,13 +841,13 @@ public class Demo7 {
 
 ​				BlockingQueue有七个实现类，入下图所示:
 
-![BlockingQueue七个实现类](面试题_pic/BlockingQueue七个实现类.jpg)
+![BlockingQueue七个实现类](tips_pic/BlockingQueue七个实现类.jpg)
 
 
 
 ## 5.4主要方法
 
-![BlockingQueue主要方法](面试题_pic/BlockingQueue主要方法.jpg)
+![BlockingQueue主要方法](tips_pic/BlockingQueue主要方法.jpg)
 
 
 
@@ -1614,15 +1614,15 @@ public ThreadPoolExecutor(int corePoolSize,
 
 ## 7.4底层工作原理
 
-![线程池底层工作原理](面试题_pic/线程池底层工作原理.jpg)
+![线程池底层工作原理](tips_pic/线程池底层工作原理.jpg)
 
 
 
-![线程池底层工作原理2](面试题_pic/线程池底层工作原理2.jpg)
+![线程池底层工作原理2](tips_pic/线程池底层工作原理2.jpg)
 
 
 
-![线程池底层工作原理3](面试题_pic/线程池底层工作原理3.jpg)
+![线程池底层工作原理3](tips_pic/线程池底层工作原理3.jpg)
 
 
 
@@ -1664,11 +1664,11 @@ public ThreadPoolExecutor(int corePoolSize,
 
 ​				理由如下：
 
-![实际使用线程池](面试题_pic/实际使用线程池.jpg)
+![实际使用线程池](tips_pic/实际使用线程池.jpg)
 
 
 
-![实际使用线程池2](面试题_pic/实际使用线程池2.jpg)
+![实际使用线程池2](tips_pic/实际使用线程池2.jpg)
 
 
 
@@ -1762,7 +1762,7 @@ IO密集型(分两种)：
 
 ​				死锁是指两个或两个以上的进程在执行过程中，因争夺资源而造成的一种互相等待现象，若无外力干涉，那它们将都无法推进下去，如果系统资源充足，进程的资源请求都能够得到满足，死锁出现的可能性就很低，否则就会因争夺优有限资源而陷入死锁。
 
-![死锁概念](面试题_pic/死锁概念.jpg)
+![死锁概念](tips_pic/死锁概念.jpg)
 
 
 
@@ -1855,7 +1855,7 @@ public class Demo3 {
     -枚举根结点做可达性分析(根搜索路径);
 ```
 
-![GC引用遍历](面试题_pic/GC引用遍历.jpg)
+![GC引用遍历](tips_pic/GC引用遍历.jpg)
 
 ```java
 为了解决循环计数法引用计数的问题，Java使用了可达性分析方法。
@@ -1863,7 +1863,7 @@ public class Demo3 {
 基本思路就是通过一系列名为“GC Roots”的对象作为引用起始点，从这个被称为GC Roots的对象开始向下搜索，如果一个对象到遍历到的（可达到的）对象就被判定为存活，没有被遍历到的就被判定为死亡。
 ```
 
-![GC引用遍历2](面试题_pic/GC引用遍历2.jpg)
+![GC引用遍历2](tips_pic/GC引用遍历2.jpg)
 
 
 
@@ -1931,7 +1931,7 @@ jinfo -flags 进程号 (查看某个java进程所有的参数)
 如下图所示，默认没有开启打印GC收集细节。
 ```
 
-![GC参数1](面试题_pic/GC参数1.jpg)
+![GC参数1](tips_pic/GC参数1.jpg)
 
 ```java
 以eclipse为例，在 run configurations中添加配置：
@@ -1939,7 +1939,7 @@ jinfo -flags 进程号 (查看某个java进程所有的参数)
 运行程序，通过命令查看，发现PrintGCDetails已经开启(如下如所示)：
 ```
 
-![GC参数2](面试题_pic/GC参数2.jpg)
+![GC参数2](tips_pic/GC参数2.jpg)
 
 
 
@@ -1953,7 +1953,7 @@ KV设值类型:
 默认元空间大小如下图所示：
 ```
 
-![GC参数3](面试题_pic/GC参数3.jpg)
+![GC参数3](tips_pic/GC参数3.jpg)
 
 ```
 以eclipse为例，在 run configurations中添加配置：
@@ -1961,7 +1961,7 @@ KV设值类型:
 再次查看，如下图所示(单位是kb)：
 ```
 
-![GC参数4](面试题_pic/GC参数4.jpg)
+![GC参数4](tips_pic/GC参数4.jpg)
 
 
 
@@ -1982,7 +1982,7 @@ KV设值类型:
         会出来超级多参数，如下图所示：
 ```
 
-![GC参数5](面试题_pic/GC参数5.jpg)
+![GC参数5](tips_pic/GC参数5.jpg)
 
 ```
 -XX:+PrintFlagsFinal (查看修改更新)
@@ -2009,7 +2009,7 @@ PrintFlagsInitial 或者 PrintFlagsFinal
 工作中常用的 JVM 参数主要如下所示：
 ```
 
-![JVM参数_工作中常用](面试题_pic/JVM参数_工作中常用.jpg)
+![JVM参数_工作中常用](tips_pic/JVM参数_工作中常用.jpg)
 
 ```Java
 下面，开始逐个介绍.
@@ -2031,19 +2031,19 @@ PrintFlagsInitial 或者 PrintFlagsFinal
 	在windows 下执行jps -flag ThreadStackSize 进程号，会发现值是零,如下图所示
 ```
 
-![JVM_Xss_dos默认](面试题_pic/JVM_Xss_dos默认.jpg)
+![JVM_Xss_dos默认](tips_pic/JVM_Xss_dos默认.jpg)
 
 ```
 关于该属性默认值大小，见下图官方文档:
 ```
 
-![JVM_Xss默认](面试题_pic/JVM_Xss默认.jpg)
+![JVM_Xss默认](tips_pic/JVM_Xss默认.jpg)
 
 ```
 以Eclipse为例，设置 -Xss127k,则插看该值就为自定义设置的值，如下图所示：
 ```
 
-![JVM_Xss_自定义](面试题_pic/JVM_Xss_自定义.jpg)
+![JVM_Xss_自定义](tips_pic/JVM_Xss_自定义.jpg)
 
 
 
@@ -2061,7 +2061,7 @@ PrintFlagsInitial 或者 PrintFlagsFinal
 典型配置案例(如下图所示):
 ```
 
-![JVM_工作中典型参数配置](面试题_pic/JVM_工作中典型参数配置.jpg)
+![JVM_工作中典型参数配置](tips_pic/JVM_工作中典型参数配置.jpg)
 
 
 
@@ -2074,21 +2074,21 @@ PrintFlagsInitial 或者 PrintFlagsFinal
     打印日志如下图所示：
 ```
 
-![GC日志](面试题_pic/GC日志.jpg)
+![GC日志](tips_pic/GC日志.jpg)
 
 ```
 那么，如何阅读呢？
 ```
 
-![GC日志详解](面试题_pic/GC日志详解.jpg)
+![GC日志详解](tips_pic/GC日志详解.jpg)
 
-![GC日志详解2](面试题_pic/GC日志详解2.jpg)
+![GC日志详解2](tips_pic/GC日志详解2.jpg)
 
 ```java
 不管是young gc 还是 gull gc,总结1如下：
 ```
 
-![GC日志详解3](面试题_pic/GC日志详解3.jpg)
+![GC日志详解3](tips_pic/GC日志详解3.jpg)
 
 
 
@@ -2096,7 +2096,7 @@ PrintFlagsInitial 或者 PrintFlagsFinal
 -XX:SurvivorRatio
 ```
 
-![JVM_SurvivorRatio](面试题_pic/JVM_SurvivorRatio.jpg)
+![JVM_SurvivorRatio](tips_pic/JVM_SurvivorRatio.jpg)
 
 
 
@@ -2104,7 +2104,7 @@ PrintFlagsInitial 或者 PrintFlagsFinal
 -XX:NewRatio
 ```
 
-![JVM_newRatio](面试题_pic/JVM_newRatio.jpg)
+![JVM_newRatio](tips_pic/JVM_newRatio.jpg)
 
 
 
@@ -2112,7 +2112,7 @@ PrintFlagsInitial 或者 PrintFlagsFinal
 -XX:MaxTenuringThreshold
 ```
 
-![JVM_MaxTenuringThreshold](面试题_pic/JVM_MaxTenuringThreshold.jpg)
+![JVM_MaxTenuringThreshold](tips_pic/JVM_MaxTenuringThreshold.jpg)
 
 
 
@@ -2126,7 +2126,7 @@ PrintFlagsInitial 或者 PrintFlagsFinal
     虚引用；
 ```
 
-![JVM_引用体系](面试题_pic/JVM_引用体系.jpg)
+![JVM_引用体系](tips_pic/JVM_引用体系.jpg)
 
 
 
@@ -2264,7 +2264,7 @@ public class Demo3 {
 
 ```
 
-![软引用适用场景](面试题_pic/软引用适用场景.jpg)
+![软引用适用场景](tips_pic/软引用适用场景.jpg)
 
 
 
@@ -2323,9 +2323,9 @@ public class Demo4 {
 
 ## 9.11虚引用
 
-![虚引用](面试题_pic/虚引用.jpg)
+![虚引用](tips_pic/虚引用.jpg)
 
-![虚引用2](面试题_pic/虚引用2.jpg)
+![虚引用2](tips_pic/虚引用2.jpg)
 
 ```java
 import java.lang.ref.PhantomReference;
@@ -2356,7 +2356,7 @@ public class Demo6 {
 
 ## 9.12引用队列
 
-![引用队列](面试题_pic/引用队列.jpg)
+![引用队列](tips_pic/引用队列.jpg)
 
 ```java
 //示例代码如下：
@@ -2384,7 +2384,7 @@ public class Demo5 {
 
 ```
 
-![引用队列2](面试题_pic/引用队列2.jpg)
+![引用队列2](tips_pic/引用队列2.jpg)
 
 
 
@@ -2394,7 +2394,7 @@ public class Demo5 {
 
 ```
 
-![GCRoot和四大引用](面试题_pic/GCRoot和四大引用.jpg)
+![GCRoot和四大引用](tips_pic/GCRoot和四大引用.jpg)
 
 
 
@@ -2411,7 +2411,7 @@ public class Demo5 {
 体系结构如下图所示:
 ```
 
-![OOM体系](面试题_pic/OOM体系.jpg)
+![OOM体系](tips_pic/OOM体系.jpg)
 
 ## 10.2StackOverFlow
 
@@ -2464,7 +2464,7 @@ public class Demo2 {
 java.lang.OutOfMemoryError: GC overhead limit exceeded
 ```
 
-![overhead_limit_exceeded](面试题_pic/overhead_limit_exceeded.jpg)
+![overhead_limit_exceeded](tips_pic/overhead_limit_exceeded.jpg)
 
 ```java
 import java.util.ArrayList;
@@ -2505,7 +2505,7 @@ public class Demo3 {
 java.lang.OutOfMemoryError: Direct buffer memory
 ```
 
-![direct_buffer_memory](面试题_pic/direct_buffer_memory.jpg)
+![direct_buffer_memory](tips_pic/direct_buffer_memory.jpg)
 
 
 
@@ -2515,7 +2515,7 @@ java.lang.OutOfMemoryError: Direct buffer memory
 java.lang.OutOfMemoryError: unable to create new native thread
 ```
 
-![ubable_to_create_new_native_thread](面试题_pic/ubable_to_create_new_native_thread.jpg)
+![ubable_to_create_new_native_thread](tips_pic/ubable_to_create_new_native_thread.jpg)
 
 
 
@@ -2525,7 +2525,7 @@ java.lang.OutOfMemoryError: unable to create new native thread
 java.lang.OutOfMemoryError:metaspace
 ```
 
-![OOM_metaspace](面试题_pic/OOM_metaspace.jpg)
+![OOM_metaspace](tips_pic/OOM_metaspace.jpg)
 
 
 
@@ -2540,7 +2540,7 @@ GC垃圾回收算法和垃圾收集器的关系？请分别谈谈
 四种主要的垃圾收集器:
 ```
 
-![四种垃圾收集器](面试题_pic/四种垃圾收集器.jpg)
+![四种垃圾收集器](tips_pic/四种垃圾收集器.jpg)
 
 
 
@@ -2577,9 +2577,9 @@ GC垃圾回收算法和垃圾收集器的关系？请分别谈谈
 
 ```
 
-![垃圾收集器_串行vs并行](面试题_pic/垃圾收集器_串行vs并行.jpg)
+![垃圾收集器_串行vs并行](tips_pic/垃圾收集器_串行vs并行.jpg)
 
-![垃圾收集器_串行vs并行](面试题_pic/垃圾收集器_串行vs并行.jpg)
+![垃圾收集器_串行vs并行](tips_pic/垃圾收集器_串行vs并行.jpg)
 
 
 
@@ -2618,7 +2618,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 主要有以下几种：
 ```
 
-![jvm主要几种垃圾回收器](面试题_pic/jvm主要几种垃圾回收器.jpg)
+![jvm主要几种垃圾回收器](tips_pic/jvm主要几种垃圾回收器.jpg)
 
 
 
@@ -2628,11 +2628,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![七大垃圾收集器](面试题_pic/七大垃圾收集器.jpg)
+![七大垃圾收集器](tips_pic/七大垃圾收集器.jpg)
 
-![七大垃圾收集器2](面试题_pic/七大垃圾收集器2.jpg)
+![七大垃圾收集器2](tips_pic/七大垃圾收集器2.jpg)
 
-![七大垃圾收集器3](面试题_pic/七大垃圾收集器3.jpg)
+![七大垃圾收集器3](tips_pic/七大垃圾收集器3.jpg)
 
 
 
@@ -2642,7 +2642,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![GC_部分参数约定说明](面试题_pic/GC_部分参数约定说明.jpg)
+![GC_部分参数约定说明](tips_pic/GC_部分参数约定说明.jpg)
 
 
 
@@ -2652,9 +2652,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![serial收集器](面试题_pic/serial收集器.jpg)
+![serial收集器](tips_pic/serial收集器.jpg)
 
-![serial收集器2](面试题_pic/serial收集器2.jpg)
+![serial收集器2](tips_pic/serial收集器2.jpg)
 
 
 
@@ -2664,9 +2664,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![parnew收集器](面试题_pic/parnew收集器.jpg)
+![parnew收集器](tips_pic/parnew收集器.jpg)
 
-![parnew收集器2](面试题_pic/parnew收集器2.jpg)
+![parnew收集器2](tips_pic/parnew收集器2.jpg)
 
 
 
@@ -2676,11 +2676,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![parallel收集器](面试题_pic/parallel收集器.jpg)
+![parallel收集器](tips_pic/parallel收集器.jpg)
 
-![parallel收集器2](面试题_pic/parallel收集器2.jpg)
+![parallel收集器2](tips_pic/parallel收集器2.jpg)
 
-![parallel收集器3](面试题_pic/parallel收集器3.jpg)
+![parallel收集器3](tips_pic/parallel收集器3.jpg)
 
 
 
@@ -2690,7 +2690,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![parallel_old](面试题_pic/parallel_old.jpg)
+![parallel_old](tips_pic/parallel_old.jpg)
 
 
 
@@ -2700,17 +2700,17 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![CMS收集器](面试题_pic/CMS收集器.jpg)
+![CMS收集器](tips_pic/CMS收集器.jpg)
 
-![CMS收集器2](面试题_pic/CMS收集器2.jpg)
+![CMS收集器2](tips_pic/CMS收集器2.jpg)
 
-![CMS收集器3](面试题_pic/CMS收集器3.jpg)
+![CMS收集器3](tips_pic/CMS收集器3.jpg)
 
-![CMS收集器4](面试题_pic/CMS收集器4.jpg)
+![CMS收集器4](tips_pic/CMS收集器4.jpg)
 
-![CMS收集器5](面试题_pic/CMS收集器5.jpg)
+![CMS收集器5](tips_pic/CMS收集器5.jpg)
 
-![CMS收集器6](面试题_pic/CMS收集器6.jpg)
+![CMS收集器6](tips_pic/CMS收集器6.jpg)
 
 
 
@@ -2720,7 +2720,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![SerialOld收集器](面试题_pic/SerialOld收集器.jpg)
+![SerialOld收集器](tips_pic/SerialOld收集器.jpg)
 
 
 
@@ -2730,9 +2730,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![选择垃圾收集器](面试题_pic/选择垃圾收集器.jpg)
+![选择垃圾收集器](tips_pic/选择垃圾收集器.jpg)
 
-![选择垃圾收集器2](面试题_pic/选择垃圾收集器2.jpg)
+![选择垃圾收集器2](tips_pic/选择垃圾收集器2.jpg)
 
 
 
@@ -2742,7 +2742,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ```
 
-![G1收集器1](面试题_pic/G1收集器1.jpg)
+![G1收集器1](tips_pic/G1收集器1.jpg)
 
 
 
@@ -2750,15 +2750,15 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 什么是G1?
 ```
 
-![G1收集器2](面试题_pic/G1收集器2.jpg)
+![G1收集器2](tips_pic/G1收集器2.jpg)
 
-![G1收集器3](面试题_pic/G1收集器3.jpg)
+![G1收集器3](tips_pic/G1收集器3.jpg)
 
 ```
 G1特点：
 ```
 
-![G1收集器4](面试题_pic/G1收集器4.jpg)
+![G1收集器4](tips_pic/G1收集器4.jpg)
 
 
 
@@ -2766,13 +2766,13 @@ G1特点：
 G1收集器原理：
 ```
 
-![G1收集器原理1](面试题_pic/G1收集器原理1.jpg)
+![G1收集器原理1](tips_pic/G1收集器原理1.jpg)
 
-![G1收集器原理2](面试题_pic/G1收集器原理2.jpg)
+![G1收集器原理2](tips_pic/G1收集器原理2.jpg)
 
-![G1收集器原理3](面试题_pic/G1收集器原理3.jpg)
+![G1收集器原理3](tips_pic/G1收集器原理3.jpg)
 
-![G1收集器原理4](面试题_pic/G1收集器原理4.jpg)
+![G1收集器原理4](tips_pic/G1收集器原理4.jpg)
 
 
 
@@ -2780,15 +2780,15 @@ G1收集器原理：
 G1回收步骤：
 ```
 
-![G1收集器回收步骤1](面试题_pic/G1收集器回收步骤1.jpg)
+![G1收集器回收步骤1](tips_pic/G1收集器回收步骤1.jpg)
 
-![G1收集器回收步骤2](面试题_pic/G1收集器回收步骤2.jpg)
+![G1收集器回收步骤2](tips_pic/G1收集器回收步骤2.jpg)
 
-![G1收集器回收步骤3](面试题_pic/G1收集器回收步骤3.jpg)
+![G1收集器回收步骤3](tips_pic/G1收集器回收步骤3.jpg)
 
 
 
-![G1收集器回收步骤4](面试题_pic/G1收集器回收步骤4.jpg)
+![G1收集器回收步骤4](tips_pic/G1收集器回收步骤4.jpg)
 
 
 
@@ -2802,7 +2802,7 @@ G1回收步骤：
 G1和CMS相比的优势在哪里？
 ```
 
-![G1相比CMS的优势](面试题_pic/G1相比CMS的优势.jpg)
+![G1相比CMS的优势](tips_pic/G1相比CMS的优势.jpg)
 
 
 
@@ -2824,7 +2824,7 @@ G1和CMS相比的优势在哪里？
 问题：生产服务器变慢了，诊断思路和性能评估谈谈？
 ```
 
-![linux](面试题_pic/linux.jpg)
+![linux](tips_pic/linux.jpg)
 
 ## 12.1 top
 
@@ -2841,9 +2841,9 @@ G1和CMS相比的优势在哪里？
 
 ```
 
-![linux_vmstat1](面试题_pic/linux_vmstat1.jpg)
+![linux_vmstat1](tips_pic/linux_vmstat1.jpg)
 
-![linux_vmstat2](面试题_pic/linux_vmstat2.jpg)
+![linux_vmstat2](tips_pic/linux_vmstat2.jpg)
 
 
 
@@ -2894,7 +2894,7 @@ G1和CMS相比的优势在哪里？
 步骤如下：
 ```
 
-![linux_cpu占用过高分析](面试题_pic/linux_cpu占用过高分析.jpg)
+![linux_cpu占用过高分析](tips_pic/linux_cpu占用过高分析.jpg)
 
 
 
