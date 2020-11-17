@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <title>Document</title>
+</head>
+
+<body ng-app ng-init="age=18">
+
+    <!-- 
+        1.作用域对象：
+            一个js实例对象,ng-app指令会默认创建一个根作用域对象$rootScope,它的属性和方法与页面中的指令或表达式是关联的。
+        2.控制器对象:
+            用来控制AnguarJS应用数据的实例对象
+            ng-controller:指定控制器构造函数,Angular会自动new此函数创建控制器对象,
+            同时angular还会创建一个新的作用域对象$scope,它是$rootScope的子对象,
+            在控制器中声明$scope形参,Angular会自动将$scope对象传入。
+     -->
+
+    <div ng-controller="myCtrl">
+        <input type="text" ng-model="firstName">
+        <input type="text" ng-model="lastName">
+        <p>姓名1: {{firstName+ " "+lastName}}</p>
+        <p>姓名2: {{getFullName()}}</p>
+        {{age}}
+    </div>
+
+    <script>
+        function myCtrl($scope){ //形参必须是$scope
+            console.log(this instanceof myCtrl);
+            console.log($scope);
+            $scope.firstName = "Kobe";
+            $scope.lastName = "Braynt";
+            $scope.getFullName = function(){
+                return $scope.firstName+"_"+$scope.lastName;
+            }
+        }
+    </script>
+</body>
+
+</html>

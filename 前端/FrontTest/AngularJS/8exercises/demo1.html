@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <script src="./demo1.js"></script>
+    <style>
+        textarea{
+            resize: none;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" >
+
+    <div ng-controller="myCtrl" >
+        <h2>notes</h2>
+        <textarea cols="40", rows="10" ng-model="msg" ></textarea>
+        <div>
+            <button ng-click="save()">保存</button>
+            <button ng-click="read()">读取</button>
+            <button ng-click="delete()">删除</button>
+        </div>
+        <p>剩余的字数: {{getRemain()}}</p>
+    </div>
+
+</body>
+</html>

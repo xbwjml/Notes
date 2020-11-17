@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" >
+
+    <div ng-controller="myCtrl">
+        <input type="text" ng-model="employeeName">
+        <p>员工名字1: {{employeeName}}</p>
+    </div>
+    
+    <div ng-controller="myCtrl2" >
+        <input type="text" ng-model="employeeName2">
+        <p>员工名字2: {{employeeName2}}</p>
+    </div>
+
+    <script>
+        // console.log(angular);
+        //创建模块化对象
+        var myModule = angular.module('myApp',[]);
+        //生成作用域对象
+        myModule.controller('myCtrl',function($scope){
+            $scope.employeeName = 'Kobe';
+        });
+        myModule.controller('myCtrl2',function($scope){
+            $scope.employeeName2 = 'Wade';
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" >
+
+    <!-- 
+        Angular指令:
+            Angular为html页面扩展的,自定义标签属性或标签
+            与Angular的作用域对象($scope)交互,扩展页面的动态表现力.
+        常用指令一:
+            1. ng-app: 指定模块名,angular管理的区域;
+            2. ng-model: 双向绑定,输入相关标签;
+            3. ng-init: 初始化数据;
+            4. ng-click: 点击时调用作用域对象的方法;
+            5. ng-controller: 指定控制器构造函数名,内部会自动创建一个新的子作用域;
+            6. ng-bind: 解决使用{{}}显示数据短时间内闪屏问题;
+            7. ng-repeat: 遍历数据显示数据
+                    $index, $first, $last, $middle, $odd, $even
+            8. ng-show: 控制显示,布尔值, true时显示,false时隐藏;
+            9. ng-hide: 和ng-show相反;
+     -->
+
+    <div ng-controller="myCtrl" >
+        <div>
+            <h2>价格计算器(自动):</h2>
+            数量: <input type="number" ng-model="count1">
+            价格: <input type="number" ng-model="price1">
+            <p>总计: {{price1 * count1}} </p>
+        </div>
+        <div>
+            <h2>价格计算器(手动):</h2>
+            数量: <input type="number" ng-model="count2">
+            价格: <input type="number" ng-model="price2">
+            <button ng-click="getTotalPrice()" >计算</button>
+            <p>总计: {{totalPrice}}  </p>
+        </div>
+        <div>
+            <h2>人员信息列表</h2>
+            <ul>
+                <li ng-repeat="p in people">{{$even}}--- {{$odd}}--- {{$middle}} --- {{$last}}--- {{$first}}--- {{$index}} --- {{p.name}} --- {{p.age}}</li>
+            </ul>
+        </div>
+        <div>
+            <button ng-click="switchx()" >切换</button>
+            <p ng-show="isOn">秀一把</p>
+            <p ng-hide="isOn">隐藏角色</p>
+        </div>
+    </div>
+    
+    <script>
+        //创建模块对象
+        angular.module('myApp',[])
+               .controller('myCtrl',function($scope){
+                    $scope.price1 = 20;
+                    $scope.count1 = 3;
+
+                    $scope.price2 = 30;
+                    $scope.count2 = 4;
+                    $scope.totalPrice = $scope.price2 * $scope.count2;
+                    $scope.getTotalPrice = function(){
+                        $scope.totalPrice = $scope.price2 * $scope.count2;
+                    }
+
+                    //初始化人员数据
+                    $scope.people = [
+                        {name:'张三', age:'18'},
+                        {name:'里斯', age:'19'},
+                        {name:'王五', age:'20'},
+                        {name:'赵六', age:'21'}
+                    ];
+
+                    $scope.isOn = true;
+                    $scope.switchx = function(){
+                        $scope.isOn = !$scope.isOn;
+                    }
+               });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <script src="./demo2.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="todoApp">
+
+    <div ng-controller="myCtrl">
+        <h2>备忘录</h2>
+        <div>
+            <input type="text" ng-model="newTodo">
+            <button ng-click="add()" >添加s</button>
+        </div>
+        <div ng-repeat="t in todos">
+            <input type="checkbox" ng-model="t.isChecked">
+            <span>{{t.name}}</span>
+        </div>
+            <button ng-click="del()" >删除选中的记录</button>
+    </div>
+    
+</body>
+</html>

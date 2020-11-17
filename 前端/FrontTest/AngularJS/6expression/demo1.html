@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp">
+
+    <!-- 
+        操作的数据类型:
+            基本数据类型: number/string/boolean
+            undefined, Infinity, NaN, null解析为空串: "",
+            对象的属性或方法
+            数组
+     -->
+
+    <div ng-controller="myCtrl" >
+        <p> {{123}} </p>
+        <p> {{'abc'}} </p>
+        <p> {{abc}} </p>
+        <p> {{true}} </p>
+        <p> --- {{undefined}} </p>
+        <p>{{abc.split('').reverse().join('')}}</p>
+    </div>
+
+     <script>
+         //创建模块对象
+         angular.module('myApp',[])
+                .controller('myCtrl',['$scope',function(a){
+                    a.abc = 'Hello';
+                }])
+     </script>
+    
+</body>
+</html>

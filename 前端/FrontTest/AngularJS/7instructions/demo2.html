@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <style>
+        .c1{
+            background-color: pink;
+        }
+        .c2{
+            background-color: seagreen;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body ng-app="myApp">
+    
+    <!-- 
+        常用指令二:
+            1.ng-class: 动态引用定义的样式
+            2.ng-style: 动态引用通过js指定的样式对象
+            3.ng-mouseenter: 鼠标移入监听,值为函数调用,可以传$event
+            4.ng-mouseleave: 鼠标移出监听,值为函数调用,可以传$event
+     -->
+
+    <div ng-controller="myCtrl" >
+        <div ng-style="myStyle" ng-mouseenter="fun1()" ng-mouseleave="fun2()"></div>
+        <ul>
+            <li ng-repeat="p in people" ng-class="{c1:$odd, c2:$even}">{{p.name}}---{{p.age}}</li>
+        </ul>
+    </div>
+    
+
+     <script>
+         angular.module('myApp', [])
+                .controller('myCtrl', function($scope){
+
+                    $scope.myStyle={
+                        background: 'blue',
+                        width:'300px',
+                        height:'400px'
+                    };
+
+                    $scope.fun1 = function(){
+                        this.myStyle.background = 'deepPink';
+                    }
+
+                    $scope.fun2 = function(){
+                        this.myStyle.background = 'blue';
+                    }
+
+                    $scope.people = [
+                        {name:'张三', age:'18'},
+                        {name:'里斯', age:'19'},
+                        {name:'王五', age:'20'},
+                        {name:'赵六', age:'21'}
+                    ];
+
+                });
+     </script>
+</body>
+</html>
