@@ -134,3 +134,48 @@ docker pull 镜像名称:版本号
 若直接docker pull 镜像名称，则默认拉取latest
 ```
 
+```
+删除镜像:
+docker rmi 镜像名称:tag
+	若不加tag,就删除latest,若该镜像在本地只有一个,可不加;
+docker rmi imageID 也可以
+若要删除一个正运行着容器的镜像,用 -f
+	docker rmi -f ...
+
+```
+
+## 3.3容器命令
+
+```bash
+新建并启动容器:
+docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+```
+
+```
+查看容器:
+docker ps [OPTIONS]
+	若没有参数,则列出所有正在运行着的容器.
+	-a :列出所有容器(不仅仅是正在运行的)
+	-l :列出最近一个被创建的容器.
+	-n num :列出最近num个被创建的容器.
+```
+
+```
+退出容器:
+	docker stop 正常关闭正在运行的容器;
+	docker kill 直接kill正在运行的容器;
+	docker rm 容器(若容器正在运行中,则要强制-f);
+```
+
+```
+查看容器:
+	查看容器细节: docker inspect 容器id;
+	登录一个正在运行的容器: docker attach 容器id,
+		例如登录到一个正在运行者的centos容器(以命令行方式);
+```
+
+```
+复制容器内文件到宿主机:
+	docker cp 容器id:容器类文件路径 宿主机路径
+```
+
