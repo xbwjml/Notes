@@ -13,8 +13,6 @@
 	仓库分为公开仓库和私有仓库。最大的公开仓库是Docker Hub(https://hub.docker.com)
 ```
 
-
-
 # 2.Docker安装
 
 ```bash
@@ -60,8 +58,6 @@ This message shows that your installation appears to be working correctly.
 	就是成功安装了。
 ```
 
-
-
 # 3.Docker命令
 
 ## 3.1基础命令
@@ -84,7 +80,7 @@ This message shows that your installation appears to be working correctly.
 列出本地镜像: docker images
 ```
 
-![3.2.1](D:\001LeeMJ\code\01MyOwn\Notes\Docker\pic\3.2.1.jpg)
+![](./pic/3.2.1.jpg)
 
 ```
 其中:
