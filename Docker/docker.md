@@ -17,8 +17,6 @@ author: LeeMJ
 	仓库分为公开仓库和私有仓库。最大的公开仓库是Docker Hub(https://hub.docker.com)
 ```
 
-
-
 # 2.Docker安装
 
 ```bash
@@ -64,8 +62,6 @@ This message shows that your installation appears to be working correctly.
 	就是成功安装了。
 ```
 
-
-
 # 3.Docker命令
 
 ## 3.1基础命令
@@ -88,8 +84,7 @@ This message shows that your installation appears to be working correctly.
 列出本地镜像: docker images
 ```
 
-![3.2.1](.\pic\3.2.1.jpg)
-
+![](./pic/3.2.1.jpg)
 ```
 其中:
 REPOSITORY  --镜像的仓库源;
@@ -144,7 +139,7 @@ docker rmi 镜像名称:tag
 	若不加tag,就删除latest,若该镜像在本地只有一个,可不加;
 docker rmi imageID 也可以
 若要删除一个正运行着容器的镜像,用 -f
-	docker rmi -f ...
+	docker rmi -f 容器id
 
 ```
 
@@ -194,5 +189,23 @@ docker ps [OPTIONS]
 commit:
 	有时候对一个容器进行了更改，例如修改了一个tomcat容器里的配置文件,下次还要用这个改后的配置，那么就可以这个改动创建一个新的镜像，以便下次使用。
 	docker commit -m="说明" -a="作者" 容器id 新镜像名称
+
 ```
 
+
+# 4.容器数据卷
+
+## 4.1概念
+
+```
+docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据做为镜像的一部分保存下来，那么当容器删除后，数据就饿没有了。
+为了能保存数据，就在docker中使用卷。
+```
+```
+卷就是目录或文件，存在于一个或多个容器中，由docker挂载到容器，但不属于联合文件系统，因此能够绕过Union File System提供一些用于持续存储或共享数据的特性：
+卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此Docker不会在容器删除时删除其挂载的数据卷。
+特点：
+	1.数据卷可在容器之间共享或重用数据
+	2.卷中的更改可以直接生效
+	3.数据卷的生命周期一直持续到没有容器使用它为止
+```

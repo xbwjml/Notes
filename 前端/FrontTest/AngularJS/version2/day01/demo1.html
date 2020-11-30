@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../0Source/angular-1.2.29/angular.js"></script>
+</head>
+<body>
+
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <h1>双向数据绑定</h1>
+        <input type="text" placeholder="请输入", ng-model="user.name" />
+        <p>hello, {{user.name}}</p>
+    </div>
+
+    <script>
+        //注册模块,通过module函数
+        //第一个参数是这个模块的名字,第二个参数是这个模块所依赖摩模块,若不依赖，则传空数组
+        //返回刚刚创建的模块对象
+        var my = angular.module('myApp',[]);
+
+        //创建控制器,创建的控制器属于my模块
+        //控制器函数的入参中有一个$scope
+        my.controller('myCtrl',function($scope){
+            //当控制器执行时,会自动执行这个函数
+            $scope.user = {
+                name: '张三',
+            };
+            //监视模型的变化
+            $scope.$watch('user.name',function(now,old){
+                console.log('old is : '+old);
+                console.log('now is : '+now);
+            })
+        });
+
+
+    </script>
+    
+</body>
+</html>

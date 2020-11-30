@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+</head>
+<body ng-app="myModule", ng-contrtoller="HelloCtrl" >
+
+    <script>
+        var module = angular.module('myModule',[]);
+
+        //第一个参数是控制器的名称
+        //第二个参数是数组,数组中的最后一项是函数，区域前几项都是函数的入参
+        module.controller('HelloCtrl',['$scope',function(a){
+            console.log(a);
+        }]);
+    </script>
+    
+</body>
+</html>

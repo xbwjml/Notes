@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../0Source/angular-1.2.29/angular.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp">
+
+    <div ng-controller="myCtrl" >
+        <h1>{{name}}</h1>
+        <h1>{{value | currency:'￥' }}</h1>
+        <h1>{{num | number:4 }}</h1>
+        <h1>变大写: {{word | uppercase }}</h1>
+        <pre>{{JsonObj | json}}</pre>
+        <h1>{{myString | limitTo: 6 }}</h1>
+        <br>
+        <h3>{{f1}}</h3>
+        <h3>{{f2}}</h3>
+        <h3>{{firstCharUpper}}</h3>
+    </div>
+
+    <script>
+        var m1 = angular.module('myApp',[]);
+        m1.controller('myCtrl',['$scope','$filter',function($scope,$filter){
+            $scope.name = '勒布朗';
+            $scope.value = 3456785;
+            $scope.num = 532453532.45534;
+            $scope.word = 'hEllo';
+            $scope.JsonObj = {'name':'杜兰特','age':'18','addresss':'US'};
+            $scope.myString = 'PHP is the best language';
+
+            $scope.f1 = $filter('uppercase')('worlD');
+            $scope.f2 = $filter('number')('316846866.683743674368368',2);
+        }]);
+        m1.filter();
+    </script>
+    
+</body>
+</html>
