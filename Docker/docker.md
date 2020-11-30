@@ -1,3 +1,7 @@
+author: LeeMJ
+
+
+
 # 1.Docker三要素
 
 ```
@@ -84,7 +88,7 @@ This message shows that your installation appears to be working correctly.
 列出本地镜像: docker images
 ```
 
-![3.2.1](D:\001LeeMJ\code\01MyOwn\Notes\Docker\pic\3.2.1.jpg)
+![3.2.1](.\pic\3.2.1.jpg)
 
 ```
 其中:
@@ -149,7 +153,13 @@ docker rmi imageID 也可以
 ```bash
 新建并启动容器:
 docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+常用: docker run -p 宿主机端口号:容器端口号 镜像名称
+
+例如: docker run -p 80:8080 tomcat
+	成功启动后访问宿主机80端口,如下图所示:![3.1.1]
 ```
+
+![](.\pic\3.1.1.jpg)
 
 ```
 查看容器:
@@ -171,11 +181,18 @@ docker ps [OPTIONS]
 查看容器:
 	查看容器细节: docker inspect 容器id;
 	登录一个正在运行的容器: docker attach 容器id,
+		或者 docker exec -it 容器id /bin/bash
 		例如登录到一个正在运行者的centos容器(以命令行方式);
 ```
 
 ```
 复制容器内文件到宿主机:
 	docker cp 容器id:容器类文件路径 宿主机路径
+```
+
+```
+commit:
+	有时候对一个容器进行了更改，例如修改了一个tomcat容器里的配置文件,下次还要用这个改后的配置，那么就可以这个改动创建一个新的镜像，以便下次使用。
+	docker commit -m="说明" -a="作者" 容器id 新镜像名称
 ```
 
