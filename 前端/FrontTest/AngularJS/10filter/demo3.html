@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        function getData1() {
+            console.log(new Date())
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve('resolved');
+                }, 3000);
+            });
+        }
+        function getData2() {
+            console.log(new Date())
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve('resolved2');
+                }, 5000);
+            });
+        }
+        async function asyncCall() {
+            var data1 = await getData1();
+            var data2 = await getData2();
+            console.log(data1)
+            console.log(data2)
+        }
+        asyncCall();
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
