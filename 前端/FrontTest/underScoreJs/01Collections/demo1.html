@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0000Source/underscore.js"></script>
+
+    <script>
+        let list = ['helle','world','java'];
+        let fun1 = (val,index,list)=>{
+            console.log(val,index,list);
+        }
+        _.each(list, fun1);
+
+        let obj = {'name':'张三', age:18, address:'北京'};
+        let fun2 = (val,key)=>{
+            console.log(key +"==="+ val);
+        }
+        _.each(obj,fun2);
+    </script>
+
+</head>
+<body>
+    
+</body>
+</html>
