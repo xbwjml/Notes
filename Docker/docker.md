@@ -78,6 +78,12 @@ This message shows that your installation appears to be working correctly.
 帮助: docker --help
 ```
 
+```
+命令文档:https://docs.docker.com/engine/reference
+```
+
+
+
 ## 3.2镜像命令
 
 ```
@@ -191,6 +197,40 @@ commit:
 	docker commit -m="说明" -a="作者" 容器id 新镜像名称
 
 ```
+
+## 3.4其他命令
+
+```bash
+查看日志: docker logs
+
+[root@VM_0_12_centos ~]# docker logs --help
+
+Usage:  docker logs [OPTIONS] CONTAINER
+
+Fetch the logs of a container
+
+Options:
+      --details        Show extra details provided to logs
+  -f, --follow         Follow log output
+      --since string   Show logs since timestamp (e.g. 2013-01-02T13:23:37Z) or
+                       relative (e.g. 42m for 42 minutes)
+  -n, --tail string    Number of lines to show from the end of the logs (default "all")
+  -t, --timestamps     Show timestamps
+      --until string   Show logs before a timestamp (e.g. 2013-01-02T13:23:37Z) or
+                       relative (e.g. 42m for 42 minutes)
+```
+
+```bash
+查看容器中进程信息: docker top 容器id
+[root@VM_0_12_centos ~]# docker top 5fc555d9e5a2
+UID		PID		PPID		C		STIME		TTY		TIME		CMD
+root	20236	20216		0		15:41		pts/0	00:00:00	/bin/bash
+```
+
+```
+
+```
+
 
 
 # 4.容器数据卷
