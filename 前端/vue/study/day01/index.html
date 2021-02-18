@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+
+    <div id="app" >
+        <h2>{{msg}}</h2>
+        <h2 v-once >{{msg}}</h2>
+        <span v-html="myHtml" ></span><br/>
+        <span v-text="myText"></span>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data:{
+                msg: 'world',
+                myHtml: '<a href="http://www.baidu.com">百度一下<a/>',
+                myText: 'javas',
+            }
+        });
+    </script>
+    
+</body>
+</html>
