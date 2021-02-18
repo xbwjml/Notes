@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+
+    <div id="app">
+        {{msg}}
+        <span v-once>{{ext}}</span>
+        <p> {{myHtml}} </p>
+        <span v-html="myHtml"></span>
+        <div v-bind:style="myBind">test...</div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'aloha',
+                ext: '不变的值',
+                myHtml: '<span style="color:red" > red alert </span>',
+                myBind:'color:green; font-size:100px',
+            },
+        })
+        vm.msg = 'Java';
+        vm.ext = '变了';
+    </script>
+   
+    
+</body>
+</html>

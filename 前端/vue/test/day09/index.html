@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <div id='example' >
+        <div v-for="(e,index) of list" >
+           {{index}} -- {{e.name}}  ---- {{e.age}}
+        </div>
+        <div v-for="(v,key) in myObj">
+            {{key}}  :  {{v}}
+        </div>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#example',
+            data:{
+                list:[
+                     {'name':'张三', 'age':18}
+                    ,{'name':'李四', 'age':19}
+                    ,{'name':'王五', 'age':20}
+                ],
+                myObj:{
+                    'id':123,
+                    'address': 'cn',
+                    'career':'developer',
+                    'weight':'80kg'
+                },
+            }
+        });
+    </script>
+    
+</body>
+</html>

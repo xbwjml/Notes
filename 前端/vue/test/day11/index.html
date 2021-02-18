@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+    <div id='example' >
+        <input v-model="msg" placeholder="edit me">
+        <p>输入内容为: {{msg}}</p>
+        <textarea v-model="msg2" placeholder="多行文本"></textarea>
+        <p>{{msg2}}</p>
+        <br/>
+
+        <div style="margin-top: 20px;">
+            <input type="checkbox" id="jack" value="Jack" v-model="chkNames">
+            <label for="jack">Jack</label>
+            <input type="checkbox" id="john" value="John" v-model="chkNames">
+            <label for="john">John</label>
+            <input type="checkbox" id="mike" value="Mike" v-model="chkNames">
+            <label for="mike">Mike</label><br/>
+            <span>CheckedNames: {{chkNames}}</span>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <input type="radio" id="one" value="One" v-model="picked"/>
+            <label for="one">One</label>
+            <input type="radio" id="two" value="Two" v-model="picked"/>
+            <label for="two">Two</label>
+            <input type="radio" id="three" value="Three" v-model="picked"/>
+            <label for="three">Three</label><br/>
+            <span>Picked: {{picked}}</span><br/>
+            <select v-model="selected" >
+                <!-- <option disabled value="">请选择</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option> -->
+                <option v-for="opt in options" v-bind:value="opt.val">
+                    {{opt.text}}
+                </option>
+            </select>
+            <span>selected: {{selected}}</span>
+
+            <br/>
+            <button @click="submit" style="margin-top: 20px;">提交</button>
+        </div>
+
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#example',
+            data:{
+                msg:'init',
+                msg2:'init2',
+                chkNames:['Jack'],
+                picked:'',
+                selected:[],
+                options:[
+                    {text:'hello',val:'HELLO'},
+                    {text:'world',val:'WORLD'},
+                    {text:'js',val:'JS'},
+                ]
+            },
+            methods:{
+                submit: function(){
+
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>

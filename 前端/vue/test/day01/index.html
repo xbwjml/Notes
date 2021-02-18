@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+
+    <div id="app">
+        {{ a }} 
+    </div>
+
+    <script>
+        var dt = {'a':'张三'}
+        // Object.freeze(dt);
+        var vm = new Vue({
+            el: '#app',
+            data: dt
+        });
+        dt.a = 'hi hhhhx';
+
+        vm.$data
+        vm.$el == document.getElementById("app");
+        vm.$watch('a',(newVal, oldVal)=>{
+            console.log(newVal, oldVal);
+        });
+
+        dt.a = 'world';
+        dt.a = 'back';
+        dt.a = 'back2';
+        dt.a = 'back3';
+        dt.a = 'back4';
+        dt.a = 'back5';
+        dt.a = 'back6';
+        dt.a = 'back7';
+        debugger;
+    </script>
+    
+</body>
+</html>
