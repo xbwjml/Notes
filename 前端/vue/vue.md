@@ -95,11 +95,43 @@ v-cloak:
 
 # 5 v-bind
 
-```
+```javascript
 不仅仅用来绑定值,还可以用来绑定其他属性,比如style,href等
+
+<div id="app">
+    <a  style="margin-top: 20px;" v-bind:href="myUrl">链接</a>
+<img v-bind:src="imgUrl" />
+    </div>
+
+<script>
+    const app = new Vue({
+        el : '#app',
+        data :{
+            myUrl:'http://www.baidu.com',
+            imgUrl:'https://cn.vuejs.org/images/lifecycle.png',
+        }
+    });
+</script>
 ```
 
 ```
+v-bind: 可以简写成 :
+```
 
+```
+v-bind:class="{c1:flag1, c2:flag2, c3:flag3}"
+由flag的boolean值确定.
+```
+
+```
+v-bind:style 也是类似
+```
+
+
+
+# 6 计算属性computed
+
+```
+计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的。
 ```
 
