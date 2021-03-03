@@ -167,6 +167,70 @@ v-on还有一些修饰符
 # 9 v-model
 
 ```
+用于input,select等输入标签中的值双向绑定,如下所示:
+```
+
+```javascript
+<div id='app'>
+        <input type="text" v-model="msg"/>
+        {{msg}}
+        <br/>
+
+        <label for="male">
+            <input type="radio" id="male"  value="♂" v-model="gender">男
+        </label>
+        <label for="female">
+            <input type="radio" id="female"  value="♀" v-model="gender">女
+        </label>
+        <h2>{{gender}}</h2><br/>
+
+        <label for="agree" >
+            <input type="checkbox" id="agree" v-model="isAgree">同意协议
+        </label>
+        <h2>{{isAgree}}</h2><br/>
+        <button :disabled="!isAgree">下一步</button><br/>
+
+        <input type="checkbox" value="篮球" v-model="hobbies">篮球
+        <input type="checkbox" value="橄榄球" v-model="hobbies">橄榄球
+        <input type="checkbox" value="足球" v-model="hobbies">足球
+        <input type="checkbox" value="羽毛球" v-model="hobbies">羽毛球
+        <h2>爱好是: {{hobbies}}</h2><br/>
+
+        <select v-model="fruit" multiple>
+            <option value="apple"  >apple</option>
+            <option value="banana"  >banana</option>
+            <option value="pear"  >pear</option>
+            <option value="melon"  >melon</option>
+        </select>
+        <h2>水果是: {{fruit}}</h2>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data :{
+                msg:'xxl;',
+                gender:'♂',
+                isAgree:false,
+                hobbies: [],
+                fruit:['melon'],
+            },
+
+        });
+    </script>
+```
 
 ```
+v-model的一些修饰符：
+
+.lazy: 默认情况下,v-model是在input事件中同步输入框中的数据,一但输入框中的数据发生改变,data中的数据立即相应改变，可能会比较耗费性能。lazy修饰符使输入框中的数据失去焦点或者按下回车键时才改变data中对应的数据;
+
+.number: 默认情况下如果不加.number,输入框中的内容总是被当作字符串处理。加了.number之后,若输入框中输入数字,则会被转成number类型,若输入的不是数字,则人就是字符串类型。
+
+.trim: 可以去除输入框中的首尾的空格.
+```
+
+
+
+# 10 组件化
 
