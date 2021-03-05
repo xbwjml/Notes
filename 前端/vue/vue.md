@@ -230,7 +230,85 @@ v-model的一些修饰符：
 .trim: 可以去除输入框中的首尾的空格.
 ```
 
+```javascript
+<div id='app'>
+    <!-- lazy -->
+    <input type="text" v-model.lazy="msg">
+    <h2>lazy: {{msg}}</h2><br/>
+
+    <!-- number -->
+    <input type="text" v-model.number="num">
+    <h2>{{typeof num}}: {{num}}</h2><br/>
+    
+    <!-- trim -->
+    <input type="text" v-model.trim="name">
+    <h2>name: {{name}}</h2><br/>
+</div>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data :{
+            msg : 'init',
+            num:6,
+            name:' x '
+        },
+    });
+</script>
+```
+
 
 
 # 10 组件化
+
+## 10.1组件化引入
+
+```
+略
+```
+
+## 10.2基本使用
+
+```
+组件使用的步骤:
+- 创建组件构造器;
+- 注册组件;
+- 使用组件;
+```
+
+```javascript
+    <div id='app'>
+        <my-cpn></my-Cpn>
+        <my-cpn></my-Cpn>
+        <my-cpn></my-Cpn>
+    </div>
+
+    <script>
+        //1.创建组件构造器s
+        const constructor = Vue.extend({
+            template:`
+                <div>
+                    <h2>标题</h2>
+                    <p>内容</p>
+                </div>
+            `
+        });
+
+        //2注册组件
+        //传两个参数:组件的标签, 组件的构造器
+        Vue.component('my-cpn', constructor);
+
+        const app = new Vue({
+            el: '#app',
+            data :{
+            },
+        });
+    </script>
+```
+
+## 10.3 全局组件和局部组件
+
+```
+按上面方式，是全局组件
+```
 
