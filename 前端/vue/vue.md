@@ -310,5 +310,44 @@ v-model的一些修饰符：
 
 ```
 按上面方式，是全局组件
+把组件注册在vue实例的components属性里，就成了这个vue实例的局部组件,如下所示:
+components: {
+	局部组件标签名: 局部组件构造器
+}
+```
+
+```javascript
+<div id='app'>
+    <cpn></cpn>
+</div>
+
+<script>
+    const constructor = Vue.extend({
+        template:`
+            <div>
+                <h2>标题</h2>
+                <p>内容</p>
+            </div>
+        `
+    });
+
+    const app = new Vue({
+        el: '#app',
+        data :{
+            msg:'hello',
+        },
+        components: {
+            cpn: constructor
+        }
+    });
+
+    const app2 = new Vue({
+        el: '#app2'
+    })
+</script>
+```
+
+```
+
 ```
 

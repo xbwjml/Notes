@@ -9,17 +9,10 @@
 <body>
 
     <div id='app'>
-        <my-cpn></my-cpn>
+        <cpn></cpn>
     </div>
-    <h2>========</h2>
-
-    <div id='app2'>
-        <loaclCpn></loaclCpn>
-        <!-- <my-cpn></my-cpn> -->
-    </div>
-
+    
     <script>
-        //1.创建组件构造器s
         const constructor = Vue.extend({
             template:`
                 <div>
@@ -29,17 +22,13 @@
             `
         });
 
-        //2注册组件
-        //传两个参数:组件的标签, 组件的构造器
-        Vue.component('my-cpn', constructor);
-
         const app = new Vue({
             el: '#app',
             data :{
                 msg:'hello',
             },
             components: {
-                loaclCpn: constructor
+                cpn: constructor
             }
         });
 
