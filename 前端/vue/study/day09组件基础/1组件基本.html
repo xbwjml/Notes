@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+
+    <div id='app'>
+        <my-cpn></my-cpn>
+        <my-cpn></my-cpn>
+        <my-cpn></my-cpn>
+    </div>
+
+    <script>
+        //1.创建组件构造器s
+        const constructor = Vue.extend({
+            template:`
+                <div>
+                    <h2>标题</h2>
+                    <p>内容</p>
+                </div>
+            `
+        });
+
+        //2注册组件
+        //传两个参数:组件的标签, 组件的构造器
+        Vue.component('my-cpn', constructor);
+
+        const app = new Vue({
+            el: '#app',
+            data :{
+            },
+        });
+    </script>
+    
+</body>
+</html>

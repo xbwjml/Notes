@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+
+    <div id='app'>
+        <input type="text" v-model="msg"/>
+        {{msg}}
+        <br/>
+
+        <label for="male">
+            <input type="radio" id="male"  value="♂" v-model="gender">男
+        </label>
+        <label for="female">
+            <input type="radio" id="female"  value="♀" v-model="gender">女
+        </label>
+        <h2>{{gender}}</h2><br/>
+
+        <label for="agree" >
+            <input type="checkbox" id="agree" v-model="isAgree">同意协议
+        </label>
+        <h2>{{isAgree}}</h2><br/>
+        <button :disabled="!isAgree">下一步</button><br/>
+
+        <input type="checkbox" value="篮球" v-model="hobbies">篮球
+        <input type="checkbox" value="橄榄球" v-model="hobbies">橄榄球
+        <input type="checkbox" value="足球" v-model="hobbies">足球
+        <input type="checkbox" value="羽毛球" v-model="hobbies">羽毛球
+        <h2>爱好是: {{hobbies}}</h2><br/>
+
+        <select v-model="fruit" multiple>
+            <option value="apple"  >apple</option>
+            <option value="banana"  >banana</option>
+            <option value="pear"  >pear</option>
+            <option value="melon"  >melon</option>
+        </select>
+        <h2>水果是: {{fruit}}</h2>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data :{
+                msg:'xxl;',
+                gender:'♂',
+                isAgree:false,
+                hobbies: [],
+                fruit:['melon'],
+            },
+
+        });
+    </script>
+    
+</body>
+</html>

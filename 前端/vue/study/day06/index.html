@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js" ></script>
+</head>
+<body>
+
+    <div id='app'>
+        <ul>
+            <li v-for="(n,idx) in names" >{{idx}} --- {{n}}</li>
+        </ul>
+        <ul>
+            <li v-for="(val,key,idx) in myObj" >{{key}} --- {{val}} --- {{idx}}</li>
+        </ul>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data :{
+                names:['张三', '李四', '王五'],
+                myObj:{
+                    address:'cn',
+                    code:'+86',
+                    color:'red',
+                }
+            },
+
+        });
+        function f(...args){
+            // debugger;
+            args;
+        }
+        f(1,2,6,73);
+
+        let arr = ['w','o','r','l','d'];
+        let newArr = arr.reduce(function(pre,cur,idx,list){
+            debugger;
+            return pre+cur;
+        },'init');
+        debugger;
+    </script>
+    
+</body>
+</html>
