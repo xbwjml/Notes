@@ -31,3 +31,25 @@
 </html>
 ```
 
+
+
+## 1.2数据类型
+
+```
+JS中共有6种数据类型:
+	String			字符串
+	Number			数值
+	Boolean			布尔值
+	Null				空值
+	Undefined		为定义
+	Object			对象
+	
+其中：Object是引用数据类型，其他的都是基本数据类型.
+	
+```
+
+```
+String 字符串
+
+```
+
