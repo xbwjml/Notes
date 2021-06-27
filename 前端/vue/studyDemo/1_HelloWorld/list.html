@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../0source/vue.js" ></script>
+
+    <div id='app'>
+        <ul>
+            <li v-for="e in movies">{{e}}</li>
+        </ul>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data:{
+                msg:'Hello',
+                movies:['刘备','关羽','张飞']
+            }
+        });
+    </script>
+</body>
+</html>
