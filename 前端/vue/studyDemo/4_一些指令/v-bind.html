@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .active{
+          color:red  
+        }
+        .c1{
+            color: red;
+        }
+        .c2{
+            text-decoration: underline;
+        }
+        .c3{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        v-bind
+            用法:  v-bind:属性名="xxx"
+                简写为:  :属性名="xxx"
+     -->
+     
+     <div id='app'>
+         <a v-bind:href="url">链接</a><br/>
+         <a :class="ac">链接</a><br/>
+         <h2 :class="{c1:v1, c2:v2, c3:v3}">{{msg}}</h2>
+         <h2 :class="getClass()">{{msg}}</h2>
+         <h2 :class="['c1','c2','c3']">{{msg}}</h2>
+         <button v-on:click="clickBtn">点击</button>
+     </div>
+     <script src="../0source/vue.js"></script>
+        
+     <script>
+         const app = new Vue({
+             el:'#app',
+             data:{
+                msg:'Hello',
+                url: 'https://www.qq.com',
+                ac:'active',
+                v1:true,
+                v2:true,
+                v3:false,
+             },
+             methods:{
+                clickBtn: function(){
+                     this.v2 = !this.v2;
+                     debugger;
+                },
+                getClass: function(){
+                    return {c1:this.v1, c2:this.v2, c3:this.v3};
+                }
+             }
+         });
+     </script>
+</body>
+</html>

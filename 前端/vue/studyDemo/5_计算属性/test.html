@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+    <!-- 
+        计算属性:
+     -->
+
+    <div id='app'>
+        <h2>{{getFullName()}}</h2>
+        <h2>{{fullName}}</h2>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el:'#app',
+            data:{
+                fName:'马',
+                lName:'冬梅',
+            },
+            methods:{
+                getFullName(){
+                    debugger;
+                    return this.fName+this.lName;
+                }
+            },
+            computed:{
+                fullName: function(){
+                    debugger;
+                    return this.fName+this.lName;
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
