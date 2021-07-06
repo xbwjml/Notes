@@ -8,16 +8,12 @@
     <script src="../0source/vue.js"></script>
 </head>
 <body>
+
     <!-- 
-        计算属性:
+        计算属性的setter和getter方法
      -->
 
     <div id='app'>
-        <h2>{{getFullName()}}</h2>
-        <h2>{{getFullName()}}</h2>
-        <h2>{{getFullName()}}</h2>
-        <h2>{{fullName}}</h2>
-        <h2>{{fullName}}</h2>
         <h2>{{fullName}}</h2>
     </div>
 
@@ -25,21 +21,24 @@
         const app = new Vue({
             el:'#app',
             data:{
-                fName:'马',
-                lName:'冬梅',
-            },
-            methods:{
-                getFullName(){
-                    debugger;
-                    return this.fName+this.lName;
-                }
+                fName:'Kobe',
+                lName:'Braynt',
             },
             computed:{
-                fullName: function(){
-                    debugger;
-                    return this.fName+this.lName;
+                fullName:{
+                    set: function(){
+
+                    },
+                    // get: function(){
+                    //     return this.fName+this.lName;
+                    // },
+                    get: vm=>{
+                        debugger;
+                        return vm.fName+vm.lName;
+                    }
                 }
-            }
+            },
+            
         });
     </script>
     
