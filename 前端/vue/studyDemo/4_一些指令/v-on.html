@@ -13,12 +13,19 @@
         v-on 
             作用:绑定事件监听器 。
             缩写:@ 。
+
+            若调用的方法无需参数,可以不加括号;
+            若调用的时候没加括号,但是被调用方法有入参,那么默认第一个入参就是 event事件;
+            若调用的时候，既要传event事件又要传其他参数,那么event用 $enevt;
      -->
 
     <div id='app'>
         <h2>计数: {{counter}}</h2>
         <button v-on:click="add()">加</button>
         <button @click="minus()">减</button>
+        <button @click="minus">减</button>
+        <button @click="btnClick">按钮</button>
+        <button @click="btnClick2('123', $event, 'hello')">按钮2</button>
     </div>
 
     <script>
@@ -33,6 +40,12 @@
                 },
                 minus: function(){
                     this.counter--;
+                },
+                btnClick: function(a,b){
+                    debugger;
+                },
+                btnClick2: function(arg1,arg2,arg3){
+                    debugger;
                 },
             }
         });
