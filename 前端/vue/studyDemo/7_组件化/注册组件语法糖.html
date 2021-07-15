@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <mycpn></mycpn>
+        <cpn2></cpn2>
+    </div>
+
+    <script>
+        /**注册组件语法糖*/
+        Vue.component('mycpn', {
+            template:`<div>
+                        <h2>world</h2>
+                    </div>`,
+        });
+
+        const app = new Vue({
+            el: '#app',
+            components:{
+                cpn2: {
+                    template: `<div>
+                        <h2>java</h2>
+                    </div>`,
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>
