@@ -17,6 +17,7 @@
     <template id="cpnyy">
         <div>
             <h2>22222222222</h2>
+            <h2>{{title}}</h2>
         </div>
     </template>
 
@@ -27,7 +28,12 @@
     <script>
         Vue.component('cpn1',{
             // template: '#cpnxx'
-            template: '#cpnyy'
+            template: '#cpnyy',
+            data(){
+                return {
+                    title:'abc',
+                }
+            }
         });
         const app = new Vue({
             el: '#app',
