@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <globalcpn></globalcpn>
+        <localcpn></localcpn>
+    </div>
+    <h2>------------------</h2>
+
+    <div id="app2">
+        <globalcpn></globalcpn>
+        <localcpn></localcpn>
+    </div>
+
+    <script>
+        /**1.创建组件构造器*/
+        const cpn1 =  Vue.extend({
+            template: ` <h2>Hello!</h2> `
+        });
+
+        /**2.注册组件(全局组件,可以在多个Vue实例中使用)*/
+        Vue.component('globalcpn', cpn1);
+
+        const app = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            /** 当前vue实例里面的局部组件 */
+            components:{
+                localcpn: cpn1
+            }
+        });
+
+        const app2 = new Vue({
+            el: '#app2',
+        });
+    </script>
+    
+</body>
+</html>
