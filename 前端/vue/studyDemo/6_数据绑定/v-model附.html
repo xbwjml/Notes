@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <li v-for="e in genders">
+            <label for="e">
+                <input type="radio" :value="e" v-model="gen">{{e}}
+            </label>
+        </li>
+        <h2>- {{gen}}</h2>
+        <div>-----------------------</div><br/>
+
+        <label for="agree">
+            <input type="checkbox" id="agree" v-model="agreed">同意协议
+        </label>
+        <h2>- {{agreed}}</h2>
+        <div>-----------------------</div><br/>
+
+        <input type="checkbox" value="football" v-model="hobbies">足球
+        <input type="checkbox" value="basketball" v-model="hobbies">篮球
+        <input type="checkbox" value="badminton" v-model="hobbies">羽毛球
+        <input type="checkbox" value="pingpong" v-model="hobbies">乒乓球
+        <h2>- {{hobbies}}</h2>
+        <div>-----------------------</div><br/>
+
+        <h2>- {{fruit}}</h2>
+        <select name="abc" id="" v-model="fruit" multiple>
+            <option v-for=" e in fruits " :value="e" >{{e}}</option>
+        </select>
+        <div>-----------------------</div><br/>
+
+        <!-- v-model修饰符之 lazy; number; trim -->
+        <input type="text" v-model.lazy="lazyMsg" />
+        <div>-{{lazyMsg}}-</div><br/>
+        <input type="number" v-model.number="numMsg" />
+        <div>-{{typeof numMsg}}--{{numMsg}}-</div><br/>
+        <input type="text" v-model.trim="trimMsg" />
+        <div>---{{trimMsg}}-</div><br/>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                genders:['男', '女'],
+                gen: '',
+                agreed: false,
+                hobbies:[],
+                fruits:['apple', 'pear', 'orange', 'banana'],
+                fruit:['pear'],
+                lazyMsg:'init',
+                numMsg:0,
+                trimMsg:'',
+            },
+        })
+    </script>
+    
+</body>
+</html>
