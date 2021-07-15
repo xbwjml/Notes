@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <!-- <cpnc1></cpnc1>
+        <cpnc2></cpnc2> -->
+
+        <cpnc2></cpnc2>
+    </div>
+
+    <script>
+        const cpn1 = Vue.extend({
+            template: `<div><h2>哈哈哈哈哈</h2></div>`
+        });
+        const cpn2 = Vue.extend({
+            template: `<div>
+                            <h2>hhhhhhhh</h2>
+                            <son></son>
+                        </div>
+                     `,
+            components:{
+                son: cpn1,
+            }
+        });
+
+
+        const app = new Vue({
+            el: '#app',
+            components:{
+                // cpnc1: cpn1,
+                cpnc2: cpn2,
+            }
+        });
+    </script>
+    
+</body>
+</html>
