@@ -8,6 +8,38 @@
     <script src="../0source/vue.js"></script>
 </head>
 <body>
+
+    <template id="cpn1">
+        <div>
+            <p>{{cmovies}}</p>
+            <p>{{cmsg}}</p>
+        </div>
+    </template>
+
+    <div id="app">
+        <cpn :cmovies="movies" :cmsg="msg" ></cpn>
+    </div>
+
+    <script>
+        const cpn = {
+            template: '#cpn1',
+            props: ['cmovies', 'cmsg'],
+            data(){
+                return {};
+            },
+        };
+
+        const app = new Vue({
+            el: '#app',
+            data:{
+                msg:'Hello',
+                movies : ['让子弹飞', 'a','c'],
+            },
+            components:{
+                cpn,
+            }
+        });
+    </script>
     
 </body>
 </html>
