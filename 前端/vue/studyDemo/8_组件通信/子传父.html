@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <template id="cpn1">
+        <div>
+            <button v-for="e in cates" @click="cateClick(e)">{{e.name}}</button>
+        </div>
+    </template>
+
+    <div id="dad">
+        <son @itemclick="func1"></son>
+    </div>
+
+    <script>
+        /**子组件*/
+        const son = {
+            template: cpn1,
+            data() {
+                return {
+                    cates:[
+                        {id:'a',name:'家电'}
+                        ,{id:'b',name:'数码'}
+                        ,{id:'c',name:'食品'}
+                        ,{id:'d',name:'服装'}
+                    ],
+                }
+            },
+            methods:{
+                cateClick(item){
+                    this.$emit('itemclick',item);
+                }
+            }
+        }
+
+        /**父组件*/
+        const app = new Vue({
+            el: '#dad',
+            data: {
+                msg: 'Andriod'
+            },
+            components:{
+                son
+            },
+            methods:{
+                func1(item){
+                    debugger;
+                }
+            }
+        });
+    </script>
+
+    
+</body>
+</html>

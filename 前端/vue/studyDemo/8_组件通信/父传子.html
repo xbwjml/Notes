@@ -12,18 +12,18 @@
     <template id="cpn1">
         <div>
             <p>{{cmovies}}</p>
-            <p>{{cmsg}}</p>
+            <p>{{cMsg}}</p>
         </div>
     </template>
 
     <div id="app">
-        <cpn :cmovies="movies" :cmsg="msg" ></cpn>
+        <cpn :cmovies="movies" :cMsg="msg" ></cpn>
     </div>
 
     <script>
         const cpn = {
             template: '#cpn1',
-            props: ['cmovies', 'cmsg'],
+            props: ['cmovies', 'cMsg'],
             data(){
                 return {};
             },
