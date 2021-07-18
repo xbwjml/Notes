@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0source/vue.js"></script>
+</head>
+<body>
+
+    <template id="son1">
+        <!-- <div>
+            <h2>son1</h2>
+            <button @click="btnClick">按钮son1</button>
+        </div> -->
+        <cpn11></cpn11>
+    </template>
+
+    <template id="grandson1">
+        <div>
+            <h2>grandson1</h2>
+            <button @click="btnClick">按钮grandson1</button>
+        </div>
+     </template>
+
+     <div id="dad">
+         <cpn1></cpn1>
+     </div>
+
+     <script>
+         const app = new Vue({
+             el:'#dad',
+             data(){
+                return {
+                    msg: 'sonHello',
+                }
+             },
+             components:{
+                 cpn1:{
+                     template: '#son1',
+                     data(){
+                         return {
+                            msg:'son1Hello',
+                         }
+                     },
+                     components:{
+                         cpn11:{
+                             template: '#grandson1',
+                             methods:{
+                                btnClick(){
+                                    debugger;
+                                    //访问父组件
+                                    let a = this.$parent;
+                                    //访问根组件
+                                    let b = this.$root;
+                                    debugger;
+                                }
+                             },
+                         }
+                     }
+                 }
+             }
+         });
+     </script> 
+    
+</body>
+</html>
