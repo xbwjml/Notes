@@ -9,17 +9,27 @@
 </head>
 <body>
 
+    <!-- 
+        抽取共性，保留不同。
+        将共性抽取到组件中，将不同暴露为插槽。
+        一旦预留插槽，就可以让使用者根据自己的需求，决定插槽中插入什么内容。
+     -->
+
     <template id="cpn">
         <div>
             <h2>我是组件</h2>
             <p>我是组件啊</p>
-
+            <slot><button>按钮</button></slot>
         </div>
     </template>
 
     <div id="app">
-        <cpn></cpn>
-        <cpn></cpn>
+        <cpn><button>ananiu</button></cpn>
+        <cpn>
+            <span>666</span>
+            <span>777</span>
+            <span>888</span>
+        </cpn>
         <cpn></cpn>
     </div>
 
