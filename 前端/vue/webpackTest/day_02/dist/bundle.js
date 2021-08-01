@@ -65,61 +65,50 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_info_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_normal_css__ = __webpack_require__(3);
-const {sum, mul} = __webpack_require__(1);
-
-console.log(sum(10,66));
-console.log(mul(10,66));
 
 
-console.log(__WEBPACK_IMPORTED_MODULE_0__js_info_js__["b" /* name */],__WEBPACK_IMPORTED_MODULE_0__js_info_js__["a" /* age */]);
+var _info = __webpack_require__(1);
 
+var _normal = __webpack_require__(2);
 
+var _normal2 = _interopRequireDefault(_normal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _require = __webpack_require__(6),
+    sum = _require.sum,
+    mul = _require.mul;
+
+console.log(sum(10, 66));
+console.log(mul(10, 66));
+
+console.log(_info.name, _info.age);
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-function sum(a, b) {
-    return a + b;
-}
-
-function mul(a, b) {
-    return a * b;
-}
-
-module.exports = {
-      sum
-    , mul
-}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var name = exports.name = 'zhangSan';
+var age = exports.age = '20';
 
 /***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-const name = 'zhangSan';
-/* harmony export (immutable) */ __webpack_exports__["b"] = name;
-
-const age = '20';
-/* harmony export (immutable) */ __webpack_exports__["a"] = age;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__ = __webpack_require__(4);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_css_loader_dist_cjs_js_normal_css__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_css_loader_dist_cjs_js_normal_css__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_css_loader_dist_cjs_js_normal_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__node_modules_css_loader_dist_cjs_js_normal_css__);
 
             
@@ -133,10 +122,10 @@ var update = __WEBPACK_IMPORTED_MODULE_0__node_modules_style_loader_dist_runtime
 
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_1__node_modules_css_loader_dist_cjs_js_normal_css___default.a.locals || {});
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_1__node_modules_css_loader_dist_cjs_js_normal_css___default.a.locals || {});
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -411,16 +400,16 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(false);
+exports = module.exports = __webpack_require__(5)(false);
 // Module
 exports.push([module.i, "body {\n    background-color: red;\n}", ""]);
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -514,6 +503,26 @@ function toComment(sourceMap) {
   var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
   return "/*# ".concat(data, " */");
 }
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function sum(a, b) {
+    return a + b;
+}
+
+function mul(a, b) {
+    return a * b;
+}
+
+module.exports = {
+    sum: sum,
+    mul: mul
+};
 
 /***/ })
 /******/ ]);
