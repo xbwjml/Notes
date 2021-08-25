@@ -5,4 +5,12 @@
     "exclude": [
         "node_modules"
     ],
+    "compilerOptions": {
+        "target": "ES6",//ts被编译为js的版本
+        "module": "amd",
+        // "lib":["DOM"],
+        "outDir":"./dist",
+        "outFile": "./dist/res.js",
+    },
+    
 }
