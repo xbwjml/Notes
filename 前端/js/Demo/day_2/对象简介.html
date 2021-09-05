@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        
+        /**
+         *  1.内建对象:
+         *      由ES标准中定义的对象，在任何ES实现中都可以使用
+         *      比如:Math,String,Number等;
+         *  2.宿主对象:
+         *      由JS运行环境提供的对象，目前来讲主要是由浏览器提供的对象
+         *      比如:BOM,DOM;
+         *  3.自定义对象
+         **/
+
+        //创建对象
+        let obj = new Object();
+        debugger;
+        obj.name = '孙悟空';
+        obj.age = 18;
+        // delete obj.age;
+
+        /**
+         * 判断对象里是否包含某个属性值
+         *  "属性名" in 对象
+         **/
+        let a = "age" in obj;
+        let b = "address" in obj;
+        
+        debugger;
+    </script>
+    
+</body>
+</html>
