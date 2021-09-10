@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        let fn = new Function();
+        let t =  typeof fn;
+
+        let fn1 = new Function(
+            "console.log('hhhh');"
+        );
+        fn1();
+        fn1.hobby = 'reading';
+
+        function fn2(a,b,c){
+            console.log('!!!'+a,b,c);
+        }
+        fn2(1,2,3);
+
+        let fun3 = function(m,n){
+            console.log(m,n);
+        };
+        fun3(6666,777);
+
+        debugger;
+    </script>
+</body>
+</html>
