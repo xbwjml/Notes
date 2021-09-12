@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function say2(){
+
+        }
+        function Person(nickName, age){
+            this.nickName = nickName;
+            this.age = age;
+            this.say = function(){};
+            this.say2 = say2;
+        }
+        let p = new Person();
+        let t = typeof p;
+
+        let p1 = new Person("",1);
+        let p2 = new Person("",2);
+        let bo = p1.say==p2.say;
+        let bo2 = p1.say2==p2.say2;
+
+
+
+        debugger;
+    </script>
+</body>
+</html>
