@@ -484,6 +484,12 @@ public class FactoryMethod {
 }
 ```
 
+```
+
+```
+
+
+
 ## 2.3抽象工厂模式
 
 ```
@@ -508,6 +514,7 @@ public class FactoryMethod {
 	例如添加了新产品族 IScreen, 则IFactory里要添加新方法 IScreen getScreen();
 适用场景:
 	当需要多个产品族,并且产品族数量相对比较稳定的场景;
+	比如: 文本编辑器和图片处理器，分别在Linux下和Windows下的功能是相同的，但代码实现肯定不同，于是我们可以使用抽象工厂模式，产生不同操作系统下的文本编辑器和图片处理器。
 ```
 
 ```java
