@@ -621,18 +621,102 @@ private static Calendar createCalendar(TimeZone zone,
 
 
 
-# 3.建造者模式
+# 3.模板方法模式
 
 ```
-当我们需要实力化一个类，可能根据不同是使用场景，有不同的实例化方式(构造方法).
-就可以使用不同的类对它们的实例化操作进行封装,这些类就被称为建造者.每当需要来自同一个类但具有不同结构的对象时，就可以通过构造另一个建造者来帮助我们生成这个对象。
+定义:
+	定义一个操作中的算法的框架,而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可重新定义该算法的某些特定步骤。
 ```
 
 ```
-角色:
-	抽象产品:需要为其构建对象的类，是具有不同表现形式的复杂对象。
-	抽象建造者:用于声明构建产品类的组成部分的抽象类或接口。它的作用是仅公开构建产品类的功能，隐藏其产品类的其他功能。
-	具体建造者类:用于实现抽象建造者类接口中声明的方法。
-	导演类:用于指导如何构建对象的类。在建造者模式的某些变体中已经移除。
+模板方法模式的抽象类中分两种方法：
+	1.基本方法(由子类去实现);
+	2.模板方法，是对基本方法的调用，完成固定的逻辑;
+	
+	注意:	为了防止恶意调用，模板方法都加上final关键字，不允许被重写。
+	
+```
+
+```java
+public abstract class AbsClass {
+
+    protected abstract void buy();
+
+    protected abstract void cook();
+
+    protected abstract void eat();
+
+    public final void method(){
+        this.buy();
+        this.cook();
+        this.eat();
+    }
+}
+```
+
+```java
+public class ChineseMeal extends AbsClass {
+    @Override
+    protected void buy() {
+        System.out.println("买肉丝");
+    }
+
+    @Override
+    protected void cook() {
+        System.out.println("炒鱼香肉丝");
+    }
+
+    @Override
+    protected void eat() {
+        System.out.println("用筷子吃");
+    }
+}
+```
+
+```java
+public class FrenchMeal extends AbsClass{
+    @Override
+    protected void buy() {
+        System.out.println("买cheese");
+    }
+
+    @Override
+    protected void cook() {
+        System.out.println("涂抹面包");
+    }
+
+    @Override
+    protected void eat() {
+        System.out.println("上手吃");
+    }
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        AbsClass chineseMeal = new ChineseMeal();
+        AbsClass frenchMeal = new FrenchMeal();
+
+        chineseMeal.method();
+        frenchMeal.method();
+    }
+}
+```
+
+```
+模板方法方法模式的优点:
+	封装不变的部分，扩展可变的部分。
+	把不变的部分封装到父类实现，把可变的部分交给子类实现。
+
+模板方法模式的缺点:
+	按照设计习惯，抽象类负责声明最抽象普遍的属性和方法，子类去实现。而模板方法模式确颠倒了。
+```
+
+```
+模板方法模式的使用场景:
+	多个子类有共有的方法，并且逻辑基本相同时；
+	复杂，重要的算法，可以把核心算法设计为模板方法，周边相关的细节方法由子类来实现；
+	
 ```
 
