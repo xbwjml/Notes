@@ -7,7 +7,6 @@ public class Test5 {
         String res = method("heqq", "jjjkk", func );
 
 
-
         return;
     }
 
@@ -15,5 +14,7 @@ public class Test5 {
         return func.apply(var1, var2);
     }
 }
+
+
 
 

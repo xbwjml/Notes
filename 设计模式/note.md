@@ -23,7 +23,7 @@
 
 ```
 依赖:
-	一个类中的某个方法如参中使用到了另一个类，称为依赖;
+	一个类中的某个方法入参中使用到了另一个类，称为依赖;
 ```
 
 ```
@@ -629,6 +629,10 @@ private static Calendar createCalendar(TimeZone zone,
                                            Locale aLocale){
   //...
 }
+
+```
+
+```
 
 ```
 
