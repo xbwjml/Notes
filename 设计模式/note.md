@@ -737,3 +737,91 @@ public class Test {
 	
 ```
 
+
+
+# 4.建造者模式
+
+```
+定义:
+	将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+```
+
+```java
+现在更习惯使用静态内部类的方式实现建造者模式：
+public class Car {
+    private String brand;
+    private String color;
+    private String power;
+
+    Car(String brand, String color, String power) {
+        this.brand = brand;
+        this.color = color;
+        this.power = power;
+    }
+
+    public static Car.CarBuilder builder() {
+        return new Car.CarBuilder();
+    }
+
+    public static class CarBuilder {
+        private String brand;
+        private String color;
+        private String power;
+
+        CarBuilder() {
+        }
+
+        public Car.CarBuilder brand(String brand) {
+            this.brand = brand;
+            return this;
+        }
+
+        public Car.CarBuilder color(String color) {
+            this.color = color;
+            return this;
+        }
+
+        public Car.CarBuilder power(String power) {
+            this.power = power;
+            return this;
+        }
+
+        public Car build() {
+            return new Car(this.brand, this.color, this.power);
+        }
+
+        public String toString() {
+            return "Car.CarBuilder(brand=" + this.brand + ", color=" + this.color + ", power=" + this.power + ")";
+        }
+    }
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Car car = Car.builder()
+                    .color("红色")
+                    .power("220马力")
+                    .brand("五菱")
+                    .build();
+        return;
+    }
+}
+```
+
+```
+建造者模式在jdk中的应用:
+	AbstractStringBuilder类实现了 Appendable接口，实现其中的append方法.
+```
+
+```
+在Mybatis中的应用:
+	CacheBuilder类
+```
+
+```
+在spring中的应用:
+	BeanDefinitionBuilder类;
+```
+

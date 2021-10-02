@@ -1,4 +1,4 @@
-package template;
+package templateMode;
 
 public abstract class AbsClass {
 

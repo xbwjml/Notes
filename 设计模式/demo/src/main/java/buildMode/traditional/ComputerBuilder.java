@@ -1,4 +1,4 @@
-package build.traditional;
+package buildMode.traditional;
 
 /**
  * 抽象建造者类

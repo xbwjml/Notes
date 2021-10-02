@@ -1,4 +1,4 @@
-package build.traditional;
+package buildMode.traditional;
 
 public class Test {
     public static void main(String[] args) {

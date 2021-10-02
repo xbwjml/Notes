@@ -1,4 +1,4 @@
-package build.traditional;
+package buildMode.traditional;
 
 /**
  * 联想电脑建造者类

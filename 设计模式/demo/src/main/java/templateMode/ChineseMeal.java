@@ -1,4 +1,4 @@
-package template;
+package templateMode;
 
 public class ChineseMeal extends AbsClass {
     @Override

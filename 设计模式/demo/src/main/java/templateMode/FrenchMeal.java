@@ -1,4 +1,4 @@
-package template;
+package templateMode;
 
 public class FrenchMeal extends AbsClass{
     @Override
