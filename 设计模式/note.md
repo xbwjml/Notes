@@ -857,3 +857,181 @@ public class Test {
 	动态代理；
 ```
 
+```java
+静态代理案例如下:
+public interface ISubject {
+    void request();
+}
+
+public class RealSubject implements ISubject{
+    @Override
+    public void request() {
+        System.out.println("real method called");
+    }
+}
+
+public class Proxy implements ISubject{
+
+    private ISubject subject;
+
+    public Proxy(ISubject subject){
+        this.subject = subject;
+    }
+
+    @Override
+    public void request() {
+        before();
+        subject.request();
+        after();
+    }
+
+    public void before(){
+        System.out.println("proxy before");
+    }
+
+    public void after(){
+        System.out.println("proxy after");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        ISubject subject = new Proxy(new RealSubject());
+        subject.request();
+    }
+
+}
+
+```
+
+```
+静态代理的局限性:
+	必须自己写代理类，得知道被代理对象。
+```
+
+```
+动态代理:
+	不需要手动创建代理类,无需关系被代理的对象是谁,只需编写一个动态处理器。
+	目前普遍使用的是jdk自带的代理和cglib
+```
+
+```java
+jdk自带动态代理如下:
+需要 java.lang.reflect.InvocationHandler 和 java.lang.reflect.Proxy
+jdk动态代理要求被代理的类实现接口
+
+public interface IPerson {
+
+    void study();
+
+    void eat();
+}
+
+public class ZhangSan implements IPerson {
+
+    @Override
+    public void study() {
+        System.out.println("张三在读书");
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("张三在吃饭");
+    }
+}
+
+public class PersonHandeler implements InvocationHandler {
+
+    private IPerson target;
+
+    public IPerson getInstance(IPerson target){
+        this.target = target;
+        Class clazz = target.getClass();
+        return (IPerson) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        before();
+        Object res = method.invoke(this.target, args);
+        after();
+        return res;
+    }
+
+    private void before(){
+        System.out.println("前置方法");
+    }
+
+    private void after(){
+        System.out.println("后置方法");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        PersonHandeler proxy = new PersonHandeler();
+        IPerson person = proxy.getInstance(new ZhangSan());
+        person.study();
+        person.eat();
+        return;
+    }
+}
+```
+
+```java
+cglib动态代理如下:
+被代理的类可以不实现接口.
+public class Consumer {
+
+    public void buy(){
+        System.out.println("购物中");
+    }
+}
+
+public class CGlibPro implements MethodInterceptor {
+
+    public Object getInstance(Class clazz) throws Exception{
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(clazz);
+        enhancer.setCallback(this);
+        return enhancer.create();
+    }
+
+
+    @Override
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+        before();
+        Object res = methodProxy.invokeSuper(o, objects);
+        after();
+        return res;
+    }
+
+    public void before(){
+        System.out.println("前置方法");
+    }
+
+    public void after(){
+        System.out.println("后置方法");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) throws Exception {
+        Consumer consumer = (Consumer) new CGlibPro().getInstance(Consumer.class);
+        consumer.buy();
+        return;
+    }
+}
+```
+
+```
+jdk动态代理和cglib动态代理对比:
+	(1)jdk动态代理实现了被代理对象的接口，cglib动态代理继承了被代理对象。
+	(2)jdk动态代理和cglib动态代理都在运行时期生成字节码。jdk动态代理直接写class字节码；cglib动态代理使用ASM框架写Class字节码。cglib动态代理实现更复杂，生成代理类比jdk动态代理效率低。
+	(3)jdk动态代理调用代理方法是通过反射；cglib动态代理是通过FastClass机制直接调用方法，cglib动态代理的执行效率更高。
+```
+
+```
+
+```
+
