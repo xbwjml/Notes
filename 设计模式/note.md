@@ -1035,3 +1035,118 @@ jdk动态代理和cglib动态代理对比:
 
 ```
 
+
+
+# 6.原型模式
+
+```
+定义:
+	用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。
+```
+
+```
+  原型模式的核心在于复制原型对象。以系统中已存在的一个对象为原型，直接基于内存二进制流复制，不需要再经历耗时的对象初始化过程(不调用构造函数)，性能提升许多。
+```
+
+```
+JDK提供了 Cloneable 接口,继承该接口并实现clone方法即可。
+调用clone方法不会走构造函数。
+```
+
+```java
+@Data
+public class ProtoA implements Cloneable{
+
+    private String desc;
+
+    @Override
+    public ProtoA clone() {
+        ProtoA obj = null;
+        try {
+            obj = (ProtoA) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+}
+```
+
+```java
+super.clone()是浅拷贝，
+若类中有引用类型的属性，则只会拷贝该引用类型对象的一个引用；
+若要完成深拷贝，则该引用类型的属性也得拷贝，如下所示:
+
+@Data
+public class ProtoB implements Cloneable{
+
+    private String desc;
+
+    private ArrayList<String> hobby = new ArrayList();
+
+    public ProtoB(){
+        System.out.println("构造方法");
+    }
+
+    @Override
+    public ProtoB clone() {
+        ProtoB obj = null;
+        try {
+            obj = (ProtoB) super.clone();
+            this.hobby = (ArrayList) this.hobby.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+}
+```
+
+```java
+也可以实现Serializable接口来实现深拷贝
+
+@Data
+public class ProtoB implements Cloneable, Serializable {
+
+    private String desc;
+
+    private ArrayList<String> hobby = new ArrayList();
+
+    public ProtoB(){
+        System.out.println("构造方法");
+    }
+
+    @Override
+    public ProtoB clone() {
+        ProtoB obj = null;
+        try {
+            obj = (ProtoB) super.clone();
+            this.hobby = (ArrayList) this.hobby.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    public ProtoB deepClone(){
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(this);
+            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            return (ProtoB) ois.readObject();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+```
+
+```
+在jdk中的应用：
+	太多了，不列举，基本实现 Cloneable的类都用到了。
+```
+
