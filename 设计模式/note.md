@@ -1253,3 +1253,146 @@ public class Test {
 	-中介者模式将原本多个对象直接的相互依赖变成了中介者和多个同事类的依赖关系。当同事类越多时，中介者就会越来臃肿。
 ```
 
+
+
+# 8.命令模式
+
+```
+定义:
+	命令模式是对命令的封装，每一个命令都是一个操作：接收方发出请求要求执行一个操作；接收方收到请求，并执行操作。命令模式解耦了请求方与接收方，请求方只需请求执行命令，不用关心命令怎样被接收，怎样操作以及是否被执行等。命令模式属于行为设计模式。
+```
+
+```
+	在软件系统中，行为请求者与实现者通常是一种紧耦合关系，因为这样的实现简单明了。但紧耦合关系缺乏扩展性，在某些场合中，当需要对行为进行记录，撤销或重做等处理时候，只能修改源码。而命令模式通过在请求与实现之间引入一个抽象命令接口，解耦了请求与实现，并且中间件是抽象的，它由不同的子类实现，因此具备扩展性。所以，命令模式的本质是解耦命令请求与处理。
+```
+
+```
+主要角色如下:
+	(1)接收者 Receievr：该类负责具体执行一个请求。
+	(2)抽象命令角色 ICommand：定义需要执行的所有命令行为。
+	(3)具体命令角色 ConcreteCommand：该类内部维护一个Receiver,在其execute()方法中调用Receiver的相关方法。
+	(4)请求者角色 Invoker:接收客户端的命令，并执行命令。
+```
+
+```java
+代码如下:
+
+/**
+ * 具体Receievr
+ */
+public class GPlayer {
+
+    public void play(){
+        System.out.println("正常播放");
+    }
+
+    public void speed(){
+        System.out.println("更改播放速度");
+    }
+
+    public void stop(){
+        System.out.println("终止播放");
+    }
+
+    public void pause(){
+        System.out.println("暂停");
+    }
+}
+```
+
+```java
+/**
+ * ICommand
+ */
+public interface IAction {
+    void execute();
+}
+```
+
+```java
+/**
+ * 各个ConcrteCommand
+ */
+public class PlayAction implements IAction {
+
+    private GPlayer player;
+
+    public PlayAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.play();
+    }
+}
+
+public class SpeedAction implements IAction {
+    private GPlayer player;
+
+    public SpeedAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.speed();
+    }
+}
+
+public class PauseAction implements IAction {
+    private GPlayer player;
+
+    public PauseAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.pause();
+    }
+}
+
+public class StopAction implements IAction {
+    private GPlayer player;
+
+    public StopAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.stop();
+    }
+}
+
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        GPlayer player = new GPlayer();
+        List<IAction> actions = Arrays.asList(
+                new PlayAction(player),
+                new PauseAction(player),
+                new SpeedAction(player),
+                new StopAction(player)
+        );
+
+        actions.forEach(e->{
+            e.execute();
+        });
+    }
+}
+```
+
+```
+优点:
+	(1)通过引入中间件ICommand,解耦了命令的请求与实现；
+	(2)扩展性良好，可以很容易增加新命令；
+	(3)支持组合命令，支持队列命令；
+	(4)可以在现有命令的基础上，增加额外功能。
+缺点:
+	(1)具体命令可能会很多。
+```
+
