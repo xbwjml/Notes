@@ -20,7 +20,6 @@ public class Test {
         b.getHobby().add("打游戏!!");
         bClone.getHobby().add("唱歌");
 
-        HHH hhh = new HHH();
         return;
     }
 }

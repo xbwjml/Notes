@@ -1150,3 +1150,106 @@ public class ProtoB implements Cloneable, Serializable {
 	太多了，不列举，基本实现 Cloneable的类都用到了。
 ```
 
+
+
+# 7.中介者模式
+
+```
+定义:
+	中介者模式又叫做调解者模式或调停者模式。用一个中介对象封装一系列对象交互，中介者使各个对象不需要显式地相互作用，从而使其耦合松散，而且可以独立地改变它们之间的交互，属于行为设计模式。
+	中介者模式包装了一系列对象相互作用的方式，使得这些对象不必相互明显作用，从而使它们可以松散耦合。当某些对象之间的作用发生改变时，不会立即影响其他一些对象之间的作用。保证这些作用可以彼此独立地变化。其核心思想是，通过中介者解耦系统各层次对象的直接耦合，层次对象的对外依赖通信全部交由中介者转发。
+```
+
+```
+	中介者模式是用来降低多个对象和类之间的通信复杂性的。这种模式通过提供一个中介类，将系统各层次之间的多对多关系变成一对多关系，中介者对象可以将复杂的网状结构变成以中介者为中心的星形结构，达到降低系统复杂性，提高可扩展性的作用。
+```
+
+```
+角色:
+	(1)抽象中介者: 定义统一的接口，用于各个同事角色之间的通信。
+	(2)具体中介者: 从具体的同事对象接受消息，向具体同事对象发出命令，协调同事间的协作。
+	(3)抽象同事类: 每一个同事对象均需要依赖中介者角色，与其他同事间通信时，交由中介者转发协作。
+	(4)具体同事类:	负责实现自发行为，转发依赖方法交由中介者进行协调.
+		
+```
+
+```java
+@Setter
+public abstract class Mediator {
+    protected ColleagueA a;
+    protected ColleagueB b;
+
+    public abstract void transferA();
+    public abstract void transferB();
+}
+
+public class ConcreteMediator extends Mediator {
+    @Override
+    public void transferA() {
+        this.b.selfMethodB();
+    }
+
+    @Override
+    public void transferB() {
+        this.a.selfMethodA();
+    }
+}
+
+public abstract class Colleague {
+    protected Mediator mediator;
+    public Colleague(Mediator mediator){
+        this.mediator = mediator;
+    }
+}
+
+public class ColleagueA extends Colleague {
+    public ColleagueA(Mediator mediator) {
+        super(mediator);
+        this.mediator.setA(this);
+    }
+
+    public void selfMethodA(){
+        System.out.println(this.getClass().getSimpleName()+", selfMethod");
+    }
+
+    public void depMethodA(){
+        System.out.println(this.getClass().getSimpleName()+", depMethod");
+        this.mediator.transferA();
+    }
+}
+
+public class ColleagueB extends Colleague {
+    public ColleagueB(Mediator mediator) {
+        super(mediator);
+        this.mediator.setB(this);
+    }
+
+    public void selfMethodB(){
+        System.out.println(this.getClass().getSimpleName()+", selfMethod");
+    }
+
+    public void depMethodB(){
+        System.out.println(this.getClass().getSimpleName()+", depMethod");
+        this.mediator.transferB();
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Mediator mediator = new ConcreteMediator();
+        ColleagueA a = new ColleagueA(mediator);
+        ColleagueB b = new ColleagueB(mediator);
+        a.depMethodA();
+        b.depMethodB();
+    }
+}
+```
+
+```
+优点:
+	-减少类之间的依赖，将多对多转换为一对多，降低了类间耦合。
+	-类之间各司其职，符合迪米特法则。
+缺点:
+	-中介者模式将原本多个对象直接的相互依赖变成了中介者和多个同事类的依赖关系。当同事类越多时，中介者就会越来臃肿。
+```
+
