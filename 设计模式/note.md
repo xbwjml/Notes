@@ -1475,3 +1475,127 @@ public class Test {
 	(2)如果节点对象存在循环引用，则会造成死循环，倒置系统崩溃;
 ```
 
+
+
+# 10.装饰模式
+
+```
+定义:
+	装饰器模式也叫包装器模式，指不在改变原有对象的基础上，动态地给一个对象添加一些额外职责。就增加新功能来说，装饰器模式相比于生成子类更为灵活。
+```
+
+```
+	装饰器模式提供了比继承更有弹性的替代方案(扩展原有对象的功能)将功能附加到对象上。因此，装饰器模式的核心是功能扩展。使用装饰器模式可以透明且动态地扩展类的功能。
+```
+
+```
+应用场景：
+	(1)用于扩展一个类的功能，或者给一个类添加附件职责；
+	(2)动态地给一个对象添加功能，这些功能可以再动态地被撤销；
+	(3)需要为一批平行的兄弟类进行改装或加装功能;
+```
+
+```java
+例子如下:
+public abstract class BatterCake {
+    protected abstract String getMsg();
+    protected abstract int getPrice();
+    @Override
+    public String toString() {
+        return getMsg()+" 售价 "+getPrice();
+    }
+}
+
+public class BaseBatterCake extends BatterCake {
+    @Override
+    protected String getMsg() {
+        return "煎饼";
+    }
+
+    @Override
+    protected int getPrice() {
+        return 10;
+    }
+}
+public abstract class Decorator extends BatterCake{
+    private BatterCake cake;
+
+    public Decorator(BatterCake cake){
+        this.cake = cake;
+    }
+
+    @Override
+    public String getMsg(){
+        return this.cake.getMsg();
+    }
+
+    @Override
+    public int getPrice(){
+        return this.cake.getPrice();
+    }
+}
+
+public class DecoratorEgg extends Decorator {
+
+    public DecoratorEgg(BatterCake cake) {
+        super(cake);
+    }
+
+    @Override
+    public String getMsg(){
+        return super.getMsg()+" +1个鸡蛋";
+    }
+
+    @Override
+    public int getPrice(){
+        return super.getPrice()+1;
+    }
+}
+
+public class DecoratorSausage extends Decorator {
+    public DecoratorSausage(BatterCake cake) {
+        super(cake);
+    }
+
+    @Override
+    public String getMsg(){
+        return super.getMsg()+" +1个香肠";
+    }
+
+    @Override
+    public int getPrice(){
+        return super.getPrice()+3;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        BatterCake cake = new BaseBatterCake();
+        System.out.println(cake);
+        cake = new DecoratorEgg(cake);
+        System.out.println(cake);
+        cake = new DecoratorEgg(cake);
+        System.out.println(cake);
+        cake = new DecoratorSausage(cake);
+        System.out.println(cake);
+        return;
+    }
+}
+```
+
+```
+jdk中的应用:
+	IO各种流
+
+```
+
+```
+优点:
+	(1)装饰器模式是继承的有力补充，比继承灵活，在不改变原有对象的情况下，动态地给一个对象扩展功能，即插即用；
+	(2)通过使用不同的装饰类及这些装饰类的排列组合，可以实现不用的效果；
+	(3)装饰器完全遵循开闭原则；
+缺点:
+	(1)会出现更多的类；
+	(2)动态装饰在多层装饰时会更复杂；
+```
+
