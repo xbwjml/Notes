@@ -1396,3 +1396,82 @@ public class Test {
 	(1)具体命令可能会很多。
 ```
 
+
+
+# 9.责任链模式
+
+```
+定义:
+	责任链模式将链中的每一个节点都看作一个对象，每个节点处理的请求不同，且在内部维护下一个节点对象。当一个请求从链式的首端发出时，会沿着责任链预设的路径依次传递到每一个节点对象，直至被链中某个节点处理为止。
+```
+
+```
+角色:
+	(1)抽象处理者：定义一个请求处理的方法，并维护下一个处理节点对象的引用。
+	(2)具体处理者：对请求进行处理，如果不能处理，则进行转发。
+```
+
+```java
+public abstract class AbsHandler {
+    protected AbsHandler next;
+
+    public void setnext(AbsHandler next){
+        this.next = next;
+    }
+
+    public abstract void handleRequest(String request);
+}
+
+public class HandlerA extends AbsHandler{
+    @Override
+    public void handleRequest(String request) {
+        if ("requestA".equals(request)){
+            System.out.println(this.getClass().getSimpleName()+" 处理: "+request);
+            return;
+        }
+        if( null != this.next ){
+            this.next.handleRequest(request);
+        }
+    }
+}
+
+public class HandlerB extends AbsHandler {
+    @Override
+    public void handleRequest(String request) {
+        if ("requestB".equals(request)){
+            System.out.println(this.getClass().getSimpleName()+" 处理: "+request);
+            return;
+        }
+        if( null != this.next ){
+            this.next.handleRequest(request);
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        AbsHandler handlerA = new HandlerA();
+        AbsHandler handlerB = new HandlerB();
+        handlerA.setnext(handlerB);
+        handlerA.handleRequest("requestB");
+    }
+}
+```
+
+```
+应用:
+	Filter
+```
+
+```
+优点:
+	(1)将请求与处理解耦；
+	(2)处理者(节点对象)只需关注自己感兴趣的请求进行处理即可，对于不感兴趣的请求，直接转发给下一个节点对象;
+	(3)具备链式传递处理请求功能，请求发送者不需要知晓链路结构，只需等待请求处理结果即可；
+	(4)链路结构灵活，可以通过改变链路结构动态地新增或删减责任；
+	(5)易于扩展新的请求处理类(节点)，符合开闭原则;
+缺点:
+	(1)责任链太长或处理时间太长，会影响整体性能；
+	(2)如果节点对象存在循环引用，则会造成死循环，倒置系统崩溃;
+```
+
