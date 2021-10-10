@@ -1599,3 +1599,107 @@ jdk中的应用:
 	(2)动态装饰在多层装饰时会更复杂；
 ```
 
+
+
+# 11.策略模式
+
+```
+定义:
+	策略模式将定义的算法家族分别封装起来，让它们之间可以互相替换，从而让算法的变化不会影响到使用算法的用户。
+	策略模式使用的就是面向对象的继承和多态机制，从而实现同一行为在不同场景下具备不同的实现。
+```
+
+```
+应用场景:
+	策略模式可以解决在有多种相似算法的情况下使用 if else 或 switch case 带来的臃肿性。
+	(1)针对同一类型的问题，有多种处理方式。每一种都能独立解决问题；
+	(2)需要自由切换算法的场景；
+	(3)需要屏蔽算法规则的场景;
+```
+
+```
+角色:
+	(1)上下文角色(Context):用来操作策略的上下文环境，屏蔽高层模块对策略或算法的直接访问，封装可能存在的变化;
+	(2)抽象策略角色(IStrategy):规定策略或算法行为;
+	(3)具体策略角色(ConcreteStrategy):具体的业务逻辑或算法实现;
+```
+
+```java
+/**
+ * 上下文角色
+ */
+public class SellActivity {
+    private ISellStrategy strategy;
+
+    public SellActivity(ISellStrategy strategy){
+        this.strategy = strategy;
+    }
+
+    public void execute(){
+        this.strategy.sell();
+    }
+}
+
+/**
+ * 抽象策略角色
+ */
+public interface ISellStrategy {
+    void sell();
+}
+
+public class CouponStrategy implements ISellStrategy {
+    @Override
+    public void sell() {
+        System.out.println("使用优惠券抵扣");
+    }
+}
+
+public class CashStrategy implements ISellStrategy {
+    @Override
+    public void sell() {
+        System.out.println("使用现金");
+    }
+}
+
+public class GroupStrategy implements ISellStrategy {
+    @Override
+    public void sell() {
+        System.out.println("团购优惠");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        SellActivity ac1 = new SellActivity(new CouponStrategy());
+        SellActivity ac2 = new SellActivity(new CashStrategy());
+        SellActivity ac3 = new SellActivity(new GroupStrategy());
+
+        ac1.execute();
+        ac2.execute();
+        ac3.execute();
+    }
+}
+```
+
+```
+在jdk源码中的应用:
+	Comparator接口。
+	Comparator有很多实现，经常会把Comparator作为参数传到方法中。
+```
+
+```
+在spring中的应用:
+	InstantiationStrategy接口的两个字类:
+		SimpleInstantiationStrategy;
+			CglibSubclassingInstantiationStrategy;
+```
+
+```
+优点:
+	(1)算法或实现可以自由切换，避免了臃肿的多重条件判断;
+	(2)扩展性良好，增加一个策略，只需增加一个具体策略实现类;
+缺点:
+	(1)每个策略都是一个类，文件数量变多;
+	(2)客户端必须知道所有的策略;
+```
+
