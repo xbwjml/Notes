@@ -23,7 +23,7 @@
 
 ```
 依赖:
-	一个类中的某个方法如参中使用到了另一个类，称为依赖;
+	一个类中的某个方法入参中使用到了另一个类，称为依赖;
 ```
 
 ```
@@ -632,20 +632,1153 @@ private static Calendar createCalendar(TimeZone zone,
 
 ```
 
-
-
-# 3.建造者模式
+```
 
 ```
-当我们需要实力化一个类，可能根据不同是使用场景，有不同的实例化方式(构造方法).
-就可以使用不同的类对它们的实例化操作进行封装,这些类就被称为建造者.每当需要来自同一个类但具有不同结构的对象时，就可以通过构造另一个建造者来帮助我们生成这个对象。
+
+
+
+# 3.模板方法模式
+
+```
+定义:
+	定义一个操作中的算法的框架,而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可重新定义该算法的某些特定步骤。
+```
+
+```
+模板方法模式的抽象类中分两种方法：
+	1.基本方法(由子类去实现);
+	2.模板方法，是对基本方法的调用，完成固定的逻辑;
+	
+	注意:	为了防止恶意调用，模板方法都加上final关键字，不允许被重写。
+	
+```
+
+```java
+public abstract class AbsClass {
+
+    protected abstract void buy();
+
+    protected abstract void cook();
+
+    protected abstract void eat();
+
+    public final void method(){
+        this.buy();
+        this.cook();
+        this.eat();
+    }
+}
+```
+
+```java
+public class ChineseMeal extends AbsClass {
+    @Override
+    protected void buy() {
+        System.out.println("买肉丝");
+    }
+
+    @Override
+    protected void cook() {
+        System.out.println("炒鱼香肉丝");
+    }
+
+    @Override
+    protected void eat() {
+        System.out.println("用筷子吃");
+    }
+}
+```
+
+```java
+public class FrenchMeal extends AbsClass{
+    @Override
+    protected void buy() {
+        System.out.println("买cheese");
+    }
+
+    @Override
+    protected void cook() {
+        System.out.println("涂抹面包");
+    }
+
+    @Override
+    protected void eat() {
+        System.out.println("上手吃");
+    }
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        AbsClass chineseMeal = new ChineseMeal();
+        AbsClass frenchMeal = new FrenchMeal();
+
+        chineseMeal.method();
+        frenchMeal.method();
+    }
+}
+```
+
+```
+模板方法方法模式的优点:
+	封装不变的部分，扩展可变的部分。
+	把不变的部分封装到父类实现，把可变的部分交给子类实现。
+
+模板方法模式的缺点:
+	按照设计习惯，抽象类负责声明最抽象普遍的属性和方法，子类去实现。而模板方法模式确颠倒了。
+```
+
+```
+模板方法模式的使用场景:
+	多个子类有共有的方法，并且逻辑基本相同时；
+	复杂，重要的算法，可以把核心算法设计为模板方法，周边相关的细节方法由子类来实现；
+	
+```
+
+
+
+# 4.建造者模式
+
+```
+定义:
+	将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+```
+
+```java
+现在更习惯使用静态内部类的方式实现建造者模式：
+public class Car {
+    private String brand;
+    private String color;
+    private String power;
+
+    Car(String brand, String color, String power) {
+        this.brand = brand;
+        this.color = color;
+        this.power = power;
+    }
+
+    public static Car.CarBuilder builder() {
+        return new Car.CarBuilder();
+    }
+
+    public static class CarBuilder {
+        private String brand;
+        private String color;
+        private String power;
+
+        CarBuilder() {
+        }
+
+        public Car.CarBuilder brand(String brand) {
+            this.brand = brand;
+            return this;
+        }
+
+        public Car.CarBuilder color(String color) {
+            this.color = color;
+            return this;
+        }
+
+        public Car.CarBuilder power(String power) {
+            this.power = power;
+            return this;
+        }
+
+        public Car build() {
+            return new Car(this.brand, this.color, this.power);
+        }
+
+        public String toString() {
+            return "Car.CarBuilder(brand=" + this.brand + ", color=" + this.color + ", power=" + this.power + ")";
+        }
+    }
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Car car = Car.builder()
+                    .color("红色")
+                    .power("220马力")
+                    .brand("五菱")
+                    .build();
+        return;
+    }
+}
+```
+
+```
+建造者模式在jdk中的应用:
+	AbstractStringBuilder类实现了 Appendable接口，实现其中的append方法.
+```
+
+```
+在Mybatis中的应用:
+	CacheBuilder类
+```
+
+```
+在spring中的应用:
+	BeanDefinitionBuilder类;
+```
+
+
+
+
+
+# 5.代理模式
+
+```
+定义:
+	为其他对象提供一种代理以控制对这个对象的访问。
+```
+
+```
+  在某些情况下，一个对象不能或不合适直接引用另一个对象，而代理对象可以在客户端与目标对象之间起到中介的作用。
+  当无法或不想直接引用某个对象，或访问某个对象存在困难时，可以通过代理对象来间接访问。
+	使用代理模式主要有两个目的：
+		1）保护目标对象；
+		2）增强目标对象；
+```
+
+```
+代理模式一般包含3个角色：
+	抽象主题角色(Subject)：主要职责是声明真实主题与代理主题的共同接口方法。
+	真实主题角色(RealSubject)：也称为被代理类，定义了代理所表示的真实对象，是负责执行真正逻辑的对象。
+	代理主题角色(Proxy)：也称为代理类，其内部持有RealSubject的引用。
+```
+
+```
+代理模式分为：
+	静态代理；
+	动态代理；
+```
+
+```java
+静态代理案例如下:
+public interface ISubject {
+    void request();
+}
+
+public class RealSubject implements ISubject{
+    @Override
+    public void request() {
+        System.out.println("real method called");
+    }
+}
+
+public class Proxy implements ISubject{
+
+    private ISubject subject;
+
+    public Proxy(ISubject subject){
+        this.subject = subject;
+    }
+
+    @Override
+    public void request() {
+        before();
+        subject.request();
+        after();
+    }
+
+    public void before(){
+        System.out.println("proxy before");
+    }
+
+    public void after(){
+        System.out.println("proxy after");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        ISubject subject = new Proxy(new RealSubject());
+        subject.request();
+    }
+
+}
+
+```
+
+```
+静态代理的局限性:
+	必须自己写代理类，得知道被代理对象。
+```
+
+```
+动态代理:
+	不需要手动创建代理类,无需关系被代理的对象是谁,只需编写一个动态处理器。
+	目前普遍使用的是jdk自带的代理和cglib
+```
+
+```java
+jdk自带动态代理如下:
+需要 java.lang.reflect.InvocationHandler 和 java.lang.reflect.Proxy
+jdk动态代理要求被代理的类实现接口
+
+public interface IPerson {
+
+    void study();
+
+    void eat();
+}
+
+public class ZhangSan implements IPerson {
+
+    @Override
+    public void study() {
+        System.out.println("张三在读书");
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("张三在吃饭");
+    }
+}
+
+public class PersonHandeler implements InvocationHandler {
+
+    private IPerson target;
+
+    public IPerson getInstance(IPerson target){
+        this.target = target;
+        Class clazz = target.getClass();
+        return (IPerson) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        before();
+        Object res = method.invoke(this.target, args);
+        after();
+        return res;
+    }
+
+    private void before(){
+        System.out.println("前置方法");
+    }
+
+    private void after(){
+        System.out.println("后置方法");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        PersonHandeler proxy = new PersonHandeler();
+        IPerson person = proxy.getInstance(new ZhangSan());
+        person.study();
+        person.eat();
+        return;
+    }
+}
+```
+
+```java
+cglib动态代理如下:
+被代理的类可以不实现接口.
+public class Consumer {
+
+    public void buy(){
+        System.out.println("购物中");
+    }
+}
+
+public class CGlibPro implements MethodInterceptor {
+
+    public Object getInstance(Class clazz) throws Exception{
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(clazz);
+        enhancer.setCallback(this);
+        return enhancer.create();
+    }
+
+
+    @Override
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+        before();
+        Object res = methodProxy.invokeSuper(o, objects);
+        after();
+        return res;
+    }
+
+    public void before(){
+        System.out.println("前置方法");
+    }
+
+    public void after(){
+        System.out.println("后置方法");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) throws Exception {
+        Consumer consumer = (Consumer) new CGlibPro().getInstance(Consumer.class);
+        consumer.buy();
+        return;
+    }
+}
+```
+
+```
+jdk动态代理和cglib动态代理对比:
+	(1)jdk动态代理实现了被代理对象的接口，cglib动态代理继承了被代理对象。
+	(2)jdk动态代理和cglib动态代理都在运行时期生成字节码。jdk动态代理直接写class字节码；cglib动态代理使用ASM框架写Class字节码。cglib动态代理实现更复杂，生成代理类比jdk动态代理效率低。
+	(3)jdk动态代理调用代理方法是通过反射；cglib动态代理是通过FastClass机制直接调用方法，cglib动态代理的执行效率更高。
+```
+
+```
+
+```
+
+
+
+# 6.原型模式
+
+```
+定义:
+	用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。
+```
+
+```
+  原型模式的核心在于复制原型对象。以系统中已存在的一个对象为原型，直接基于内存二进制流复制，不需要再经历耗时的对象初始化过程(不调用构造函数)，性能提升许多。
+```
+
+```
+JDK提供了 Cloneable 接口,继承该接口并实现clone方法即可。
+调用clone方法不会走构造函数。
+```
+
+```java
+@Data
+public class ProtoA implements Cloneable{
+
+    private String desc;
+
+    @Override
+    public ProtoA clone() {
+        ProtoA obj = null;
+        try {
+            obj = (ProtoA) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+}
+```
+
+```java
+super.clone()是浅拷贝，
+若类中有引用类型的属性，则只会拷贝该引用类型对象的一个引用；
+若要完成深拷贝，则该引用类型的属性也得拷贝，如下所示:
+
+@Data
+public class ProtoB implements Cloneable{
+
+    private String desc;
+
+    private ArrayList<String> hobby = new ArrayList();
+
+    public ProtoB(){
+        System.out.println("构造方法");
+    }
+
+    @Override
+    public ProtoB clone() {
+        ProtoB obj = null;
+        try {
+            obj = (ProtoB) super.clone();
+            this.hobby = (ArrayList) this.hobby.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+}
+```
+
+```java
+也可以实现Serializable接口来实现深拷贝
+
+@Data
+public class ProtoB implements Cloneable, Serializable {
+
+    private String desc;
+
+    private ArrayList<String> hobby = new ArrayList();
+
+    public ProtoB(){
+        System.out.println("构造方法");
+    }
+
+    @Override
+    public ProtoB clone() {
+        ProtoB obj = null;
+        try {
+            obj = (ProtoB) super.clone();
+            this.hobby = (ArrayList) this.hobby.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    public ProtoB deepClone(){
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(this);
+            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            return (ProtoB) ois.readObject();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+```
+
+```
+在jdk中的应用：
+	太多了，不列举，基本实现 Cloneable的类都用到了。
+```
+
+
+
+# 7.中介者模式
+
+```
+定义:
+	中介者模式又叫做调解者模式或调停者模式。用一个中介对象封装一系列对象交互，中介者使各个对象不需要显式地相互作用，从而使其耦合松散，而且可以独立地改变它们之间的交互，属于行为设计模式。
+	中介者模式包装了一系列对象相互作用的方式，使得这些对象不必相互明显作用，从而使它们可以松散耦合。当某些对象之间的作用发生改变时，不会立即影响其他一些对象之间的作用。保证这些作用可以彼此独立地变化。其核心思想是，通过中介者解耦系统各层次对象的直接耦合，层次对象的对外依赖通信全部交由中介者转发。
+```
+
+```
+	中介者模式是用来降低多个对象和类之间的通信复杂性的。这种模式通过提供一个中介类，将系统各层次之间的多对多关系变成一对多关系，中介者对象可以将复杂的网状结构变成以中介者为中心的星形结构，达到降低系统复杂性，提高可扩展性的作用。
 ```
 
 ```
 角色:
-	抽象产品:需要为其构建对象的类，是具有不同表现形式的复杂对象。
-	抽象建造者:用于声明构建产品类的组成部分的抽象类或接口。它的作用是仅公开构建产品类的功能，隐藏其产品类的其他功能。
-	具体建造者类:用于实现抽象建造者类接口中声明的方法。
-	导演类:用于指导如何构建对象的类。在建造者模式的某些变体中已经移除。
+	(1)抽象中介者: 定义统一的接口，用于各个同事角色之间的通信。
+	(2)具体中介者: 从具体的同事对象接受消息，向具体同事对象发出命令，协调同事间的协作。
+	(3)抽象同事类: 每一个同事对象均需要依赖中介者角色，与其他同事间通信时，交由中介者转发协作。
+	(4)具体同事类:	负责实现自发行为，转发依赖方法交由中介者进行协调.
+		
+```
+
+```java
+@Setter
+public abstract class Mediator {
+    protected ColleagueA a;
+    protected ColleagueB b;
+
+    public abstract void transferA();
+    public abstract void transferB();
+}
+
+public class ConcreteMediator extends Mediator {
+    @Override
+    public void transferA() {
+        this.b.selfMethodB();
+    }
+
+    @Override
+    public void transferB() {
+        this.a.selfMethodA();
+    }
+}
+
+public abstract class Colleague {
+    protected Mediator mediator;
+    public Colleague(Mediator mediator){
+        this.mediator = mediator;
+    }
+}
+
+public class ColleagueA extends Colleague {
+    public ColleagueA(Mediator mediator) {
+        super(mediator);
+        this.mediator.setA(this);
+    }
+
+    public void selfMethodA(){
+        System.out.println(this.getClass().getSimpleName()+", selfMethod");
+    }
+
+    public void depMethodA(){
+        System.out.println(this.getClass().getSimpleName()+", depMethod");
+        this.mediator.transferA();
+    }
+}
+
+public class ColleagueB extends Colleague {
+    public ColleagueB(Mediator mediator) {
+        super(mediator);
+        this.mediator.setB(this);
+    }
+
+    public void selfMethodB(){
+        System.out.println(this.getClass().getSimpleName()+", selfMethod");
+    }
+
+    public void depMethodB(){
+        System.out.println(this.getClass().getSimpleName()+", depMethod");
+        this.mediator.transferB();
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Mediator mediator = new ConcreteMediator();
+        ColleagueA a = new ColleagueA(mediator);
+        ColleagueB b = new ColleagueB(mediator);
+        a.depMethodA();
+        b.depMethodB();
+    }
+}
+```
+
+```
+优点:
+	-减少类之间的依赖，将多对多转换为一对多，降低了类间耦合。
+	-类之间各司其职，符合迪米特法则。
+缺点:
+	-中介者模式将原本多个对象直接的相互依赖变成了中介者和多个同事类的依赖关系。当同事类越多时，中介者就会越来臃肿。
+```
+
+
+
+# 8.命令模式
+
+```
+定义:
+	命令模式是对命令的封装，每一个命令都是一个操作：接收方发出请求要求执行一个操作；接收方收到请求，并执行操作。命令模式解耦了请求方与接收方，请求方只需请求执行命令，不用关心命令怎样被接收，怎样操作以及是否被执行等。命令模式属于行为设计模式。
+```
+
+```
+	在软件系统中，行为请求者与实现者通常是一种紧耦合关系，因为这样的实现简单明了。但紧耦合关系缺乏扩展性，在某些场合中，当需要对行为进行记录，撤销或重做等处理时候，只能修改源码。而命令模式通过在请求与实现之间引入一个抽象命令接口，解耦了请求与实现，并且中间件是抽象的，它由不同的子类实现，因此具备扩展性。所以，命令模式的本质是解耦命令请求与处理。
+```
+
+```
+主要角色如下:
+	(1)接收者 Receievr：该类负责具体执行一个请求。
+	(2)抽象命令角色 ICommand：定义需要执行的所有命令行为。
+	(3)具体命令角色 ConcreteCommand：该类内部维护一个Receiver,在其execute()方法中调用Receiver的相关方法。
+	(4)请求者角色 Invoker:接收客户端的命令，并执行命令。
+```
+
+```java
+代码如下:
+
+/**
+ * 具体Receievr
+ */
+public class GPlayer {
+
+    public void play(){
+        System.out.println("正常播放");
+    }
+
+    public void speed(){
+        System.out.println("更改播放速度");
+    }
+
+    public void stop(){
+        System.out.println("终止播放");
+    }
+
+    public void pause(){
+        System.out.println("暂停");
+    }
+}
+```
+
+```java
+/**
+ * ICommand
+ */
+public interface IAction {
+    void execute();
+}
+```
+
+```java
+/**
+ * 各个ConcrteCommand
+ */
+public class PlayAction implements IAction {
+
+    private GPlayer player;
+
+    public PlayAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.play();
+    }
+}
+
+public class SpeedAction implements IAction {
+    private GPlayer player;
+
+    public SpeedAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.speed();
+    }
+}
+
+public class PauseAction implements IAction {
+    private GPlayer player;
+
+    public PauseAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.pause();
+    }
+}
+
+public class StopAction implements IAction {
+    private GPlayer player;
+
+    public StopAction(GPlayer player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute() {
+        this.player.stop();
+    }
+}
+
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        GPlayer player = new GPlayer();
+        List<IAction> actions = Arrays.asList(
+                new PlayAction(player),
+                new PauseAction(player),
+                new SpeedAction(player),
+                new StopAction(player)
+        );
+
+        actions.forEach(e->{
+            e.execute();
+        });
+    }
+}
+```
+
+```
+优点:
+	(1)通过引入中间件ICommand,解耦了命令的请求与实现；
+	(2)扩展性良好，可以很容易增加新命令；
+	(3)支持组合命令，支持队列命令；
+	(4)可以在现有命令的基础上，增加额外功能。
+缺点:
+	(1)具体命令可能会很多。
+```
+
+
+
+# 9.责任链模式
+
+```
+定义:
+	责任链模式将链中的每一个节点都看作一个对象，每个节点处理的请求不同，且在内部维护下一个节点对象。当一个请求从链式的首端发出时，会沿着责任链预设的路径依次传递到每一个节点对象，直至被链中某个节点处理为止。
+```
+
+```
+角色:
+	(1)抽象处理者：定义一个请求处理的方法，并维护下一个处理节点对象的引用。
+	(2)具体处理者：对请求进行处理，如果不能处理，则进行转发。
+```
+
+```java
+public abstract class AbsHandler {
+    protected AbsHandler next;
+
+    public void setnext(AbsHandler next){
+        this.next = next;
+    }
+
+    public abstract void handleRequest(String request);
+}
+
+public class HandlerA extends AbsHandler{
+    @Override
+    public void handleRequest(String request) {
+        if ("requestA".equals(request)){
+            System.out.println(this.getClass().getSimpleName()+" 处理: "+request);
+            return;
+        }
+        if( null != this.next ){
+            this.next.handleRequest(request);
+        }
+    }
+}
+
+public class HandlerB extends AbsHandler {
+    @Override
+    public void handleRequest(String request) {
+        if ("requestB".equals(request)){
+            System.out.println(this.getClass().getSimpleName()+" 处理: "+request);
+            return;
+        }
+        if( null != this.next ){
+            this.next.handleRequest(request);
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        AbsHandler handlerA = new HandlerA();
+        AbsHandler handlerB = new HandlerB();
+        handlerA.setnext(handlerB);
+        handlerA.handleRequest("requestB");
+    }
+}
+```
+
+```
+应用:
+	Filter
+```
+
+```
+优点:
+	(1)将请求与处理解耦；
+	(2)处理者(节点对象)只需关注自己感兴趣的请求进行处理即可，对于不感兴趣的请求，直接转发给下一个节点对象;
+	(3)具备链式传递处理请求功能，请求发送者不需要知晓链路结构，只需等待请求处理结果即可；
+	(4)链路结构灵活，可以通过改变链路结构动态地新增或删减责任；
+	(5)易于扩展新的请求处理类(节点)，符合开闭原则;
+缺点:
+	(1)责任链太长或处理时间太长，会影响整体性能；
+	(2)如果节点对象存在循环引用，则会造成死循环，倒置系统崩溃;
+```
+
+
+
+# 10.装饰模式
+
+```
+定义:
+	装饰器模式也叫包装器模式，指不在改变原有对象的基础上，动态地给一个对象添加一些额外职责。就增加新功能来说，装饰器模式相比于生成子类更为灵活。
+```
+
+```
+	装饰器模式提供了比继承更有弹性的替代方案(扩展原有对象的功能)将功能附加到对象上。因此，装饰器模式的核心是功能扩展。使用装饰器模式可以透明且动态地扩展类的功能。
+```
+
+```
+应用场景：
+	(1)用于扩展一个类的功能，或者给一个类添加附件职责；
+	(2)动态地给一个对象添加功能，这些功能可以再动态地被撤销；
+	(3)需要为一批平行的兄弟类进行改装或加装功能;
+```
+
+```java
+例子如下:
+public abstract class BatterCake {
+    protected abstract String getMsg();
+    protected abstract int getPrice();
+    @Override
+    public String toString() {
+        return getMsg()+" 售价 "+getPrice();
+    }
+}
+
+public class BaseBatterCake extends BatterCake {
+    @Override
+    protected String getMsg() {
+        return "煎饼";
+    }
+
+    @Override
+    protected int getPrice() {
+        return 10;
+    }
+}
+public abstract class Decorator extends BatterCake{
+    private BatterCake cake;
+
+    public Decorator(BatterCake cake){
+        this.cake = cake;
+    }
+
+    @Override
+    public String getMsg(){
+        return this.cake.getMsg();
+    }
+
+    @Override
+    public int getPrice(){
+        return this.cake.getPrice();
+    }
+}
+
+public class DecoratorEgg extends Decorator {
+
+    public DecoratorEgg(BatterCake cake) {
+        super(cake);
+    }
+
+    @Override
+    public String getMsg(){
+        return super.getMsg()+" +1个鸡蛋";
+    }
+
+    @Override
+    public int getPrice(){
+        return super.getPrice()+1;
+    }
+}
+
+public class DecoratorSausage extends Decorator {
+    public DecoratorSausage(BatterCake cake) {
+        super(cake);
+    }
+
+    @Override
+    public String getMsg(){
+        return super.getMsg()+" +1个香肠";
+    }
+
+    @Override
+    public int getPrice(){
+        return super.getPrice()+3;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        BatterCake cake = new BaseBatterCake();
+        System.out.println(cake);
+        cake = new DecoratorEgg(cake);
+        System.out.println(cake);
+        cake = new DecoratorEgg(cake);
+        System.out.println(cake);
+        cake = new DecoratorSausage(cake);
+        System.out.println(cake);
+        return;
+    }
+}
+```
+
+```
+jdk中的应用:
+	IO各种流
+
+```
+
+```
+优点:
+	(1)装饰器模式是继承的有力补充，比继承灵活，在不改变原有对象的情况下，动态地给一个对象扩展功能，即插即用；
+	(2)通过使用不同的装饰类及这些装饰类的排列组合，可以实现不用的效果；
+	(3)装饰器完全遵循开闭原则；
+缺点:
+	(1)会出现更多的类；
+	(2)动态装饰在多层装饰时会更复杂；
+```
+
+
+
+# 11.策略模式
+
+```
+定义:
+	策略模式将定义的算法家族分别封装起来，让它们之间可以互相替换，从而让算法的变化不会影响到使用算法的用户。
+	策略模式使用的就是面向对象的继承和多态机制，从而实现同一行为在不同场景下具备不同的实现。
+```
+
+```
+应用场景:
+	策略模式可以解决在有多种相似算法的情况下使用 if else 或 switch case 带来的臃肿性。
+	(1)针对同一类型的问题，有多种处理方式。每一种都能独立解决问题；
+	(2)需要自由切换算法的场景；
+	(3)需要屏蔽算法规则的场景;
+```
+
+```
+角色:
+	(1)上下文角色(Context):用来操作策略的上下文环境，屏蔽高层模块对策略或算法的直接访问，封装可能存在的变化;
+	(2)抽象策略角色(IStrategy):规定策略或算法行为;
+	(3)具体策略角色(ConcreteStrategy):具体的业务逻辑或算法实现;
+```
+
+```java
+/**
+ * 上下文角色
+ */
+public class SellActivity {
+    private ISellStrategy strategy;
+
+    public SellActivity(ISellStrategy strategy){
+        this.strategy = strategy;
+    }
+
+    public void execute(){
+        this.strategy.sell();
+    }
+}
+
+/**
+ * 抽象策略角色
+ */
+public interface ISellStrategy {
+    void sell();
+}
+
+public class CouponStrategy implements ISellStrategy {
+    @Override
+    public void sell() {
+        System.out.println("使用优惠券抵扣");
+    }
+}
+
+public class CashStrategy implements ISellStrategy {
+    @Override
+    public void sell() {
+        System.out.println("使用现金");
+    }
+}
+
+public class GroupStrategy implements ISellStrategy {
+    @Override
+    public void sell() {
+        System.out.println("团购优惠");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        SellActivity ac1 = new SellActivity(new CouponStrategy());
+        SellActivity ac2 = new SellActivity(new CashStrategy());
+        SellActivity ac3 = new SellActivity(new GroupStrategy());
+
+        ac1.execute();
+        ac2.execute();
+        ac3.execute();
+    }
+}
+```
+
+```
+在jdk源码中的应用:
+	Comparator接口。
+	Comparator有很多实现，经常会把Comparator作为参数传到方法中。
+```
+
+```
+在spring中的应用:
+	InstantiationStrategy接口的两个字类:
+		SimpleInstantiationStrategy;
+			CglibSubclassingInstantiationStrategy;
+```
+
+```
+优点:
+	(1)算法或实现可以自由切换，避免了臃肿的多重条件判断;
+	(2)扩展性良好，增加一个策略，只需增加一个具体策略实现类;
+缺点:
+	(1)每个策略都是一个类，文件数量变多;
+	(2)客户端必须知道所有的策略;
+```
+
+
+
+# 12.适配器模式
+
+```
+定义:
+	适配器模式又叫变压器模式，它的功能是将一个类的接口变成客户端所期望的另一种接口，从而使原本因接口不匹配而导致无法在一起工作的两个类能够一起工作。
+```
+
+```
+使用场景:
+	在生活中，适配器模式有非常多应用场景，例如电源转换插头，手机充电转换头，显示器转接头等。
+	适配器模式提供一个适配器，将当前系统存在的一个对象转化为客户端能够访问的对象，主要适用于以下场景:
+	(1)已存在的类，它的方法和需求不匹配；
+	(2)适配器模式不是软件设计阶段考虑的设计模式，是随着软件维护，由于不同产品，不同厂家造成功能类似而接口不同的情况下的解决方案，有亡羊补牢的感觉；
+```
+
+```
+适配器模式有3种形式:
+	类适配器，对象适配器，接口适配器
+```
+
+```Javaj a
+角色:
+	(1)目标角色(ITarget):也就是我们期望的接口;
+	(2)源角色(Adaptee):存在于系统中，是指内容满足客户需求(需转换)但接口不匹配的接口实例；
+	(3)适配器(Adapter):将Adaptee 转换为 ITarget
+```
+
+```
+  
+```
+
+
+
+# 13.迭代器模式
+
+```
+定义:
+	迭代器模式又叫游标模式，它提供一种按顺序访问集合的方法，而又无需暴露集合的内部表示。迭代器模式可以为不同的容器提供一致的遍历行为，而不用关心容器内元素的组成结构。
+```
+
+```
+正常开发中基本不需要自己写，源码或框架中基本都有了
+	比如jdk中的 java.util.Iterator
+```
+
+
+
+# 14.组合模式
+
+```
+定义:
+	组合模式又叫做整体-部分模式，它的宗旨是通过将单个对象(叶子结点)和组合对象(树枝节点)用相同的接口进行表示，使得客户对单个对象和组合对象的使用具有一致性。
+```
+
+```
+	生活中，组合模式很常见，比如：树形菜单，公司组织架构，文件目录结构等。
+```
+
+```
+透明组合模式:
+	把公共方法都定义在Component中，这样做的好处是客户端无须分辨叶子结点和树枝节点，它们具备完全一致的接口。
+```
+
+```
+安全组合模式:
+	安全组合模式只规定系统各个层次的最基础的一致行为，而把组合(节点)本身的方法(管理子类对象的添加，删除等)放到自身中。
+```
+
+
+
+# 15.观察者模式
+
+```
+定义:
+	
 ```
 

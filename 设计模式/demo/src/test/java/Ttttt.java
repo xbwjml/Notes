@@ -8,6 +8,8 @@ public class Ttttt {
         new Father().doSth(new HashMap());
         new Son().doSth(new LinkedHashMap());
 
+        
+
 
     }
 }
