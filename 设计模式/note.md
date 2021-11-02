@@ -1779,6 +1779,82 @@ public class Test {
 
 ```
 定义:
-	
+	观察者模式又叫发布订阅模式，定义一种一对多的依赖关系，一个主题对象可被多个观察者对象同时监听，使得每个主题对象状态变化时，所有依赖它的对象都会得到通知并被自动更新。
+```
+
+```
+	观察者模式的核心是将观察者与被观察者解耦，以类似消息广播发送的机制联动两者，使被观察者的变动能通知到感兴趣的观察者们，从而做出相应的响应。
+```
+
+```
+	观察者模式主要包含4个角色:
+1.抽象主题(ISubject):是被观察的对象，定义了增加,删除,通知观察者对象的方法。
+2.具体主题(ConcreteSunject):具体被观察者类，当其内部状态变化时，会通知已注册的观察者。
+3.抽象观察者(IObserver):定义了响应通知的更新方法。
+4.具体观察者(ConcreteObserver):当得到状态更新的通知时，会自动做出响应。
+```
+
+```java
+public interface IObserver<E> {
+    void update(E event);
+}
+```
+
+```java
+public interface ISubject<E> {
+
+    boolean attach(IObserver<E> observer);
+
+    boolean detach(IObserver<E> observer);
+
+    void notify(E event);
+}
+```
+
+```java
+public class ConcreteObserver<E> implements IObserver<E> {
+    @Override
+    public void update(E event) {
+        System.out.println("收到事件: "+event);
+    }
+}
+```
+
+```java
+public class ConcreteSubject<E> implements ISubject<E> {
+    private List<IObserver<E>> observers = new ArrayList();
+
+    @Override
+    public boolean attach(IObserver<E> observer) {
+        return !this.observers.contains(observer) && this.observers.add(observer);
+    }
+
+    @Override
+    public boolean detach(IObserver<E> observer) {
+        return this.observers.remove(observer);
+    }
+
+    @Override
+    public void notify(E event) {
+        this.observers.forEach(e->{
+            e.update(event);
+        });
+    }
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        //被观察者
+        ISubject<String> observerable = new ConcreteSubject();
+        //观察者
+        IObserver<String> observer = new ConcreteObserver();
+        //注册
+        observerable.attach(observer);
+        //通知
+        observerable.notify("开饭了");
+    }
+}
 ```
 
