@@ -1880,3 +1880,78 @@ public class Test {
 	2.子系统角色(SubSystem)：可以同时拥有一个或多个SubSystem。每个SubSystem都不是一个单独的类，而实一个类的集合。SubSystem并不知道Facade的存在，对于SubSystem而言，Facade只是另一个客户端而已。
 ```
 
+
+
+# 17.备忘录模式
+
+```
+定义:
+	备忘录模式又叫做快照模式或令牌模式。指在不破坏封装的前提下，捕获一个对象的内部状态，并在对象之外保存这个状态。这样以后就可以将该对象恢复到原先保存的状态。
+```
+
+```java
+//发起人角色
+@Data
+public class Originator {
+    private String state;
+
+    public Memento createMemento(){
+        return new Memento(this.state);
+    }
+
+    public void restoreMemento(Memento memento){
+        this.setState(memento.getState());
+    }
+}
+```
+
+```java
+//备忘录角色
+@Data
+public class Memento {
+    private String state;
+
+    public Memento(String state){
+        this.state = state;
+    }
+}
+```
+
+```java
+//备忘录管理者角色
+public class CreateTaker {
+    private Memento memento;
+
+    public Memento getMemento(){
+        return this.memento;
+    }
+
+    public void storeMemento(Memento memento){
+        this.memento = memento;
+    }
+}
+
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        //创建发起人角色
+        Originator originator = new Originator();
+        //创建备忘录管理员角色
+        CreateTaker createTaker = new CreateTaker();
+        //管理员存储发起人的备忘录
+        createTaker.storeMemento(originator.createMemento());
+        //发起人从管理员获取备忘录进行回滚
+        originator.restoreMemento(createTaker.getMemento());
+    }
+}
+```
+
+```
+角色:
+	1.发起人角色(Originator):负责创建一个备忘录，记录自身需要保存的状态，具备状态回滚功能。
+	2.备忘录角色(Memento):用于存储Originator状态，且可防止Originator以外的对象进行访问。
+	3.备忘录管理员角色(Caretaker):负责存储，提供管理Memento,无法对Memento的内容进行操作和访问。
+```
+
