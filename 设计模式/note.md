@@ -1955,3 +1955,139 @@ public class Test {
 	3.备忘录管理员角色(Caretaker):负责存储，提供管理Memento,无法对Memento的内容进行操作和访问。
 ```
 
+
+
+# 18.访问者模式
+
+```
+定义:
+	访问者模式一种将数据结构与数据操作分离的设计模式，指封装一些作用于某种数据结构中的各元素的操作，可以在不改变数据结构的前提下定义作用于这些元素的新操作，属于行为设计模式。
+```
+
+```
+	访问者模式的基本思想是:
+	针对系统中拥有固定类型数的对象结构(元素),在其内部提供一个accept方法来接收访问者对象的访问。不同访问者对同一元素的访问内容不同，使得相同的元素集合可以产生不同的结果。
+	accept方法可以接收不同的访问者对象，然后在内部将自己(元素)转发到接收的访问者对象的visit方法内。访问者内部对应类型的visit方法就会得到回调执行，对元素进行操作。也就是通过两次动态分发，第1次是对访问者分发accept方法，第二次是对元素分发visit方法，最终将一个元素传递到一个具体的访问者。如此一来，就解耦了数据结构与数据操作，且数据操作不会改变元素状态。
+```
+
+```
+应用场景:
+	(1)数据结构稳定，作用于数据结构的操作经常变化的场景；
+	(2)需要数据结构与数据操作分离的场景；
+	(3)需要对不同数据类型进行操作，而不使用分支判断具体类型的场景;
+```
+
+```
+主要角色:
+	(1)抽象访问者:定义了一个visit方法用于访问每一个具体元素，入参就是具体元素。理论上来说，visit方法的个数与元素个数是相等的。如果元素个数经常变动，就不适用访问者模式;
+	(2)具体访问者:实现对元素的具体操作;
+	(3)抽象元素:定义了一个接收访问者的方法accept,表示所有元素类型都支持被访问者访问。
+	(4)具体元素:具体的元素类型，提供接受访问者的具体实现，通常都为visitor.visit(this);
+	(5)结构对象:该类内部维护了元素集合，并提供方法接受访问者对该集合所有元素进行操作;
+```
+
+```java
+//抽象元素
+public interface IElement {
+    void accept(IVisitor visitor);
+}
+```
+
+```java
+//具体元素A
+public class ElementA implements IElement{
+    @Override
+    public void accept(IVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public String operA(){
+        return this.getClass().getSimpleName();
+    }
+}
+
+//具体元素B
+public class ElementB implements IElement{
+    @Override
+    public void accept(IVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public int operB(){
+        return new Random().nextInt(100);
+    }
+}
+```
+
+```java
+//抽象访问者
+public interface IVisitor {
+    void visit(ElementA element);
+    void visit(ElementB element);
+}
+```
+
+```java
+//具体访问者A
+public class VisitorA implements IVisitor{
+    @Override
+    public void visit(ElementA element) {
+        String res = element.operA();
+        System.out.println("result from "+element.getClass().getSimpleName()+" : "+res);
+    }
+
+    @Override
+    public void visit(ElementB element) {
+        int res = element.operB();
+        System.out.println("result from "+element.getClass().getSimpleName()+" : "+res);
+    }
+}
+
+//具体访问者B
+public class VisitorB implements IVisitor{
+    @Override
+    public void visit(ElementA element) {
+        String res = element.operA();
+        System.out.println("result from "+element.getClass().getSimpleName()+" : "+res);
+    }
+
+    @Override
+    public void visit(ElementB element) {
+        int res = element.operB();
+        System.out.println("result from "+element.getClass().getSimpleName()+" : "+res);
+    }
+}
+```
+
+```java
+//结构对象
+public class ObjectStructure {
+    private List<IElement> list = Arrays.asList(
+            new ElementA(),
+            new ElementB()
+    );
+
+    public void accept(IVisitor visitor){
+        this.list.forEach(e-> e.accept(visitor) );
+    }
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        ObjectStructure collection = new ObjectStructure();
+
+        IVisitor visitorA = new VisitorA();
+        collection.accept(visitorA);
+
+        IVisitor visitorB = new VisitorB();
+        collection.accept(visitorB);
+    }
+}
+```
+
+```
+
+```
+
