@@ -2091,3 +2091,105 @@ public class Test {
 
 ```
 
+
+
+
+
+# 19.状态模式
+
+```
+定义:
+	状态模式也叫状态机模式，允许对象在内部状态发生改变时改变它的行为，对象看起来好像修改了它的类，属于行为设计模式。
+```
+
+```
+	状态模式中的类的行为是由状态决定的，在不同的状态下具有不同的行为。其意图是让一个对象在其内部改变的时候，行为也随之改变。状态模式的核心是状态与行为绑定，不同的状态对应不同的行为。
+```
+
+```
+角色:
+	(1)环境类角色(Context):定义客户端需要的接口，内部维护一个当前状态的实例，并负责具体状态的切换；
+	(2)抽象状态角色(IState):定义该状态下的行为，可以有一个或多个行为。
+	(3)具体状态角色(ConcreteState):具体实现该状态对应的行为，并且在需要的情况下进行状态切换。
+```
+
+```java
+@Getter
+@Setter
+public class AppContext {
+    public static final UserState STATE_LOGIN = new LoginState();
+    public static final UserState STATE_UNLOGIN = new UnLoginState();
+
+    private UserState currState = STATE_UNLOGIN;
+
+    {
+        STATE_LOGIN.setContext(this);
+        STATE_UNLOGIN.setContext(this);
+    }
+
+    public void favorite(){
+        this.currState.favorite();
+    }
+
+    public void comment(String comment){
+        this.currState.comment(comment);
+    }
+}
+```
+
+```java
+@Setter
+public abstract class UserState {
+
+    protected AppContext context;
+
+    public abstract void favorite();
+
+    public abstract void comment(String comment);
+}
+```
+
+```java
+public class LoginState extends UserState {
+    @Override
+    public void favorite() {
+        System.out.println("收藏成功");
+    }
+
+    @Override
+    public void comment(String comment) {
+        System.out.println(comment);
+    }
+}
+```
+
+```java
+public class UnLoginState extends UserState {
+
+    private void switchLgin(){
+        System.out.println("跳转到登录界面");
+        this.context.setCurrState(this.context.STATE_LOGIN);
+    }
+
+
+    @Override
+    public void favorite() {
+
+    }
+
+    @Override
+    public void comment(String comment) {
+
+    }
+}
+```
+
+```
+优点:
+	(1).结构清晰：将状态独立为类，消除了冗余的if else或switch case语句;
+	(2).将状态转换显示化,通常对象内部都是使用数值类型来定义状态的，状态的切换通过赋值进行表现，不够直观；而使用状态类，当切换状态时，是以不同的类进行表示的，转换目的更加明确;
+	(3).状态类职责明确具备扩展性;
+缺点：
+	(1).类膨胀:因为状态变成类了，那么状态一多，类就很多;
+```
+
