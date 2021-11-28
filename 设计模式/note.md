@@ -2244,3 +2244,124 @@ public class UnLoginState extends UserState {
 	(2)使系统，程序的逻辑复杂化;
 ```
 
+
+
+
+
+# 22.桥接模式
+
+```
+定义:
+	将抽象部分与实现部分分离，使它们都可以独立地变化，属于结构型设计模式。
+```
+
+```
+	桥接模式的目的是通过组合的方式建立两个类之间的关系，而不是继承，但又类似于多重继承方案。但是多重继承方案往往违背了单一职责原则，其复用性比较差，桥接模式是必多重继承更好的替代方案。桥接模式的核心在于把抽象与实现接耦。
+```
+
+```
+角色：
+	(1)抽象(Abstraction):该类持有一个对实现角色的引用，抽象角色中的方法需要实现角色来实现。
+	(2)修正抽象(RefinedAbstraction): Abstraction的具体实现。
+	(3)实现(IImplementor):确定实现维度的基本操作，提供给Abstraction使用。该类一般为接口或抽象类。
+	(4)具体实现(ConcreteImplementor):IImplementor的具体实现。
+```
+
+```java
+//实现消息发送的统一接口
+public interface IMessage {
+
+    void sendMsg(String msg, String toWhom);
+}
+
+//邮件消息实现类
+public class EmailMessage implements IMessage{
+    @Override
+    public void sendMsg(String msg, String toWhom) {
+        System.out.println("使用邮件发送: "+msg+" 给:  "+toWhom);
+    }
+}
+
+//短信消息实现类
+public class SmsMessage implements IMessage {
+    @Override
+    public void sendMsg(String msg, String toWhom) {
+        System.out.println("使用短信发送: "+msg+" 给:  "+toWhom);
+    }
+}
+```
+
+```java
+//抽象消息类
+public abstract class AbsMessage {
+
+    //持有一个实现部分的对象
+    IMessage message;
+
+    public AbsMessage(IMessage message) {
+        this.message = message;
+    }
+
+    public void sendMsg(String msg, String toWhom){
+        this.message.sendMsg(msg, toWhom);
+    }
+}
+
+//普通消息类
+public class NormalMessage extends AbsMessage{
+    public NormalMessage(IMessage message) {
+        super(message);
+    }
+
+    @Override
+    public void sendMsg(String msg, String toWhom){
+        super.sendMsg(msg, toWhom);
+    }
+}
+
+//加急消息类
+public class UrgencyMessage extends AbsMessage {
+    public UrgencyMessage(IMessage message) {
+        super(message);
+    }
+
+    @Override
+    public void sendMsg(String msg, String toWhom) {
+        msg = "加急 " + msg;
+        super.sendMsg(msg, toWhom);
+    }
+
+}
+```
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        IMessage message = new SmsMessage();
+        AbsMessage absMessage = new NormalMessage(message);
+        absMessage.sendMsg("今日有雨","观众朋友");
+
+        message = new EmailMessage();
+        absMessage = new UrgencyMessage(message);
+        absMessage.sendMsg("发生山体滑坡", "领导");
+    }
+}
+```
+
+```
+桥接模式在jdk中的应用:
+	jdbc用到的Driver类
+```
+
+```
+优点:
+	(1)分离抽象部分及其具体实现部分;
+	(2)提高了系统的扩展性；
+	(3)符合开闭原则;
+	(4)符合合成复用原则;
+	
+缺点:
+	(1)增加了系统的理解与设计难度;
+	(2)需要正确地识别系统中两个独立变化的维度;
+```
+
