@@ -6,7 +6,7 @@ public class LISTEst {
     public static void main(String[] args) {
         int[] nums = {1,3,5,4,7};
         findNumberOfLIS(nums);
-        Arrays.sort();
+        //Arrays.sort();
         return;
     }
 
