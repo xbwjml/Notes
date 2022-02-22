@@ -3,16 +3,18 @@ package spring.chapter01;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MainTest {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext();
 
-        AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition().getBeanDefinition();
-        beanDefinition.setBeanClass(MyFcBean.class);
-        ac.registerBeanDefinition("kk",  beanDefinition);
+        ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("spring.xml");
 
-        Person kk = ac.getBean("kk", Person.class);
+        UserService uu = ac.getBean("uu", UserService.class);
+        UserService uu1 = ac.getBean("uu", UserService.class);
+        UserService uu2 = ac.getBean("uu2", UserService.class);
+        UserService uu22 = ac.getBean("uu2", UserService.class);
+
 
         return;
     }

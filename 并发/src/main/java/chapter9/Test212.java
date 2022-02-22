@@ -12,6 +12,7 @@ public class Test212 {
         t1.start();
         Thread.sleep(1000);
         t2.start();
+        System.out.println();
     }
 }
 
