@@ -17,7 +17,7 @@
     "install": "^0.13.0",
     "less": "^3.13.1",
     "less-loader": "^2.2.3",
-    "npm": "^7.20.2",
+    "npm": "^8.11.0",
     "style-loader": "^2.0.0",
     "vue-loader": "^13.0.0",
     "vue-template-compiler": "^2.6.14",
