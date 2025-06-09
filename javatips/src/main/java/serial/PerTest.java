@@ -8,6 +8,10 @@ public class PerTest {
         deserialize();
     }
 
+    public Object m1(){
+        throw new RuntimeException();
+    }
+
     public static void serialize() throws IOException {
         Person person = new Person();
         person.setName("tom");
