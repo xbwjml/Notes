@@ -145,3 +145,17 @@ L.data = (ElemType *) malloc( sizeof(ElemType)*InitSize ) ;
 ![截屏2025-06-15 19.51.30](/Users/liminjie/Documents/study/Notes/数据结构与算法/截图/截屏2025-06-15 19.51.30.png)
 
 ![截屏2025-06-15 19.55.21](/Users/liminjie/Documents/study/Notes/数据结构与算法/截图/截屏2025-06-15 19.55.21.png)
+
+
+
+
+
+### 2.3.1单链表的定义
+
+![截屏2025-06-15 20.07.40](/Users/liminjie/Documents/study/Notes/数据结构与算法/截图/截屏2025-06-15 20.07.40.png)
+
+![截屏2025-06-15 20.09.20](/Users/liminjie/Documents/study/Notes/数据结构与算法/截图/截屏2025-06-15 20.09.20.png)
+
+![截屏2025-06-15 20.11.44](/Users/liminjie/Documents/study/Notes/数据结构与算法/截图/截屏2025-06-15 20.11.44.png)
+
+![截屏2025-06-15 20.12.51](/Users/liminjie/Documents/study/Notes/数据结构与算法/截图/截屏2025-06-15 20.12.51.png)
