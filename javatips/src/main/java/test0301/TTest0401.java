@@ -1,59 +1,31 @@
 package test0301;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
 public class TTest0401 {
 
     public static void main(String[] args) {
-        int[] arr = new int[]{3,2,3};
-        majorityElement(arr);
+        int i = climbStairs(45);
+        System.out.println(i);
     }
 
-    public boolean isValid(String s) {
-
-        char[] arr = s.toCharArray();
-        Set<Character> leftSet = new HashSet(){{
-            add('(');
-            add('[');
-            add('{');
-        }};
-        Set<Character> rightSet = new HashSet(){{
-            add(')');
-            add(']');
-            add('}');
-        }};
-
-        boolean res = true;
-        Stack<Character> stack =new Stack<>();
-
-        for (char c : arr) {
-            
-        }
-        for (int i=0; i<arr.length; i++) {
-            if (leftSet.contains(arr[i])) {
-                stack.push(c);
-            }
-            if (rightSet.contains(arr[i])) {
-                char left = stack.pop();
-                char right = arr[i];
-                boolean match = (left == '(' && right == ')')
-                        || (left == '[' && right == ']')
-                        || (left == '{' && right == '}');
-                if (!boolean) {
-                    res = false;
-                    break;
-                }
-            }
-        }
-
-        return res && res.isEmpty();
+    public static int climbStairs(int n) {
+         if (n == 1) return 1;
+         if (n == 2) return 2;
+         return climbStairs(n - 1) + climbStairs(n - 2);
     }
 }
