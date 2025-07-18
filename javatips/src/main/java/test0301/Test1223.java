@@ -9,6 +9,7 @@ public class Test1223 {
         int[] rocks = new int[]{35,32,45,98,6,1,25};
         int additionalRocks = 17;
 
+        Integer.MAX_VALUE
         int[] ints = Arrays.copyOfRange(capacity, 7, 7);
 
         System.out.println(ints);
