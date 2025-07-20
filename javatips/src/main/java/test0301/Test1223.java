@@ -1,52 +1,26 @@
 package test0301;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class Test1223 {
     public static void main(String[] args) {
-        int[] capacity = new int[]{91,54,63,99,24,45,78};
-        int[] rocks = new int[]{35,32,45,98,6,1,25};
-        int additionalRocks = 17;
 
-        Integer.MAX_VALUE
-        int[] ints = Arrays.copyOfRange(capacity, 7, 7);
-
-        System.out.println(ints);
+        int[] arr = new int[]{7,1,5,3,6,4};
+        maxProfit(arr);
     }
 
-    public static int maximumBags(int[] capacity, int[] rocks, int additionalRocks) {
+    public static int maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length][2];
+        dp[0][0] = prices[0];
 
-        int fullNum = 0;
-        List<Integer> list = new LinkedList<>();
-        int gap = 0;
-
-        for (int i=0; i<capacity.length; i++) {
-            int remains = capacity[i] - rocks[i];
-            if (remains == 0) {
-                fullNum++;
-                continue;
-            }
-            if (remains <= additionalRocks) {
-                list.add(remains);
-                gap += remains;
-                continue;
-            }
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = Math.min(prices[i-1], prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], prices[i] - dp[i][0]);
         }
 
-        if (gap <= additionalRocks) {
-            return capacity.length;
-        }
-
-        Collections.sort(list);
-        for (Integer c : list) {
-            additionalRocks -= c;
-            if (additionalRocks < 0) {
-                break;
-            }
-            fullNum++;
-        }
-
-        return fullNum;
+        return dp[prices.length - 1][1];
     }
 }
