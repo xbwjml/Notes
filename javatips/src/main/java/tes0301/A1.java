@@ -1,4 +1,4 @@
-package test0301;
+package tes0301;
 
 public class A1 {
 }

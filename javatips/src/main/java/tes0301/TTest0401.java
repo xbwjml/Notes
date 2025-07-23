@@ -1,11 +1,4 @@
-package test0301;
-
-import lombok.*;
-import org.springframework.util.StringUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
+package tes0301;
 
 
 class ListNode {
