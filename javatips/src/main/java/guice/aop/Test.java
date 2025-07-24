@@ -1,6 +1,7 @@
 package guice.aop;
 
 import com.google.inject.*;
+import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
