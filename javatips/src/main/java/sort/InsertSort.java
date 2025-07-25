@@ -10,19 +10,15 @@ public class InsertSort {
         return;
     }
 
-    private static void sort(int[] arr){
-        if(null == arr || 0 == arr.length )
-            return;
-        for(int i=1; i<arr.length; i++ ){
-            if(arr[i] < arr[i-1]){
-                int temp = arr[i];
-                int j = i;
-                while(j > 0 && temp < arr[j-1]){
-                    arr[j] = arr[j-1];
-                    j--;
-                }
-                arr[j] = temp;
+    public static void sort(int[] arr){
+        for (int i = 1; i < arr.length; i++) {
+            int pivot = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > pivot) {
+                arr[j + 1] = arr[j];
+                j--;
             }
+            arr[j + 1] = pivot;
         }
     }
 
