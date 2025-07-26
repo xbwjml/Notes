@@ -2,30 +2,39 @@ package sort;
 
 public class ShellSort {
     public static void main(String[] args) {
-        int[] arr = GenerateArrUtil.getArr(15,1000);
+        int[] arr = GenerateArrUtil.getArr(30000900,1000);
+        long start = System.currentTimeMillis();
         sort(arr);
+        long end = System.currentTimeMillis();
+        System.out.println("time : " + (end - start));
+
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] < arr[i - 1]) {
+                throw new RuntimeException("i = " + i + ", arr[i] = " + arr[i]+ ", arr[i-1] = " + arr[i-1]);
+            }
+        }
+
+        //for (int i = 0; i < arr.length; i++) {
+        //    System.out.println(arr[i]);
+        //}
         return;
     }
 
     private static void sort(int[] arr){
-        if(null == arr || 0 == arr.length )
-            return;
-        int len = arr.length;
-        int d = len;
+        if (null == arr) return;
 
-        while(d > 1){
-            d /= 2;
-            for (int i=d; i<len; i+=d){
-                if(arr[i] < arr[i-d]){
-                   int temp = arr[i];
-                   int j = i;
-                   while( j>0 && temp<arr[j-1] ){
-                       arr[j] = arr[j-1];
-                       j--;
-                   }
-                   arr[j] = temp;
+        for (int d = arr.length / 2; d > 0; d /= 2) {
+            for (int i = d; i<arr.length; i++) {
+                int pivot = arr[i];
+                int j = i - d;
+                while (j > -1 && pivot < arr[j]) {
+                    arr[j + d] = arr[j];
+                    j-=d;
                 }
+                arr[j + d] = pivot;
             }
+
         }
+
     }
 }
