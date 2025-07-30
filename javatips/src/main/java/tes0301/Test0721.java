@@ -1,30 +1,41 @@
 package tes0301;
 
-import java.util.*;
+import java.util.HashSet;
 
-class FFF {
+class FFa {
+    static int a = 10;
+    static {
+        System.out.println("father static block");
+        System.out.println(a);
+    }
+    {
+        System.out.println("father block");
+    }
 
-    public void m1(){}
+    public FFa() {
+        System.out.println("father constructor");
+    }
 }
 
-class AAA extends FFF{
-    @Override
-    public void m1() {
-        super.m1();
+class SSon extends FFa {
+    static int b = 20;
+    static {
+        System.out.println("son static block");
+        System.out.println(b);
+    }
+    {
+        System.out.println("son block");
+    }
+
+    public SSon() {
+        System.out.println("son constructor");
     }
 }
 
 public class Test0721<T> {
 
-    public void push(Collection<? extends T> e) {
-        System.out.println(e);
-    }
-
     public static void main(String[] args) throws CloneNotSupportedException {
-        Class<Void> voidClass = void.class;
-        return;
+        new SSon();
     }
-
-    
 
 }

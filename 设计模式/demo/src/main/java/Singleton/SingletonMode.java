@@ -91,7 +91,7 @@ class Singleton3{
  */
 class Singleton4{
 
-    private static Singleton4 singleton4;
+    private volatile static Singleton4 singleton4;
 
     private Singleton4(){}
 
