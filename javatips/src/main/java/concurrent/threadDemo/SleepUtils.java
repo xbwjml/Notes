@@ -10,4 +10,12 @@ public class SleepUtils {
             throw new RuntimeException(e);
         }
     }
+
+    public static void millisSecond(long milliSeconds) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(milliSeconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
