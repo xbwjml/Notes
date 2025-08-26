@@ -1,8 +1,28 @@
 package tes0301;
 
 
+import concurrent.ThreadPool;
+import concurrent.threadDemo.InterruptTest;
+import concurrent.threadDemo.SleepUtils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.java.Log;
+import utils.LogUtils;
+
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicStampedReference;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.StampedLock;
 
 class FFaa {
     static {
@@ -29,25 +49,51 @@ class SSonn extends FFaa {
     }
 }
 
-public class Test1223 {
-    public static void main(String[] args) {
-        int[] arr = {2};
-        int amount = 3;
-        coinChange(arr, amount);
+class Ts1 {
+    int a = 0;
+    public int getA() {
+        return a;
+    }
+}
+
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+@AllArgsConstructor
+@Getter
+class Ur {
+    String name;
+    volatile int age;
+}
+
+class MyPool extends ThreadPoolExecutor {
+
+    public MyPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
     }
 
-    public static int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
-        Arrays.fill(dp, Integer.MAX_VALUE);
+    @Override
+    protected void beforeExecute(Thread t, Runnable r) {
+        super.beforeExecute(t, r);
+    }
+}
 
-        dp[0] = 0;
-        for (int i = 0; i < dp.length; i++){
-            for (int c : coins) {
-                if (i - c < 0) continue;
-                dp[i] = Math.min(dp[i], 1 + dp[i - c]);
-            }
-        }
+public class Test1223 {
 
-        return dp[amount] == (amount + 1) ? -1 : dp[amount];
+    public static void main(String[] args) {
+
+
+
     }
 }

@@ -12,16 +12,16 @@ public class JubuOuter {
                 System.out.println(a);
                 System.out.println("非静态方法调用了");
             }
-            public static void show2() {
-                System.out.println("静态方法调用了");
-            }
+            //public static void show2() {
+            //    System.out.println("静态方法调用了");
+            //}
         }
 
         Inner innerObj = new Inner();
         System.out.println(innerObj.name);
         innerObj.show1();
-        innerObj.show2();
-        Inner.show2();
+        //innerObj.show2();
+        //Inner.show2();
 
     }
 }

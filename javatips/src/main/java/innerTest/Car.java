@@ -21,7 +21,7 @@ public class Car {
      class Engine {
         String engineName;
         int engineAge;
-        static String number;
+        //static String number;
         private int a = 20;
 
         public void show() {

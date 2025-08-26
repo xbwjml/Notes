@@ -4,47 +4,52 @@ import java.util.Arrays;
 
 public class MergeSort {
     public static void main(String[] args) {
-        int[] arr = GenerateArrUtil.getArr(15,1000);
-        int[] res = Arrays.copyOf(arr, arr.length);
-        res = new  int[]{18 ,14, 15, 17, 11, 13, 16, 12, 23};
-        sort(res);
+        int[] arr = GenerateArrUtil.getArr(1000,20000);
+        sortArray(arr);
+
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] < arr[i - 1]) {
+                throw new RuntimeException("i = " + i + ", arr[i] = " + arr[i]+ ", arr[i-1] = " + arr[i-1]);
+            }
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
         return;
     }
 
-    private static void sort(int[] arr){
-        int[] temp = new int[arr.length];
-        part(arr, 0, arr.length-1, temp);
+    public static int[] sortArray(int[] nums) {
+        mergeSort(nums, 0, nums.length - 1);
+        return nums;
     }
 
-    private static void part(int[] arr, int left, int right, int[] temp) {
-        if(left < right){
-            int mid = (left+right)/2;
-            //继续分左半边
-            part(arr, left, mid, temp);
-            //继续分右半边
-            part(arr, mid+1, right, temp);
-            //合并
-            merge(arr, left, mid, right, temp);
+    public static void mergeSort(int[] nums, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            mergeSort(nums, left, mid);
+            mergeSort(nums, mid + 1, right);
+            merge(nums, left, mid, right);
         }
     }
 
-    private static void merge(int[] arr, int left, int mid, int right, int[] temp){
-        int i = left;
-        int j = mid+1;
-        int k = 0;
+    public static void merge(int[] nums, int left, int mid, int right) {
+        int[] tempArr = new int[nums.length];
+        for (int i = left; i <= right; i++)
+            tempArr[i] = nums[i];
 
-        while(i<=mid && j<=right){
-            if(arr[i] < arr[j])
-                temp[k++] = arr[i++];
-            else
-                temp[k++] = arr[j++];
+        int k = left;
+        int p1 = left;
+        int p2 = mid + 1;
+        while (p1 <= mid && p2 <= right) {
+            if (tempArr[p1] <= tempArr[p2]) {
+                nums[k++] = tempArr[p1++];
+            } else {
+                nums[k++] = tempArr[p2++];
+            }
         }
 
-        while ( i<=mid ) temp[k++] = arr[i++];
-        while ( j<=right ) temp[k++] = arr[j++];
-
-        k=0;
-        while (left <= right)
-            arr[left++] = temp[k++];
+        while(p1 <= mid) nums[k++] = tempArr[p1++];
+        while(p2 <= right) nums[k++] = tempArr[p2++];
     }
 }

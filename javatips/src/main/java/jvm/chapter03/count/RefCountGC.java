@@ -11,8 +11,8 @@ public class RefCountGC {
         RefCountGC b = new RefCountGC();
         a.ins = b;
         b.ins = a;
-        a = null;
-        b = null;
+        //a = null;
+        //b = null;
         System.gc();
     }
 }

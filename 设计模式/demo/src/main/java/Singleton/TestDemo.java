@@ -2,6 +2,8 @@ package Singleton;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 
 public class TestDemo {
