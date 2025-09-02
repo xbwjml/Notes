@@ -19,7 +19,7 @@ public class CountDownLatchTest4 {
             int k = j;
             service.submit(() -> {
                 for (int i = 0; i <= 100; i++) {
-                    SleepUtils.millisSecond(random.nextInt(200));
+                    SleepUtils.millisSecond(random.nextInt(100));
                     all[k] = i + " %";
                     System.out.print("\r" + Arrays.toString(all));
                 }
