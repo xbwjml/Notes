@@ -5,7 +5,7 @@ package sort;
  */
 public class InsertSort {
     public static void main(String[] args) {
-        int[] arr = GenerateArrUtil.getArr(30,100);
+        int[] arr = GenerateArrUtil.getArr(3000,10000);
         sort(arr);
 
         for (int i = 1; i < arr.length; i++) {
@@ -15,20 +15,22 @@ public class InsertSort {
         }
 
         for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i]);
+            //System.out.println(arr[i]);
         }
         return;
     }
 
     public static void sort(int[] arr){
-        for (int i = 1; i < arr.length; i++) {
-            int pivot = arr[i];
-            int j = i - 1;
-            while (j >= 0 && arr[j] > pivot) {
-                arr[j + 1] = arr[j];
-                j--;
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i; j > 0; j--) {
+                if (arr[j] < arr[j-1]) {
+                    int t = arr[j];
+                    arr[j] = arr[j-1];
+                    arr[j-1] = t;
+                } else {
+                    break;
+                }
             }
-            arr[j + 1] = pivot;
         }
     }
 

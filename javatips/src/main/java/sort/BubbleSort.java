@@ -2,7 +2,7 @@ package sort;
 
 public class BubbleSort {
     public static void main(String[] args) {
-        int[] arr = GenerateArrUtil.getArr(300000,1000);
+        int[] arr = GenerateArrUtil.getArr(80000,1000);
         long start = System.currentTimeMillis();
         sort(arr);
         long end = System.currentTimeMillis();
@@ -32,15 +32,17 @@ public class BubbleSort {
     //}
 
     private static void sort(int[] arr){
-        if (null == arr) return;
         for (int i = 0; i < arr.length; i++) {
+            boolean flag = false;
             for (int j = arr.length - 1; j > i; j--) {
                 if (arr[j] < arr[j - 1]) {
-                    int temp = arr[j];
+                    flag = true;
+                    int t = arr[j];
                     arr[j] = arr[j - 1];
-                    arr[j - 1] = temp;
+                    arr[j - 1] = t;
                 }
             }
+            if (!flag) break;
         }
     }
 }

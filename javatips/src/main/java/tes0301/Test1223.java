@@ -2,13 +2,18 @@ package tes0301;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RRateLimiter;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.springframework.transaction.annotation.Transactional;
 import utils.LogUtils;
 
+import java.sql.Array;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 class FFaa {
     static {
@@ -33,51 +38,24 @@ class SSonn extends FFaa {
     public SSonn() {
         System.out.println("子类构造方法");
     }
-}
 
-class Ts1 {
-    int a = 0;
-    public int getA() {
-        return a;
-    }
-}
-
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
-
-@AllArgsConstructor
-@Getter
-class Ur {
-    String name;
-    volatile int age;
-}
-
-class MyPool extends ThreadPoolExecutor {
-
-    public MyPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
-    }
-
-    @Override
-    protected void beforeExecute(Thread t, Runnable r) {
-        super.beforeExecute(t, r);
-    }
 }
 
 public class Test1223 {
-
     public static void main(String[] args) {
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://localhost:6379");
+        RedissonClient redissonClient = Redisson.create(config);
 
+        RLock lock = redissonClient.getLock("mytestLock1");
+        lock.lock(1000, TimeUnit.MILLISECONDS);
+
+        RRateLimiter limiter = redissonClient.getRateLimiter("test1");
+        //limiter.trySetRate();
+        //limiter.tryAcquire();
+        //limiter.acquire();
+
+        Thread.currentThread().setContextClassLoader();
     }
 }
+

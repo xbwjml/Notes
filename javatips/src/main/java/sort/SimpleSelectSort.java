@@ -2,7 +2,7 @@ package sort;
 
 public class SimpleSelectSort {
     public static void main(String[] args) {
-        int[] arr = GenerateArrUtil.getArr(30,100);
+        int[] arr = GenerateArrUtil.getArr(3000,10000);
         sort(arr);
 
         for (int i = 1; i < arr.length; i++) {
@@ -18,18 +18,16 @@ public class SimpleSelectSort {
     }
 
     private static void sort(int[] arr){
-        if(null == arr)
-            return;
         for (int i = 0; i < arr.length; i++) {
-            int minIdx = i;
-            for (int j = i + 1; j< arr.length; j++) {
-                if (arr[j] < arr[minIdx]) minIdx = j;
+            int midIdx = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] < arr[midIdx]) {
+                    midIdx = j;
+                }
             }
-            if (minIdx != i) {
-                int temp = arr[minIdx];
-                arr[minIdx] = arr[i];
-                arr[i] = temp;
-            }
+            int tmp = arr[i];
+            arr[i] = arr[midIdx];
+            arr[midIdx] = tmp;
         }
     }
 }

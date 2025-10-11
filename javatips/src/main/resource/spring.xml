@@ -5,9 +5,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="uu" class="spring.chapter01.UserService" scope="prototype"></bean>
+<!--    <bean id="uu" class="spring.chapter01.UserService" scope="prototype"></bean>-->
 
-    <bean id="uu2" class="spring.chapter01.UserService"></bean>
+<!--    <bean id="uu2" class="spring.chapter01.UserService"></bean>-->
 
-    <bean id="u1" class="spring.chapter02.User"></bean>
+<!--    <bean id="u1" class="spring.chapter02.User"></bean>-->
+
+    <bean id = "beanA" class = "spring.cacheDemo.BeanA">
+        <property name = "beanB" ref = "beanB"/>
+    </bean>
+    <bean id = "beanB" class = "spring.cacheDemo.BeanB">
+        <property name = "beanA" ref = "beanA"/>
+    </bean>
 </beans>

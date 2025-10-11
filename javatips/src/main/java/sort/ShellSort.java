@@ -2,9 +2,9 @@ package sort;
 
 public class ShellSort {
     public static void main(String[] args) {
-        int[] arr = GenerateArrUtil.getArr(30000900,1000);
+        int[] arr = GenerateArrUtil.getArr(300000,1000);
         long start = System.currentTimeMillis();
-        sort(arr);
+        sort2(arr);
         long end = System.currentTimeMillis();
         System.out.println("time : " + (end - start));
 
@@ -36,5 +36,22 @@ public class ShellSort {
 
         }
 
+    }
+
+    private static void sort2(int[] arr) {
+        //gap控制步长
+        for (int gap = arr.length / 2; gap >= 1; gap /= 2) {
+            for (int i = gap; i < arr.length; i++) {
+                for (int j = i; j >= gap; j -= gap) {
+                    if (arr[j] < arr[j - gap]) {
+                        int t = arr[j];
+                        arr[j] = arr[j - gap];
+                        arr[j - gap] = t;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
